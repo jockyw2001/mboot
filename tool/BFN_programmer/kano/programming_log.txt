@@ -1,0 +1,238 @@
+ÀÁÀþÀ¿þøþþøþþàþÿÿþÿþøÿþüÿøÿþøÿþøÿþþ?þüþþþþÀþÿþüÿþÿþüÿÀÀÀþþ~?øþÿþÿþþ¿þÿþþðÁÀþÐ~? üþÿþðÿþ@þÿþðÿþÿþøøÿHøÿÀÀÁþÐ~?øþþþþÿþøÿþÿþøþÿÀÁþðþ@þþþðþðÿþàÿþøÿþÿÁÁÀþ àþàþÿþÿþàþÿþüÿþøÿþøþHi Main
+----- STB BFN -----NAND ID:0x2C 0xDC 0x90 0xA6 0x54 0x0 0x0 0x0 0x2C 0xDC 0x90 0xA6 0x54 0x0 0x0
+Begin Search CIS in DRAM
+Found NandInfo in given memory, index 22
+u16_PageByteCnt = 1000h
+u16_SpareByteCnt = E0h
+u16_BlkPageCnt = 40h
+u16_BlkCnt = 800h
+u16_ECCType = 3h
+u8_AddrCycleIdx = 0h
+u8_CellType = 0h
+u8_PairPageMapLoc = 0h
+u8_PairPageMapType = 0h
+Found PartInfo in given memory, index 9
+Hash left 0x0A004
+Write blk10 ok
+LDR write end blk 11
+Hash left 0x0A004
+Write blk11 ok
+Backup LDR write end blk 12
+Hash left 0x1F7C68
+Write blk12 ok
+Hash left 0x1B7C68
+Write blk13 ok
+Hash left 0x177C68
+Write blk14 ok
+Hash left 0x137C68
+Write blk15 ok
+Hash left 0xF7C68
+Write blk16 ok
+Hash left 0xB7C68
+Write blk17 ok
+Hash left 0x77C68
+Write blk18 ok
+Hash left 0x37C68
+Write blk19 ok
+APP write end blk 20
+Hash left 0x1F7C68
+Write blk20 ok
+Hash left 0x1B7C68
+Write blk21 ok
+Hash left 0x177C68
+Write blk22 ok
+Hash left 0x137C68
+Write blk23 ok
+Hash left 0xF7C68
+Write blk24 ok
+Hash left 0xB7C68
+Write blk25 ok
+Hash left 0x77C68
+Write blk26 ok
+Hash left 0x37C68
+Write blk27 ok
+Backup APP write end blk 28
+check good blk:0x0
+CIS is written to blk 0x0
+check good blk:0x1
+CIS is written to blk 0x1
+erase blk:2
+erase blk:3
+erase blk:4
+erase blk:5
+erase blk:6
+erase blk:7
+erase blk:8
+erase blk:9
+Hash left 0x02000
+Write blk2 ok
+MIU write end blk 3
+Hash left 0x02000
+Write blk3 ok
+Backup MIU write end blk 4
+BFN programming is done
+----- END STB BFN -----
+BOOT01_OKNAND
+.Hit CIS
+Hit BIN
+
+Relocation Offset is: 0E000000
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-dirty (Dec 25 2015 - 15:32:38)  MBOT-1106.0.0.OldChip.BackUp
+
+
+Function = SYSOpen, Line = 812, current resource pri_shm content is: 0
+Function = SYSOpen, Line = 831, [SYS INFO] OPEN INSTANCE...
+create instance at 2EBF97F8 with private size 108 bytes at 2EBF9840
+
+[MIU INFO] miu opencreate instance at 2EBF98B0 with private size 80 bytes at 2EBF98F8
+SPI:  Flash is detected (0x0512, 0xC2, 0x9E, 0x16)
+MDrv_SERFLASH_GetInfo()
+        u32AccessWidth = 1
+        u32TotalSize   = 4194304
+        u32SecNum      = 64
+        u32SecSize     = 65536
+create instance at 2EBF9950 with private size 48 bytes at 2EBF9998
+
+uboot held at [2E9DDF60~30000000],size=016220A0
+CPU  : Kano
+Board: BD_MST231B_D01A
+DRAM:  256 MiB
+Now running in RAM - U-Boot at: 2F200000
+NAND:  [NC_Init]        SDR NAND is detected
+CIS is found @Blk0
+FCIE is set to 62MHz
+512 MiB
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+[CPU INFO] cpu opencreate instance at 2EC0E9C8 with private size 44 bytes at 2EC0EA10
+CPUIoctl - MDrv_CMD_CPU_QueryClock
+[UTOPIA INFO] close moduleNames[tu]:  /  /à /  /` /à /xV4
+
+[AT][MBoot][Driver Init][0]
+mtdparts variable not set, see 'help mtdparts'
+incorrect device type in UBI
+Partition UBI not found!
+[ERROR] LoadMMAP:694: mount CONFIG fail
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] syncMmap2bootargs:943: sync LX_MEM fail
+[ERROR] do_sync_mmap_to_env:1280: sync the part of mmap info to bootargs fail
+
+Changelist:     00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:705: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+Unknown command 'mmc' - try 'help'
+Kano#

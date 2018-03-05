@@ -1,0 +1,237 @@
+swch 4
+//================================================
+// Start MIU init !!!             
+//================================================
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c01
+wriu -w   0x101246  0xfffe
+wriu -w   0x101266  0xffff
+wriu -w   0x101286  0xffff
+wriu -w   0x1012a6  0xffff
+wriu -w   0x161506  0xffff
+wriu -w   0x161526  0xffff
+wriu -w   0x1615e6  0xfffe
+wriu -w   0x110d78  0x0001
+wait 4
+wriu -w   0x110d24  0x1000
+wait 1
+wriu -w   0x110d24  0x0000
+wait 1
+//----------------------
+//set DDRPLL0 = 1866MHZ 
+//----------------------
+wriu -w   0x110d36  0x0400
+wriu -w   0x110d34  0x2004
+wriu -w   0x110d8a  0x0001
+wriu -w   0x110d30  0xf45a //0117_mdy
+wriu -w   0x110d32  0x001d
+wait 30
+wriu -w   0x110d22  0x0004
+wait 1
+wriu -w   0x110d2c  0x0114
+
+wriu -w   0x110d28  0x0011 //SSC 1%
+wriu -w   0x110d2a  0x0482 //0117_mdy
+//---------------------------
+//set DDR3_16_8X_CL13_1866
+//---------------------------
+wriu -w   0x101202  0x03a3 //DC: wriu -w   0x101202  0xf3a3
+wriu -w   0x101204  0x000e //0906_mdy
+wriu -w   0x101206  0x152b
+wriu -w   0x101208  0x20dd
+wriu -w   0x10120a  0x2e76
+wriu -w   0x10120c  0xc7e9
+wriu -w   0x10120e  0x4118
+wriu -w   0x101210  0x1f14
+wriu -w   0x101212  0x4004
+wriu -w   0x101214  0x8020
+wriu -w   0x101216  0xc000
+wriu -w   0x1012d2  0x7000 //1Gb , reg_dram_size
+
+wriu -w   0x110d02  0xaaaa
+wriu -w   0x110d04  0x0080
+wriu -w   0x110d0a  0x1100 //0110_mdy
+wriu -w   0x110d3c  0x9333 //1213_mdy
+wriu -w   0x110d4c  0x0033
+wriu -w   0x110d3e  0x1033
+wriu -w   0x110d50  0x1111
+wriu -w   0x110d38  0x0076 //0110_mdy
+wriu -w   0x110d48  0x0044
+wriu -w   0x110d3a  0x2046 //0110_mdy
+wriu -w   0x110d4a  0x0003
+wriu -w   0x101228  0x0040
+wriu -w   0x110d4e  0x0033
+wriu -w   0x110d1a  0x8111 //0110_mdy
+wriu -w   0x110d2e  0x1111
+
+wriu -w   0x110dd0  0x4444
+wriu -w   0x110dd2  0x4444
+wriu -w   0x110dd4  0x4444
+wriu -w   0x110dd6  0x4444
+wriu -w   0x110dd8  0x0044
+wriu -w   0x110de0  0x4444
+wriu -w   0x110de2  0x4444
+wriu -w   0x110de4  0x4444
+wriu -w   0x110de6  0x4444
+wriu -w   0x110de8  0x0044
+wriu -w   0x110d94  0x1100 //0110_mdy
+wriu -w   0x110da0  0x0112 //1213_mdy
+wriu -w   0x110da2  0x3210 //1213_mdy
+wriu -w   0x110da4  0x1120 //1115_mdy
+wriu -w   0x110da6  0x0121 //1213_mdy
+wriu -w   0x110da8  0x1111
+wriu -w   0x110daa  0x1111
+wriu -w   0x110dac  0x1111
+wriu -w   0x110dae  0x1111
+wriu -w   0x110d70  0x0000
+wriu -w   0x110d74  0x0606 //0906_mdy
+wriu -w   0x110d76  0x0606 //0906_mdy
+wriu -w   0x110d6c  0x0f0f
+wriu -w   0x110d6e  0x0f0f
+wriu -w   0x110d70  0x0800
+wriu -w   0x110d0e  0x0089
+wriu -w   0x110d68  0x2020
+wriu -w   0x110d6a  0x2020
+wriu -w   0x110d5a  0x3333
+wriu -w   0x110d5c  0x5333 //1213_mdy
+wriu -w   0x110d5e  0x5333 //1213_mdy
+//=====================================================================
+// inivec setting start
+//=====================================================================
+//-----------------
+//program DLL
+//-----------------
+wriu -w   0x110d62  0x007f
+wriu -w   0x110d64  0xf000
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00cf
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00c3
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00c3
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00c2
+wriu -w   0x110d60  0x00c0
+wriu -w   0x110d60  0x33c8
+wriu -w   0x110d70  0x0000
+wriu -w   0x110d98  0x0000
+wriu -w   0x110d9a  0x0000
+wriu -w   0x110d90  0xf0f1
+wriu -w   0x110d70  0x0800
+//---------------------------
+//program dig general setting
+//---------------------------
+wriu -w   0x10122c  0x8221
+wriu -w   0x1012fc  0x951a
+wriu -w   0x101252  0xffff
+wriu -w   0x101272  0xffff
+wriu -w   0x101292  0xffff
+wriu -w   0x1012b2  0xffff
+wriu -w   0x161512  0xffff
+wriu -w   0x161532  0xffff
+//---------------------
+// Default BW setting  
+//---------------------
+wriu -w   0x101240  0x8011
+wriu -w   0x101260  0x8011
+wriu -w   0x101280  0x8011
+wriu -w   0x1012a0  0x8011
+wriu -w   0x161500  0x8011
+wriu -w   0x161520  0x8011
+//---------------------------
+//program ana general setting
+//---------------------------
+wriu -w   0x110d8a  0x0001
+wriu -w   0x110d70  0x0800
+wriu -w   0x110d58  0x0303
+wriu -w   0x110d5a  0x3333
+wriu -w   0x110d5c  0x5333 //0110_mdy
+wriu -w   0x110d5e  0x5333 //0110_mdy
+wriu -w   0x110d1a  0x8111 //0110_mdy
+wriu -w   0x110d1c  0x0020
+wriu -w   0x110d08  0x003f //DC: wriu -w   0x110d08  0x0000
+//-----------
+// DQSM RST  
+//-----------
+wriu -w   0x110d1e  0x0005
+wriu -w   0x110d1e  0x000f
+wriu -w   0x110d1e  0x0005
+wriu -w   0x10121e  0x8c01
+//---------------------------
+//Release miu SW reset
+//---------------------------
+wriu -w   0x10121e  0x8c00
+//---------------------------
+//disable GPIO
+//---------------------------
+wriu -w   0x110d00  0x2013 //DC: wriu -w   0x110d00  0x201b
+wriu -w   0x110d00  0x0003 //DC: wriu -w   0x110d00  0x000b
+wriu -w   0x110d18  0x0000
+wriu -w   0x110d7c  0x0000
+wriu -w   0x110d54  0xc000 //DC: wriu -w   0x110d54  0xc070
+//-----------
+// DQSM RST  
+//-----------
+wriu -w   0x110d1e  0x0005 //DC:
+wriu -w   0x110d1e  0x000f //DC:
+wriu -w   0x110d1e  0x0005 //DC:
+//---------------------------
+//select Mapping
+//---------------------------
+wriu -w   0x110d00  0x0003 //DC: wriu -w   0x110d00  0x000b
+wriu -w   0x101200  0x0000
+//---------------------
+// begin init DRAM     
+//---------------------
+//-----Wait 200us, (keep DRAM RESET = 0)-----
+wait 1
+wriu -w   0x101200  0x0008
+wriu -w   0x101200  0x000c
+//-----Wait 500us, (keep DRAM RESET = 1 , CKE = 0)-----
+wait 1
+wriu -w   0x101200  0x000e
+//-----Wait tXPR=400ns-----
+wait 1
+//--------Initial DRAM start here!!!
+wriu -w   0x101200  0x001f
+//-----Wait init done-----
+wait 1
+//--------Initial Done
+//--------DDR2 wait 400ns for tXPR(?), DDR3 wait 512T for tZQinit
+wait 10
+//--------wait 3.9us for a REF to clean RX FIFO wptr
+wait 10
+//-----------
+// DQSM RST  
+//-----------
+wriu -w   0x110d1e  0x0005 //DC:
+wriu -w   0x110d1e  0x000f //DC:
+wriu -w   0x110d1e  0x0005 //DC:
+
+//-------------------------
+// unmask for miu BIST client
+//-------------------------
+wriu -w   0x101246  0x7ffe //DC:
+wriu -w   0x1615e6  0xfffa //DC:
+
+//check miu bist pass!
+
+
+//-------------------------
+// unmask all 
+//-------------------------
+wriu -w   0x101246  0x0000 //DC:
+wriu -w   0x101266  0x0000 //DC:
+wriu -w   0x101286  0x0000 //DC:
+wriu -w   0x1012a6  0x0000 //DC:
+wriu -w   0x161506  0x0000 //DC:
+wriu -w   0x161526  0x0000 //DC:
+wriu -w   0x1615e6  0x0000 //DC:
+wriu -w   0x10121e  0x8c08 //DC:
+wriu -w   0x1012fe  0xa0e1 //DC:
+wriu -w   0x1012fe  0x80e1 //DC:
+wriu -w   0x1006f0  0x0000 //DC:
+wriu -w   0x1012f0  0x0000 //DC:
+wriu -w   0x1620f0  0x0000 //DC:

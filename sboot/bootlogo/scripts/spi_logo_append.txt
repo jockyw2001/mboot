@@ -1,0 +1,15 @@
+setenv SPI_OFFSET 0x800000
+setenv LOGO_SIZE 0x100000
+setenv LOGO_NAME boot0.jpg
+
+#usb start 1
+fatload usb 0 0x80000100 $(LOGO_NAME)
+mw 0x80000000 $(filesize)
+
+spi_wrc 0x80000000 $(SPI_OFFSET) $(LOGO_SIZE)
+
+setenv NAND_OFFSET
+setenv LOGO_SIZE
+setenv LOGO_NAME
+
+% <- this is end of file symbol

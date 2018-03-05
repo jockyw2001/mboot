@@ -1,0 +1,181 @@
+kayla# 瞧r~馵踕譇鸆纚纚瞬馵踕譇鸆謊r頎貏?>貙鸆濬@p???矘H?擬錘@蹧????馵僝?譇鸆擬?瞬馵踕譇纚Hi Main
+----- STB BFN -----reg_nf_en=30
+NAND ID:0x2C 0xDA 0x90 0x95 0x4 0x0 0x0 0x0 0x2C 0xDA 0x90 0x95 0x4 0x0 0x0
+Begin Search CIS in DRAM
+Found NandInfo in given memory, index 20
+u16_PageByteCnt = 800h
+u16_SpareByteCnt = E0h
+u16_BlkPageCnt = 40h
+u16_BlkCnt = 800h
+u16_ECCType = 3h
+u8_AddrCycleIdx = 0h
+u8_CellType = 0h
+u8_PairPageMapLoc = 0h
+u8_PairPageMapType = 0h
+Found PartInfo in given memory, index 4
+Hash left 0x0A000
+Write blk10 ok
+LDR write end blk 11
+Hash left 0x0A000
+Write blk11 ok
+Backup LDR write end blk 12
+Hash left 0x1C83F0
+Write blk12 ok
+Hash left 0x1A83F0
+Write blk13 ok
+Hash left 0x1883F0
+Write blk14 ok
+Hash left 0x1683F0
+Write blk15 ok
+Hash left 0x1483F0
+Write blk16 ok
+Hash left 0x1283F0
+Write blk17 ok
+Hash left 0x1083F0
+Write blk18 ok
+Hash left 0xE83F0
+Write blk19 ok
+Hash left 0xC83F0
+Write blk20 ok
+Hash left 0xA83F0
+Write blk21 ok
+Hash left 0x883F0
+Write blk22 ok
+Hash left 0x683F0
+Write blk23 ok
+Hash left 0x483F0
+Write blk24 ok
+Hash left 0x283F0
+Write blk25 ok
+Hash left 0x083F0
+Write blk26 ok
+APP write end blk 27
+Hash left 0x1C83F0
+Write blk27 ok
+Hash left 0x1A83F0
+Write blk28 ok
+Hash left 0x1883F0
+Write blk29 ok
+Hash left 0x1683F0
+Write blk30 ok
+Hash left 0x1483F0
+Write blk31 ok
+Hash left 0x1283F0
+Write blk32 ok
+Hash left 0x1083F0
+Write blk33 ok
+Hash left 0xE83F0
+Write blk34 ok
+Hash left 0xC83F0
+擱謊??謶讎t??貙鸆矘矘Write blk35 ok
+Hash left 0xA83F0
+Write blk36 ok
+Hash left 0x883F0
+Write blk37 ok
+Hash left 0x683F0
+Write blk38 ok
+Hash left 0x483F0
+Write blk39 ok
+Hash left 0x283F0
+Write blk40 ok
+Hash left 0x083F0
+Write blk41 ok
+Backup APP write end blk 42
+check good blk:0x0
+NC_ReadSectors :0xC
+CIS is written to blk 0x0
+check good blk:0x1
+NC_ReadSectors :0xC
+CIS is written to blk 0x1
+erase blk:2
+erase blk:3
+erase blk:4
+erase blk:5
+erase blk:6
+erase blk:7
+erase blk:8
+erase blk:9
+Hash left 0x02000
+Write blk2 ok
+MIU write end blk 3
+Hash left 0x02000
+Write blk3 ok
+Backup MIU write end blk 4
+BFN programming is done
+----- END STB BFN -----
+BOOTSPISPI AC ON
+
+Wait MIU0...
+MIU0 Init Done
+_OK!Hit CIS
+Hit BIN
+J2APP
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-dirty (Mar 02 2016 - 16:41:52)  MBOT-1106.0.1.Curry.TEE
+
+
+DRAM:  256 MiB
+
+Hello U-Boot
+Stack Pointer at: 87C639C0
+mem initial, start 0x86DD0180, len 0x420000
+
+[MIU INFO] miu opencreate instance at 86FE64A0 with private size 80 bytes at 86FE64E8
+Flash is detected (0x0705, 0xEF, 0x40, 0x17)
+create instance at 86FE6540 with private size 48 bytes at 86FE6588
+uboot held at [8F000000~90000000]
+Now running in RAM - U-Boot at: 871F0180
+NAND:  CIS is found @Blk0
+FCIE is set to 62MHz
+256 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=2"
+Bad block table found at page 131008, version 0x01
+Bad block table found at page 130944, version 0x01
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=2"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 3/2
+
+NAND read: device 0 offset 0x180000, size 0x90
+ 144 bytes read: OK
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+Changelist:     00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:718: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+Unknown command 'mmc' - try 'help'
+kayla#
+kayla#
+kayla#
+kayla#
+kayla#
+kayla#

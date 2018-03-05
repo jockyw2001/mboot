@@ -1,0 +1,92 @@
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c01
+wriu -w   0x10121e  0x0c00
+wriu -w   0x101246  0xfffe
+wriu -w   0x101266  0xffff
+wriu -w   0x101286  0xffff
+wriu -w   0x1012a6  0xffff
+wriu -w   0x161506  0xffff
+wriu -w   0x161526  0xffff
+
+wriu -w   0x101202  0x0858
+wriu -w   0x101204  0x01c5
+wriu -w   0x101206  0x0120
+wriu -w   0x101208  0x1fff
+wriu -w   0x10120a  0x2f88
+wriu -w   0x10120c  0x7ff1
+wriu -w   0x10120e  0x400e
+wriu -w   0x101210  0x0031
+wriu -w   0x10122a  0x400f
+
+
+//=====================================================================
+// inivec setting start
+//=====================================================================
+wriu -w   0x110d54  0xc000
+//---------------------------
+//program dig general setting
+//---------------------------
+wriu -w   0x10122c  0x8201
+wriu -w   0x101252  0xffff
+wriu -w   0x101272  0xffff
+wriu -w   0x101292  0xffff
+wriu -w   0x1012b2  0xffff
+wriu -w   0x161512  0xffff
+wriu -w   0x161532  0xffff
+//---------------------
+// Default BW setting  
+//---------------------
+wriu -w   0x101240  0x8015
+wriu -w   0x101260  0x8015
+wriu -w   0x101280  0x8015
+wriu -w   0x1012a0  0x8015
+wriu -w   0x161500  0x8015
+wriu -w   0x161520  0x8015
+//---------------------------
+//Toggle miu SW reset
+//---------------------------
+wriu -w   0x10121e  0x0c01
+wriu -w   0x10121e  0x0c00
+wriu -w   0x101200  0x0000
+
+
+//---------------------
+// begin init DRAM     
+//---------------------
+//-----Wait 200us, (keep DRAM RESET = 0)-----
+wait 1
+wriu -w   0x101200  0x0008
+wriu -w   0x101200  0x000c
+
+
+//-----Wait 500us, (keep DRAM RESET = 1 , CKE = 0)-----
+wait 1
+wriu -w   0x101200  0x000e
+
+//-----Wait tXPR=400ns-----
+wait 1
+//--------Initial DRAM start here!!!
+wriu -w   0x101200  0x001f
+
+//-----Wait init done-----
+wait 1
+//--------Initial Done
+//--------DDR2 wait 400ns for tXPR(?), DDR3 wait 512T for tZQinit
+wait 10
+//--------wait 3.9us for a REF to clean RX FIFO wptr
+wait 10
+
+//-------------------------
+// unmask all 
+//-------------------------
+wriu -w   0x101246  0x0000
+wriu -w   0x101266  0x0000
+wriu -w   0x101286  0x0000
+wriu -w   0x1012a6  0x0000
+wriu -w   0x161506  0x0000
+wriu -w   0x161526  0x0000
+wriu -w   0x10121e  0x0c08
+wriu -w   0x1012fe  0xa0e1
+wriu -w   0x1012f8  0x0000

@@ -1,0 +1,13 @@
+#nand erase.chip
+
+tftp 0x80400000 NANDINFO.nni
+
+tftp 0x80410000 PAIRPAGEMAP_v2.ppm
+
+tftp 0x80420000 PARTITION_v2_default.pni
+
+tftp 0x80430000 HASH0_DAT.bin
+
+tftp 0x80433800 mboot.bin
+
+ncishash 0x80400000 0x80410000 0x80420000 0x80430000 0x3800 0x80433800 $(filesize)

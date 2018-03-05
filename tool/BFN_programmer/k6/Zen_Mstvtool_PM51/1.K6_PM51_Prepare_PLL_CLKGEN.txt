@@ -1,0 +1,261 @@
+////////////////////// Prepare script ///////////////////////////
+
+swch 4
+wriu -w 0x100B22 0x8100 //stop mips clk
+
+swch 3
+
+wriu -w 0x2b80 0x0000   //dram address offset :64kB unit
+
+wriu -w 0x1008 0x0000   //pm51 dram start addr high
+wriu -w 0x100c 0x0000   //pm51 dram start addr low
+
+wriu    0x1018 0x0004   //dram enable, spi dram diasble
+
+//wriu    0x0e53 0x10     //[4]mcu0 rstz
+
+////////////////////// End of Prepare script ////////////////////
+
+////////////////////////// PLL //////////////////////////////////
+
+//turn on xtal
+swch 3
+wriu    0x00000e7a 0x00
+wriu    0x00000e7b 0x00
+//MPLL Power on
+swch 4
+wriu    0x00110b02 0x00
+wriu    0x00110b03 0x00
+wriu    0x00110b08 0x11
+wriu    0x00110b00 0x13
+wriu    0x00110b01 0x00
+
+//EVDPLL Power on
+wriu    0x00110986 0x16
+wriu    0x00110988 0x11
+// pd 83[0]
+wriu    0x00110983 0x00
+
+//ARMPLL_CLKOUT_CPU, default : 1GHz
+wriu    0x00110ac4 0x01
+wriu    0x00110ac5 0x00
+//ARMPLL Power on
+wriu    0x00110a23 0x00
+
+
+//MIU128PLL Power on
+wriu    0x00110968 0x11
+// pd 63[0]
+wriu    0x00110963 0x00
+
+
+
+
+//DACPLL (216MHz)
+wriu -w 0x0012112c 0x00005101
+wriu    0x0012112f 0x00
+//dac synth
+wriu -w 0x00121162 0x00000000
+wriu -w 0x00121164 0x00000040
+wriu -w 0x0012116a 0x00000000
+wriu -w 0x00121166 0x00000000
+wriu -w 0x00121168 0x00000000
+
+// GMACPLL
+swch 4
+
+wriu 0x100bc6 0x00
+wriu 0x110cd2 0x1b
+wriu 0x110cc6 0x00
+
+
+
+//turn on all UPLL and UTMI
+//UPLL0
+wriu 0x100800 0xc0
+wriu 0x10080e 0x01
+wriu 0x100804 0x10
+wriu 0x100805 0x01
+
+//UPLL1
+wriu 0x100820 0xc0
+wriu 0x10082e 0x01
+wriu 0x100824 0x10
+wriu 0x100825 0x01
+
+
+//utmi0
+wriu 0x103A88 0x0f
+wriu 0x103A89 0x04
+
+wriu 0x103A80 0x01
+wriu 0x103A81 0x00
+
+//utmi1
+wriu 0x103A08 0x0f
+wriu 0x103A09 0x04
+
+wriu 0x103A00 0x01
+wriu 0x103A01 0x00
+
+//utmiss0
+wriu 0x103808 0x0f
+wriu 0x103809 0x04
+
+wriu 0x103800 0x01
+wriu 0x103801 0x00
+
+//utmiss1
+wriu 0x103888 0x0f
+wriu 0x103889 0x04
+
+wriu 0x103880 0x01
+wriu 0x103881 0x00
+
+
+////////////////////////// End of PLL ////////////////////////////////
+
+////////////////////////// CLKGEN script ////////////////////////////
+
+// [Notice]
+// 1. GE clock is OFF !
+// 2. ZDEC clock is OFF !
+// 3. 1st_GMAC AHB clock is ON / 216MHz !
+// 4. 2nd_GMAC AHB clock is ON / 144MHz !
+// 5. clk_usb20_p0/p1/p2_240m is OFF !
+// 6. TSP* clock is OFF !
+// 7. VE clock is OFF !
+// 8. HDGEN(YPbPr) clock is OFF !
+// 9. Vivalid9 mcu clock is ON / 216MHz.
+// 10. SCx clock is OFF.
+// 11. Periperial Ips setting
+// => IICM* clock is OFF !
+// => fuar0 clock is ON/fuart_syn(432MHz)
+// => uart0 clock is ON/123MHz
+// => uart1 clock is ON/123MHz
+// => mspi* clock is OFF !
+
+
+//switch miu128 clk_miu to miupll
+wriu    0x00100b3e 0x08
+wriu    0x00100b3f 0x00
+
+//switch clk_ddr_syn
+wriu    0x00100bfa 0x04
+
+
+
+
+//Clk_SEL Setting@mboot
+wriu -b 0x100A03 0x1C 0x0C // reg_ckg_gmac_ahb@0001[12:10]
+wriu -b 0x103364 0x1C 0x08 // reg_ckg_secgmac_ahb@0032[4:2]
+
+wriu -b 0x100B2C 0x1C 0x18 // reg_ckg_spi@0016[4:2]
+
+wriu -b 0x100B2E 0x0C 0x00 // reg_ckg_fuart@0017[3:2]
+wriu -b 0x100B27 0x1C 0x0C // reg_ckg_uart0@0013[12:10]
+wriu -b 0x100B28 0x1C 0x0C // reg_ckg_uart1@0014[4:2]
+
+wriu -b 0x10336A 0x1C 0x00 // reg_ckg_v9mcu@0035[4:2]
+wriu -b 0x100B2E 0xC0 0x00 // reg_ckg_fuart0_syn@0017[7:6]
+wriu -b 0x100BC6 0x0C 0x00 // reg_ckg_gmac@0063[3:2]
+
+
+
+
+//Clk_ON/OFF Setting@mboot
+wriu -b 0x100B90 0x01 0xff // reg_ckg_ge@0048[0]
+wriu -b 0x100B7C 0x01 0xff // reg_ckg_gpd@003e[0]
+wriu -b 0x100A22 0x01 0xff // reg_ckg_njpd@0011[0]
+wriu -b 0x100A20 0x01 0xff // reg_ckg_mfe@0010[0]
+wriu -b 0x100B72 0x01 0xff // reg_ckg_mvd@0039[0]
+
+wriu -b 0x100A26 0x01 0xff // reg_ckg_zdec_vld@0013[0]
+wriu -b 0x100A28 0x01 0xff // reg_ckg_zdec_lzd@0014[0]
+wriu -b 0x100B61 0x01 0xff // ~reg_clk_vd_mheg5_icg_en@~0030[8]
+wriu -b 0x100A7C 0x01 0xff // reg_ckg_sdio@003e[0]
+
+wriu -b 0x100BC8 0x01 0xff // reg_ckg_nfie@0064[0]
+
+wriu -b 0x100A02 0x01 0xff // reg_ckg_ecc@0001[0]
+wriu -b 0x100A03 0x01 0x00 // reg_ckg_gmac_ahb@0001[8]
+wriu -b 0x103364 0x01 0x00 // reg_ckg_secgmac_ahb@0032[0]
+wriu -b 0x121F24 0x01 0xff // reg_ckg_gmac_rx@0012[0]
+wriu -b 0x121F23 0x01 0xff // reg_ckg_gmac_tx@0011[8]
+wriu -b 0x121F25 0x01 0xff // reg_ckg_gmac_rx_ref@0012[8]
+wriu -b 0x121F24 0x10 0xff // reg_ckg_gmac_tx_ref@0012[4]
+wriu -b 0x122424 0x01 0xff // reg_ckg_secgmac_rx@0012[0]
+wriu -b 0x122423 0x01 0xff // reg_ckg_secgmac_tx@0011[8]
+wriu -b 0x122425 0x01 0xff // reg_ckg_secgmac_rx_ref@0012[8]
+wriu -b 0x122424 0x10 0xff // reg_ckg_secgmac_tx_ref@0012[4]
+wriu -b 0x103A88 0x02 0x00 // ~reg_utmi_clk120_en@~0044[1]
+wriu -b 0x103A08 0x02 0x00 // ~reg_utmi_clk120_en@~0004[1]
+wriu -b 0x103908 0x02 0x00 // ~reg_utmi_clk120_en@~0004[1]
+
+wriu -b 0x100B7A 0x01 0xff // reg_ckg_evd@003d[0]
+wriu -b 0x100A38 0x01 0xff // reg_ckg_evd_ppu@001c[0]
+wriu -b 0x100B68 0x01 0xff // reg_ckg_hvd@0034[0]
+wriu -b 0x100B68 0x01 0xff // reg_ckg_hvd@0034[0]
+wriu -b 0x100A36 0x01 0xff // reg_ckg_hvd_aec@001b[0]
+wriu -b 0x100A3A 0x01 0xff // reg_ckg_vp8@001d[0]
+
+wriu -b 0x100B54 0x01 0xff // reg_ckg_tsp@002a[0]
+wriu -b 0x100B73 0x01 0xff // reg_ckg_parser@0039[8]
+wriu -b 0x100B5F 0x01 0xff // reg_ckg_stamp@002f[8]
+wriu -b 0x100B50 0x01 0xff // reg_ckg_ts0@0028[0]
+wriu -b 0x100B51 0x01 0xff // reg_ckg_ts1@0028[8]
+wriu -b 0x100B52 0x01 0xff // reg_ckg_ts2@0029[0]
+wriu -b 0x100B53 0x01 0xff // reg_ckg_ts3@0029[8]
+wriu -b 0x100B55 0x01 0xff // reg_ckg_stc0@002a[8]
+wriu -b 0x100B55 0x10 0xff // reg_ckg_stc1@002a[12]
+wriu -b 0x100A9E 0x01 0xff // reg_ckg_stc2@004f[0]
+wriu -b 0x100A9E 0x10 0xff // reg_ckg_stc3@004f[4]
+
+wriu -b 0x100B49 0x01 0xff // reg_ckg_vedac@0024[8]
+wriu -b 0x100B48 0x01 0xff // reg_ckg_ve@0024[0]
+wriu -b 0x100B48 0x10 0xff // reg_ckg_ve_13@0024[4]
+wriu -b 0x100BB1 0x01 0xff // reg_ckg_hdgen_fir@0058[8]
+wriu -b 0x100BB0 0x01 0xff // reg_ckg_hdgen@0058[0]
+wriu -b 0x100BB4 0x01 0xff // reg_ckg_hdgen_in@005a[0]
+wriu -b 0x100BB2 0x01 0xff // reg_ckg_dac1@0059[0]
+wriu -b 0x100BB2 0x01 0xff // reg_ckg_dac1@0059[0]
+wriu -b 0x100BB1 0x01 0xff // reg_ckg_hdgen_fir@0058[8]
+wriu -b 0x100B49 0x01 0xff // reg_ckg_vedac@0024[8]
+wriu -b 0x100BB3 0x01 0xff // reg_ckg_dac2@0059[8]
+
+wriu -b 0x100B98 0x01 0xff // reg_ckg_dc0@004c[0]
+wriu -b 0x100BAF 0x01 0xff // reg_ckg_sub_dc0@0057[8]
+wriu -b 0x100BA5 0x01 0xff // reg_ckg_fclk@0052[8]
+wriu -b 0x100BA9 0x01 0xff // reg_ckg_dip_fclk@0054[8]
+wriu -b 0x100BA4 0x01 0xff // reg_ckg_od2ve@0052[0]
+wriu -b 0x100BB7 0x01 0xff // reg_ckg_edclk_f2@005b[8]
+wriu -b 0x100BBB 0x01 0xff // reg_ckg_sc1_edclk@005d[8]
+wriu -b 0x100BBB 0x10 0xff // reg_ckg_sc1_fclk@005d[12]
+wriu -b 0x100BBE 0x01 0xff // reg_ckg_afbc@005f[0]
+wriu -b 0x100BA0 0x01 0xff // reg_ckg_gop_mix_hd_eng@0050[0]
+wriu -b 0x100BA1 0x01 0xff // reg_ckg_gop_mix_sd_eng@0050[8]
+wriu -b 0x100BA6 0x01 0xff // reg_ckg_odclk@0053[0]
+
+wriu -b 0x100B2C 0x01 0x00 // reg_ckg_spi@0016[0]
+
+wriu -b 0x103360 0x01 0xff // reg_ckg_miic@0030[0]
+wriu -b 0x103360 0x10 0xff // reg_ckg_miic2@0030[4]
+wriu -b 0x103361 0x01 0xff // reg_ckg_miic3@0030[8]
+wriu -b 0x100A74 0x01 0xff // reg_ckg_miic4@003a[0]
+wriu -b 0x100A74 0x10 0xff // reg_ckg_miic5@003a[4]
+wriu -b 0x100A75 0x01 0xff // reg_ckg_miic6@003a[8]
+wriu -b 0x100B2E 0x01 0x00 // reg_ckg_fuart@0017[0]
+wriu -b 0x100B27 0x01 0x00 // reg_ckg_uart0@0013[8]
+wriu -b 0x100B28 0x01 0x00 // reg_ckg_uart1@0014[0]
+wriu -b 0x100B2D 0x01 0xff // reg_ckg_mspi0@0016[8]
+wriu -b 0x100B2D 0x10 0xff // reg_ckg_mspi1@0016[12]
+
+wriu -b 0x10336A 0x01 0x00 // reg_ckg_v9mcu@0035[0]
+wriu -b 0x100B2E 0x10 0x00 // reg_ckg_fuart0_syn@0017[4]
+wriu -b 0x100BC6 0x01 0x00 // reg_ckg_gmac@0063[0]
+wriu -b 0x100A78 0x01 0xff // reg_ckg_fcie_syn@003c[0]
+wriu -b 0x100A24 0x01 0xff // reg_ckg_smart@0012[0]
+
+wriu -b 0x100B3F 0x10 0x00 // reg_miu_acp_clk_en@001f[12]
+
+///////////////////////// End of CLKGEN script ///////////////////////

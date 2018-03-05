@@ -1,0 +1,214 @@
+//--------------------------------
+// DDR
+//--------------------------------
+//================================================
+// Start MIU init !!!
+//================================================
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c01
+//wriu -w   0x10121e  0x0c00
+wriu -w   0x101246  0xfffe
+wriu -w   0x101266  0xffff
+wriu -w   0x101286  0xffff
+wriu -w   0x1012a6  0xffff
+wriu -w   0x161506  0xffff
+wriu -w   0x161526  0xffff
+wriu -w   0x1615e6  0xfffe
+wriu -w   0x110d78  0x0001
+wriu -w   0x110d24  0x1000
+wriu -w   0x110d24  0x0000
+wriu -w   0x110d36  0x0404
+wriu -w   0x110d34  0x2004
+wriu -w   0x110d30  0x8f5c
+wriu -w   0x110d32  0x001e
+wait 10
+wriu -w   0x110d8a  0x0001
+wriu -w   0x110d22  0x0004
+wriu -w   0x110d2c  0x0114
+wait 30
+//---------------------------
+//set DDR3_32_4X_CL13_1866
+//---------------------------
+wriu -w   0x101202  0x02a7
+wriu -w   0x101204  0x0053
+wriu -w   0x101206  0x1571
+wriu -w   0x101208  0x20dd
+wriu -w   0x10120a  0x2d77
+wriu -w   0x10120c  0xd7ea
+wriu -w   0x10120e  0x40f5
+wriu -w   0x101210  0x1f14
+wriu -w   0x101212  0x4004
+wriu -w   0x101214  0x8020
+wriu -w   0x101216  0xc000
+wriu -w   0x101228  0x00a0
+wriu -w   0x1012d2  0xa000
+wriu -w   0x110d02  0xaaaa
+wriu -w   0x110d04  0x0008
+wriu -w   0x110d0a  0x1100
+wriu -w   0x110d0e  0x0097
+wriu -w   0x110d2e  0x4444
+wriu -w   0x110d38  0x6677
+wriu -w   0x110d3a  0x1010
+wriu -w   0x110d3c  0x9033
+wriu -w   0x110d3e  0x2000
+wriu -w   0x110d48  0x6677
+wriu -w   0x110d4a  0x1010
+wriu -w   0x110d4c  0x0133
+wriu -w   0x110d4e  0x0033
+wriu -w   0x110d50  0x1111
+wriu -w   0x110d52  0x1111
+wriu -w   0x110d6c  0x0808
+wriu -w   0x110d6e  0x0808
+wriu -w   0x110d94  0x0D0F
+wriu -w   0x110d96  0x080D
+wriu -w   0x110da0  0x080A
+wriu -w   0x110da2  0x7C5C
+wriu -w   0x110da4  0xC65A
+wriu -w   0x110da6  0x5096
+wriu -w   0x110da8  0x0421
+wriu -w   0x110daa  0x5831
+wriu -w   0x110dac  0x6318
+wriu -w   0x110dae  0x5073
+wriu -w   0x110db6  0x0000
+wriu -w   0x110db8  0x3333
+wriu -w   0x110dba  0x0333
+wriu -w   0x110dbc  0x0333
+wriu -w   0x110dbe  0x0333
+wriu -w   0x110dd0  0x4444
+wriu -w   0x110dd2  0x4444
+wriu -w   0x110dd4  0x4444
+wriu -w   0x110dd6  0x4444
+wriu -w   0x110dd8  0x0044
+wriu -w   0x110de0  0x4444
+wriu -w   0x110de2  0x4444
+wriu -w   0x110de4  0x4444
+wriu -w   0x110de6  0x4444
+wriu -w   0x110de8  0x0044
+wriu -w   0x110dee  0x2f2f
+wriu -w   0x110df0  0x2f2f
+//=====================================================================
+// inivec setting start
+//=====================================================================
+//-----------------
+//program DLL
+//-----------------
+wriu -w   0x110d62  0x007f
+wriu -w   0x110d64  0xf000
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00cf
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00c3
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00c3
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00c2
+wriu -w   0x110d60  0x00c0
+wriu -w   0x110d60  0x33c8
+wriu -w   0x110d90  0xf0f1
+
+//---------------------------
+//program dig general setting
+//---------------------------
+wriu -w   0x10122c  0x8221
+wriu -w   0x1012fc  0x951a
+//--------------------------------------
+//Multi bank function
+//--------------------------------------
+wriu -w   0x101252  0xffff
+wriu -w   0x101272  0xffff
+wriu -w   0x101292  0xffff
+wriu -w   0x1012b2  0xffff
+wriu -w   0x161512  0xffff
+wriu -w   0x161532  0xffff
+//---------------------
+// Default BW setting
+//---------------------
+wriu -w   0x101240  0x8015
+wriu -w   0x101260  0x8015
+wriu -w   0x101280  0x8015
+wriu -w   0x1012a0  0x8015
+wriu -w   0x161500  0x8015
+wriu -w   0x161520  0x8015
+//---------------------------
+//program ana general setting
+//---------------------------
+wriu -w   0x110d70  0x0800
+//driving setting
+wriu -w   0x110d58  0x0a0a
+wriu -w   0x110d5a  0xaaaa
+wriu -w   0x110d5c  0xaaaa
+wriu -w   0x110d5e  0xaaaa
+//trig. lvl setting
+wriu -w   0x110d74  0x0606
+wriu -w   0x110d76  0x0404
+wriu -w   0x110d1a  0x8111
+wriu -w   0x110d1c  0x0020
+wriu -w   0x110d08  0x003f
+//-----------
+// DQSM RST
+//-----------
+wriu -w   0x110d1e  0x0005
+wriu -w   0x110d1e  0x000f
+wriu -w   0x110d1e  0x0005
+//---------------------------
+//Toggle miu SW reset
+//---------------------------
+wriu -w   0x10121e  0x8c01
+wriu -w   0x10121e  0x8c00
+//---------------------------
+//disable GPIO
+//---------------------------
+wriu -w   0x110d00  0x2010
+wriu -w   0x110d00  0x0000
+wriu -w   0x110d18  0x0000
+wriu -w   0x110d7c  0x0000
+//---------------------------
+//Release ATOP PD mode
+//---------------------------
+wriu -w   0x110d54  0xc000
+//-----------
+// DQSM RST
+//-----------
+wriu -w   0x110d1e  0x0005
+wriu -w   0x110d1e  0x000f
+wriu -w   0x110d1e  0x0005
+//---------------------------
+//select Mapping
+//---------------------------
+wriu -w   0x110d00  0x0003
+wriu -w   0x101200  0x0000
+//---------------------
+// begin init DRAM
+//---------------------
+//-----Wait 200us, (keep DRAM RESET = 0)-----
+wait 1
+wriu -w   0x101200  0x0008
+wriu -w   0x101200  0x000c
+//-----Wait 500us, (keep DRAM RESET = 1 , CKE = 0)-----
+wait 1
+wriu -w   0x101200  0x000e
+//-----Wait tXPR=400ns-----
+wait 1
+//--------Initial DRAM start here!!!
+wriu -w   0x101200  0x001f
+//-----Wait init done-----
+wait 1
+//--------Initial Done
+//--------DDR2 wait 400ns for tXPR(?), DDR3 wait 512T for tZQinit
+wait 10
+//-------------------------
+// unmask all
+//-------------------------
+
+wriu -w   0x10121e  0x8c08
+wriu -w   0x1012fe  0xa0e1
+
+wriu -w   0x101246  0x0000
+wriu -w   0x101266  0x0000
+wriu -w   0x101286  0x0000
+wriu -w   0x1012a6  0x0000
+wriu -w   0x161506  0x0000
+wriu -w   0x161526  0x0000
+wriu -w   0x1615e6  0x0000

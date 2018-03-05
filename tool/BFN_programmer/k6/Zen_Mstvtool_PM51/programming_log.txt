@@ -1,0 +1,177 @@
+頎?瞬馵馵?譇鸆????x魡諘虢?譇鸆頎譇Ap??~貙>斸僦踔蹧??謶麠╰$鸆僦_?~馵黽?譇鸆僦Ap??謶鸆僦?r@馵黽~?>貙鸆Hi Main
+----- STB BFN -----
+NAND ID:0x2C 0xDC 0x90 0xA6 0x54 0x0 0x0 0x0 0x2C 0xDC 0x90 0xA6 0x54 0x0 0x0
+Begin Search CIS in DRAM
+Found NandInfo in given memory, index 22
+u16_PageByteCnt = 1000h
+u16_SpareByteCnt = E0h
+u16_BlkPageCnt = 40h
+u16_BlkCnt = 800h
+u16_ECCType = 3h
+u8_AddrCycleIdx = 0h
+u8_CellType = 0h
+u8_PairPageMapLoc = 0h
+u8_PairPageMapType = 0h
+Found PartInfo in given memory, index 9
+Hash left 0x09010
+Write blk10 ok
+LDR write end blk 11
+Hash left 0x09010
+Write blk11 ok
+Backup LDR write end blk 12
+Hash left 0x1D58BC
+Write blk12 ok
+Hash left 0x1958BC
+Write blk13 ok
+Hash left 0x1558BC
+Write blk14 ok
+Hash left 0x1158BC
+Write blk15 ok
+Hash left 0xD58BC
+Write blk16 ok
+Hash left 0x958BC
+Write blk17 ok
+Hash left 0x558BC
+Write blk18 ok
+Hash left 0x158BC
+Write blk19 ok
+APP write end blk 20
+Hash left 0x1D58BC
+Write blk20 ok
+Hash left 0x1958BC
+Write blk21 ok
+Hash left 0x1558BC
+Write blk22 ok
+Hash left 0x1158BC
+Write blk23 ok
+Hash left 0xD58BC
+Write blk24 ok
+Hash left 0x958BC
+Write blk25 ok
+Hash left 0x558BC
+Write blk26 ok
+Hash left 0x158BC
+Write blk27 ok
+Backup APP write end blk 28
+check good blk:0x0
+CIS is written to blk 0x0
+check good blk:0x1
+CIS is written to blk 0x1
+erase blk:2
+erase blk:3
+erase blk:4
+erase blk:5
+erase blk:6
+erase blk:7
+erase blk:8
+erase blk:9
+Hash left 0x02000
+Write blk2 ok
+MIU write end blk 3
+Hash left 0x02000
+Write blk3 ok
+Backup MIU write end blk 4
+BFN programming is done
+----- END STB BFN -----
+僦頎?.?馵馵?譇鸆>_x馵馵?譇鸆?
+
+
+BOOTSPI
+SPI AC ON
+MIU0_DDR3_DQS-OK
+MIU1_DDR3_DQS-OK
+BIST_0 OK
+BIST_1 OK
+NAND
+.Hit CIS
+Hit BIN
+
+Relocation Offset is: 01500000
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-dirty (Aug 10 2016 - 21:53:04)
+
+application is going to open MODULE_SYS.
+
+ent testentententententententententent[Utopia][SYS]: Function = SYSOpen, Line = 1093, current resource pri_shm content is: 0
+[Utopia][SYS]: Function = SYSOpen, Line = 1112, [SYS INFO] OPEN INSTANCE...
+create instance at 2BEF2A98 with private size 124 bytes at 2BEF2AE0
+application is going to open MODULE_MIU
+
+ent testententententent[Utopia][MIU]:
+[MIU INFO] miu opencreate instance at 2BEF2B60 with private size 96 bytes at 2BEF2BA8
+application is going to open MODULE_BDMA
+
+ent testentententententententententententcreate instance at 2BEF2C10 with private size 56 bytes at 2BEF2C58
+
+uboot held at [2BCDDF60~2D000000],size=013220A0
+DRAM:  208 MiB
+Now running in RAM - U-Boot at: 2C500000
+NAND:  CIS is found @Blk0
+FCIE is set to 60MHz
+512 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x0000007C0000-0x000000BC0000 : "mtd=2"
+Bad block table found at page 131008, version 0x01
+Bad block table found at page 130944, version 0x01
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   262144 bytes (256 KiB)
+UBI: logical eraseblock size:    253952 bytes
+UBI: smallest flash I/O unit:    4096
+UBI: VID header offset:          4096 (aligned 4096)
+UBI: data offset:                8192
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=2"
+UBI: MTD device size:            4 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 13/11
+
+NAND read: device 0 offset 0x300000, size 0x90
+ 144 bytes read: OK
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+MAC:  0x0: 0x71: 0x21: 0x0:0x0: 0x1
+application is going to open MODULE_CPU
+
+ent testententententententententent[Utopia][CPU]:
+[CPU INFO] cpu opencreate instance at 2BF08850 with private size 44 bytes at 2BF08898
+[Utopia][CPU]: CPUIoctl - MDrv_CMD_CPU_QueryClock
+[UTOPIA INFO] close moduleNames[tu]: P, P,󾃐, P,`P,󿎬xV4
+
+ UTOPIA ASSERT: 0, apiSWI2C.c MApi_SWI2C_Init 689
+[AT][MBoot][Driver Init][0]
+
+Changelist:	00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:760: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+K6#
+K6#
+K6#
+K6#
+K6#
+K6#
+K6#
+K6#
+K6#
+K6#
+K6# save
+Saving Environment to UBI...
+Write Env to 1B2000...
+Write Backup Env to 1F0000...
+done
+K6#

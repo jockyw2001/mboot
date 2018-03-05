@@ -1,0 +1,1040 @@
+################################################################################
+#
+# Copyright (c) 2008-2010 MStar Semiconductor, Inc.
+# All rights reserved.
+#
+# Unless otherwise stipulated in writing, any and all information contained
+# herein regardless in any format shall remain the sole proprietary of
+# MStar Semiconductor Inc. and be kept in strict confidence
+# ("MStar Confidential Information") by the recipient.
+# Any unauthorized act including without limitation unauthorized disclosure,
+# copying, use, reproduction, sale, distribution, modification, disassembling,
+# reverse engineering and compiling of the contents of MStar Confidential
+# Information is unlawful and strictly prohibited. MStar hereby reserves the
+# rights to any and all damages, losses, costs and expenses resulting therefrom.
+#
+################################################################################
+
+# config first
+-include .config
+
+CONFIG_TEE_LOADER ?= 'n'
+aeon       :=0 # 0:aeon, 1:mips for chip.inc register map
+mips4ke    :=1
+mips34k    :=1
+mips74k    :=1
+
+ifeq ($(CONFIG_MSTAR_URANUS4), y)
+CHIP       ?=uranus4
+CPU        ?=mips34k
+endif
+ifeq ($(CONFIG_MSTAR_KRONUS), y)
+CHIP       ?=kronus
+CPU        ?=mips34k
+endif
+ifeq ($(CONFIG_MSTAR_KAISERIN), y)
+CHIP       ?=kaiserin
+CPU        ?=mips74k
+endif
+ifeq ($(CONFIG_MSTAR_KAISER), y)
+CHIP       ?=kaiser
+CPU        ?=ca9
+endif
+ifeq ($(CONFIG_MSTAR_KAPPA), y)
+CHIP       ?=kappa
+CPU        ?=mips34k
+endif
+ifeq ($(CONFIG_MSTAR_KELTIC), y)
+CHIP       ?=keltic
+CPU        ?=mips34k
+endif
+ifeq ($(CONFIG_MSTAR_KRITI), y)
+CHIP       ?=kriti
+CPU        ?=mips34k
+endif
+ifeq ($(CONFIG_MSTAR_KRATOS), y)
+CHIP       ?=kratos
+CPU        ?=mips34k
+endif
+ifeq ($(CONFIG_MSTAR_KIWI), y)
+CHIP       ?=kiwi
+CPU        ?=mips74k
+endif
+ifeq ($(CONFIG_MSTAR_K5TN), y)
+CHIP       ?=k5tn
+CPU        ?=mips74k
+endif
+ifeq ($(CONFIG_MSTAR_KERES), y)
+CHIP       ?=keres
+CPU        ?=mips74k
+TOOLCHAIN_VERSION = 4.8.3
+endif
+ifeq ($(CONFIG_MSTAR_KIRIN), y)
+CHIP       ?=kirin
+CPU        ?=mips74k
+TOOLCHAIN_VERSION = 4.8.3
+endif
+ifeq ($(CONFIG_MSTAR_KRIS), y)
+CHIP       ?=kris
+CPU        ?=mips74k
+TOOLCHAIN_VERSION = 4.8.3
+endif
+ifeq ($(CONFIG_MSTAR_KAYLA), y)
+CHIP       ?=kayla
+CPU        ?=mips34k
+TOOLCHAIN_VERSION = 4.8.3
+endif
+ifeq ($(CONFIG_MSTAR_KANO), y)
+CHIP       ?=kano
+CPU        ?=ca53
+endif
+ifeq ($(CONFIG_MSTAR_CURRY), y)
+CHIP       ?=curry
+CPU        ?=ca53
+endif
+ifeq ($(CONFIG_MSTAR_K6), y)
+CHIP       ?=k6
+CPU        ?=ca53
+endif
+ifeq ($(CONFIG_MSTAR_K6LITE), y)
+CHIP       ?=k6lite
+CPU        ?=ca7
+endif
+ifeq ($(CONFIG_MSTAR_K7U), y)
+CHIP       ?=k7u
+CPU        ?=ca7
+endif
+
+# PURPOSE can be generic, nds, bfn
+PURPOSE    := generic
+ifeq ($(CONFIG_LD_BOOT_FROM_OTP), y)
+PURPOSE    = bf_otp
+endif
+ifeq ($(CONFIG_LD_BOOT_OTP_SIMULATE_ON_SPINOR), y)
+PURPOSE    = bf_otp_simluate_spinor
+endif
+ifeq ($(CONFIG_MSTAR_NOCS3_ENABLE),y)
+ifeq ($(CONFIG_LD_BFN_VERSION),3)
+PURPOSE    = bfn_nagra_nocs3
+else
+PURPOSE    = nagra_nocs3
+endif
+endif
+ifeq ($(CONFIG_LD_BOOT_MIU_DQS_ON_SRAM), y)
+PURPOSE    = sram_miu_dqs
+endif
+
+ifeq ($(PURPOSE),generic)
+ifeq ($(CONFIG_RESERVED_CHUNK_HEADER),y)
+PURPOSE    = generic_chunk
+else
+ifeq ($(CONFIG_PM),y)
+PURPOSE    = generic_PM
+endif
+ifeq ($(CONFIG_MSTAR_STR_ENABLE),y)
+PURPOSE    = generic_str
+endif
+endif
+endif
+
+# VENDOR
+ifeq ($(CONFIG_CHIP_TYPE_VMX),y)
+VENDOR=vmx
+else ifeq ($(CONFIG_CHIP_TYPE_IRDETO),y)
+VENDOR=irdeto
+else ifeq ($(CONFIG_CHIP_TYPE_NAGRA),y)
+VENDOR=nagra
+else ifeq ($(CONFIG_CHIP_TYPE_VIACCESS),y)
+VENDOR=viaccess
+else ifeq ($(CONFIG_CHIP_GENERIC_DRM),y)
+VENDOR=generic_drm
+else
+VENDOR=mstar
+endif
+
+LOGO_LD_SCRIPT_LABLE = ''
+ifeq ($(CONFIG_ENABLE_SBOOT_BOOT_LOGO),y)
+LOGO_LD_SCRIPT_LABLE = _bootlogo
+endif
+
+LD_FILE    ?=ld/$(CHIP)/sboot_$(CHIP)_$(PURPOSE).ld
+ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+LD_S_FILE  ?=ld/$(CHIP)/sboot_$(CHIP)_$(PURPOSE)_$(CONFIG_LD_SEL)$(LOGO_LD_SCRIPT_LABLE).ld.S
+else
+LD_S_FILE  ?=ld/$(CHIP)/sboot_$(CHIP)_$(PURPOSE)$(LOGO_LD_SCRIPT_LABLE).ld.S
+endif
+
+ifeq ($(findstring y, $(CONFIG_MSTAR_KANO) $(CONFIG_MSTAR_K6)),y)
+ifeq ($(CONFIG_ARMv8_32BIT_SBOOT),y)
+LD_FILE    :=ld/$(CHIP)/sboot_32bit_$(CHIP)_$(PURPOSE).ld
+ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+LD_S_FILE  :=ld/$(CHIP)/sboot_32bit_$(CHIP)_$(PURPOSE)_$(CONFIG_LD_SEL).ld.S
+else
+LD_S_FILE  :=ld/$(CHIP)/sboot_32bit_$(CHIP)_$(PURPOSE).ld.S
+endif
+endif
+endif
+
+export LD_FILE
+
+PM         ?=pm_$(CHIP)
+DQS        ?=hash1_code_${CHIP}
+DQS_PATH   ?=dqs/$(DQS).bin
+
+# ecos:0x00000180
+APP_BIN    ?=0x00000180
+# ecos:0x00000220
+APP_ENTRY  ?=0x00000180
+
+# Endianess: EL only
+ENDIAN     :=EL
+
+# Optimization: 0,2,3,s
+OPTIMIZE   :=s
+
+SECUREDIR = ./secure
+BLOCK_SIZE=2097152
+#REE key bank
+REE_AES_KEY=$(SECUREDIR)/AESree.bin
+REE_RSA_PRIVATE_KEY=$(SECUREDIR)/RSAree_priv.txt
+REE_RSA_PUBLIC_KEY=$(SECUREDIR)/RSAree_pub.txt
+RSA_BOOT_PRIVATE_KEY = $(SECUREDIR)/RSAboot_priv.txt
+RSA_BOOT_PUBLIC_KEY = $(SECUREDIR)/RSAboot_pub.txt
+
+
+# **********************************************
+# Directories
+# **********************************************
+ROOT       := .
+
+KERNELVERSION = 2.0.0
+# Source files
+ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+SRCDIR     :=$(ROOT) $(ROOT)/cpu_rom/$(ARCH) $(ROOT)/chip/$(CHIP) $(ROOT)/cpu_rom/src  $(ROOT)/cpu_rom/src/nand
+INCDIR     :=$(ROOT) $(ROOT)/cpu_rom/$(ARCH) $(ROOT)/chip/$(CHIP) $(ROOT)/board/$(CHIP) $(ROOT)/include $(ROOT)/decompress $(ROOT)/cpu_rom/$(ARCH)/include $(ROOT)/cpu_rom/src $(ROOT)/cpu_rom/src/nand
+else
+SRCDIR     :=$(ROOT) $(ROOT)/cpu/$(ARCH)/$(CPU) $(ROOT) $(ROOT)/cpu/$(ARCH) $(ROOT)/chip/$(CHIP)
+INCDIR     :=$(ROOT) $(ROOT)/cpu/$(ARCH)/$(CPU) $(ROOT) $(ROOT)/cpu/$(ARCH) $(ROOT)/chip/$(CHIP) $(ROOT)/board/$(CHIP) $(ROOT)/include $(ROOT)/decompress
+endif
+SRCDIR     += $(ROOT)/decompress
+INCDIR     += $(ROOT)/chip/$(CHIP)/miu_script
+SRCDIR     += $(ROOT)/common
+INCDIR     += $(ROOT)/common
+
+ifeq ($(CONFIG_MSTAR_KANO),y)
+SRCDIR     += $(ROOT)/drivers/unfd
+SRCDIR     += $(ROOT)/drivers/unfd/src/common/
+SRCDIR     += $(ROOT)/drivers/unfd/src/config/
+INCDIR     += $(ROOT)/drivers/unfd
+INCDIR     += $(ROOT)/drivers/unfd/inc/common/
+INCDIR     += $(ROOT)/drivers/unfd/inc/config/
+SRCDIR     += $(ROOT)/drivers/cipher/src
+SRCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/cipher/src
+INCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+SRCDIR     += $(ROOT)/drivers/dscmb2/src
+SRCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/dscmb2/src
+INCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+SRCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src
+SRCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src
+INCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src/hal/$(CHIP)
+endif
+ifeq ($(CONFIG_MSTAR_CURRY),y)
+SRCDIR     += $(ROOT)/drivers/unfd
+SRCDIR     += $(ROOT)/drivers/unfd/src/common/
+SRCDIR     += $(ROOT)/drivers/unfd/src/config/
+INCDIR     += $(ROOT)/drivers/unfd
+INCDIR     += $(ROOT)/drivers/unfd/inc/common/
+INCDIR     += $(ROOT)/drivers/unfd/inc/config/
+SRCDIR     += $(ROOT)/drivers/cipher/src
+SRCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/cipher/src
+INCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+SRCDIR     += $(ROOT)/drivers/dscmb2/src
+SRCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/dscmb2/src
+INCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+SRCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src
+SRCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src
+INCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src/hal/$(CHIP)
+endif
+ifeq ($(CONFIG_MSTAR_K6),y)
+ifeq ($(CONFIG_NAND_FLASH),y)
+SRCDIR     += $(ROOT)/drivers/unfd
+SRCDIR     += $(ROOT)/drivers/unfd/src/common/
+SRCDIR     += $(ROOT)/drivers/unfd/src/config/
+INCDIR     += $(ROOT)/drivers/unfd
+INCDIR     += $(ROOT)/drivers/unfd/inc/common/
+INCDIR     += $(ROOT)/drivers/unfd/inc/config/
+endif
+ifeq ($(CONFIG_MINIUBOOT),)
+SRCDIR     += $(ROOT)/drivers/cipher/src
+SRCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/cipher/src
+INCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+SRCDIR     += $(ROOT)/drivers/dscmb2/src
+SRCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/dscmb2/src
+INCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+SRCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src
+SRCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src
+INCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src/hal/$(CHIP)
+endif
+#SRCDIR     += $(ROOT)/drivers/pq/src
+#INCDIR     += $(ROOT)/drivers/pq/src
+#INCDIR     += $(ROOT)/drivers/pq/src/hal/$(CHIP)
+endif
+ifeq ($(CONFIG_MSTAR_K6LITE),y)
+ifeq ($(CONFIG_NAND_FLASH),y)
+SRCDIR     += $(ROOT)/drivers/unfd
+SRCDIR     += $(ROOT)/drivers/unfd/src/common/
+SRCDIR     += $(ROOT)/drivers/unfd/src/config/
+INCDIR     += $(ROOT)/drivers/unfd
+INCDIR     += $(ROOT)/drivers/unfd/inc/common/
+INCDIR     += $(ROOT)/drivers/unfd/inc/config/
+endif
+ifeq ($(CONFIG_MINIUBOOT),)
+SRCDIR     += $(ROOT)/drivers/cipher/src
+SRCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/cipher/src
+INCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+SRCDIR     += $(ROOT)/drivers/dscmb2/src
+SRCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/dscmb2/src
+INCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+SRCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src
+SRCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src
+INCDIR     += $(ROOT)/../tee_loader/drivers/ca2/src/hal/$(CHIP)
+endif
+endif
+ifeq ($(CONFIG_LD_BFN_VERSION), $(filter $(CONFIG_LD_BFN_VERSION),4 5))
+SRCDIR     += $(ROOT)/drivers/unfd
+SRCDIR     += $(ROOT)/drivers/unfd/src/common/
+SRCDIR     += $(ROOT)/drivers/unfd/src/config/
+INCDIR     += $(ROOT)/drivers/unfd
+INCDIR     += $(ROOT)/drivers/unfd/inc/common/
+INCDIR     += $(ROOT)/drivers/unfd/inc/config/
+endif
+ifeq ($(CONFIG_MSTAR_KELTIC),y)
+SRCDIR     += $(ROOT)/drivers/cipher/src
+SRCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+SRCDIR     += $(ROOT)/drivers/dscmb2/src
+SRCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/cipher/src
+INCDIR     += $(ROOT)/drivers/cipher/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/dscmb2/src
+INCDIR     += $(ROOT)/drivers/dscmb2/src/hal/$(CHIP)
+endif
+
+ifeq ($(CONFIG_SPI_NOR_FLASH),y)
+SRCDIR     += $(ROOT)/drivers/spinor
+SRCDIR     += $(ROOT)/drivers/spinor/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/spinor/include
+INCDIR     += $(ROOT)/drivers/spinor/hal/$(CHIP)
+endif
+
+ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+ifeq ($(CONFIG_NAND_FLASH),y)
+SRCDIR     += $(ROOT)/drivers/nand/src/api/
+SRCDIR     += $(ROOT)/drivers/nand/src/common/
+SRCDIR     += $(ROOT)/drivers/nand/src/config/
+INCDIR     += $(ROOT)/drivers/nand/inc/api/
+INCDIR     += $(ROOT)/drivers/nand/inc/common/
+INCDIR     += $(ROOT)/drivers/nand/inc/config/
+endif
+
+ifeq ($(CONFIG_SPI_NAND_FLASH),y)
+SRCDIR     += $(ROOT)/drivers/spinand
+SRCDIR     += $(ROOT)/drivers/spinand/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/spinand/include
+INCDIR     += $(ROOT)/drivers/spinand/hal/$(CHIP)
+endif
+
+ifeq ($(CONFIG_MSTAR_AUTHEN_ENABLE),y)
+SRCDIR     += $(ROOT)/drivers/aesdma/src
+SRCDIR     += $(ROOT)/drivers/aesdma/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/drivers/aesdma/src
+INCDIR     += $(ROOT)/drivers/aesdma/src/hal/$(CHIP)
+endif
+endif
+
+ifeq ($(CONFIG_MSTAR_NS_UBOOT),y)
+ifeq ($(CONFIG_MSTAR_BUILD_TEE_LOADER_DAT),y)
+SRCDIR     += $(ROOT)/../tee_loader/
+INCDIR     += $(ROOT)/../tee_loader/
+SRCDIR     += $(ROOT)/../tee_loader/drivers/seal/src
+SRCDIR     += $(ROOT)/../tee_loader/drivers/seal/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/../tee_loader/drivers/seal/src
+INCDIR     += $(ROOT)/../tee_loader/drivers/seal/src/hal/$(CHIP)
+endif
+
+else ifneq ($(CONFIG_TEE),y)    # For R2_TEE case
+ifeq ($(CONFIG_SECURITY_BOOT),y)
+SRCDIR     += $(ROOT)/secure/verify_uboot/
+INCDIR     += $(ROOT)/secure/verify_uboot/
+SRCDIR     += $(ROOT)/../tee_loader/drivers/seal/src
+SRCDIR     += $(ROOT)/../tee_loader/drivers/seal/src/hal/$(CHIP)
+INCDIR     += $(ROOT)/../tee_loader/drivers/seal/src
+INCDIR     += $(ROOT)/../tee_loader/drivers/seal/src/hal/$(CHIP)
+endif
+endif
+
+ifeq ($(CONFIG_TEE_LOADER),y)
+SRCDIR     += $(ROOT)/secure/secure_uboot/
+INCDIR     += $(ROOT)/secure/secure_uboot/
+endif
+
+ifneq ($(CONFIG_TEE_FASTCALL),y)
+ifeq  ($(findstring y, $(CONFIG_2ND_LOADER_ENCRYPTION) $(CONFIG_2ND_LOADER_VERIFICATION)),y)
+SRCDIR     += $(ROOT)/secure/verify_uboot/
+INCDIR     += $(ROOT)/secure/verify_uboot/
+endif
+endif
+
+ifeq ($(CONFIG_UBOOT_MINI_LIB),)
+SRCDIR     += $(ROOT)/drivers/mmc/src/api/
+SRCDIR     += $(ROOT)/drivers/mmc/src/common/
+SRCDIR     += $(ROOT)/drivers/mmc/src/config/
+INCDIR     += $(ROOT)/drivers/mmc/inc/api/
+INCDIR     += $(ROOT)/drivers/mmc/inc/common/
+INCDIR     += $(ROOT)/drivers/mmc/inc/config/
+endif
+
+ifeq ($(CONFIG_BOOT_SEQUENCE_FORCE_USB_UPGRADE_LOADER),y)
+INCDIR     += $(ROOT)/drivers/usb/inc/
+SRCDIR     += $(ROOT)/drivers/usb/
+endif
+
+ifeq ($(CONFIG_TEE_FASTCALL),y)
+SRCDIR     += $(ROOT)/drivers/fastcall/
+INCDIR     += $(ROOT)/drivers/fastcall/
+endif
+
+ifeq ($(CONFIG_ENABLE_SBOOT_BOOT_LOGO),y)
+SRCDIR     += $(ROOT)/bootlogo/
+SRCDIR     += $(ROOT)/bootlogo/$(CHIP)/src/
+INCDIR     += $(ROOT)/bootlogo/
+INCDIR     += $(ROOT)/bootlogo/$(CHIP)/include/
+INCDIR     += $(ROOT)/bootlogo/$(CHIP)/bsp/include/
+endif
+
+IMAGE      :=sboot
+
+BINDIR     := bin
+OBJDIR     := obj
+MSCOMPDIR  := util
+BIN_PATH   := $(ROOT)/$(BINDIR)
+OBJ_PATH   := $(ROOT)/$(OBJDIR)
+
+VPATH      :=$(SRCDIR)
+BOOT1_INC  := include/boot1.inc
+AUTOCONF_H := include/autoconf.h
+
+UBOOT_2011_06_CHIPS := kaiser keres kirin kris kayla kano curry kratos kiwi k6 k6lite k5tn k7u
+
+UBOOT_2011_06_CHIPS += $(UBOOT_2011_06_MAIN)
+
+
+ifeq ($(CHIP), $(filter $(CHIP),$(UBOOT_2011_06_CHIPS)))
+UBOOT=u-boot-2011.06
+else
+UBOOT=u-boot-1.1.6
+endif
+
+ifeq ($(CHIP), $(filter $(CHIP),$(UBOOT_2011_06_CHIPS)))
+UBOOT_BIN  := ../$(UBOOT)/u-boot.bin
+UBOOT_ELF  := ../$(UBOOT)/u-boot
+UBOOT_STR2UNICODE := ../$(UBOOT)/tools
+else
+UBOOT_ELF  := ../$(UBOOT)/u-boot
+UBOOT_BIN  := ../$(UBOOT)/u-boot.bin
+UBOOT_STR2UNICODE := ../$(UBOOT)/tools
+endif
+UBOOT_COMPRESSED_BIN := $(BINDIR)/u-boot.compressed.bin
+ifeq ($(CHIP), $(filter $(CHIP),$(UBOOT_2011_06_CHIPS)))
+UBOOT_MODULE_CONFIG_H := ../$(UBOOT)/include/configs/uboot_module_config.h
+UBOOT_BOARD_CONFIG_H := ../$(UBOOT)/include/configs/uboot_board_config.h
+UBOOT_PANEL_CONFIG_H := ../$(UBOOT)/include/configs/uboot_panel_config.h
+else
+UBOOT_MODULE_CONFIG_H := ../$(UBOOT)/include/configs/uboot_module_config.h
+UBOOT_BOARD_CONFIG_H := ../$(UBOOT)/include/configs/uboot_board_config.h
+UBOOT_PANEL_CONFIG_H := ../$(UBOOT)/include/configs/uboot_panel_config.h
+endif
+ECOS_BIN   := $(BINDIR)/ecos.bin
+ECOS_COMPRESSED_BIN := $(BINDIR)/ecos.compressed.bin
+
+# **********************************************
+# Files to be compiled
+# **********************************************
+
+SRC_S       :=$(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.s))
+SRC_S_O     :=$(notdir $(patsubst %.s, %.o, $(SRC_S)))
+OBJ_S       :=$(foreach file, $(SRC_S_O), $(OBJ_PATH)/$(file))
+SRC_BIG_S   :=$(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.S))
+SRC_BIG_S_O :=$(notdir $(patsubst %.S, %.o, $(SRC_BIG_S)))
+OBJ_BIG_S   :=$(foreach file, $(SRC_BIG_S_O), $(OBJ_PATH)/$(file))
+
+SRC_C       :=$(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.c))
+SRC_C_O     :=$(notdir $(patsubst %.c, %.o, $(SRC_C)))
+OBJ_C       :=$(foreach file, $(SRC_C_O), $(OBJ_PATH)/$(file))
+
+
+# **********************************************
+# Libraries
+# **********************************************
+
+
+# **********************************************
+# Compiler and linker options
+# **********************************************
+CC_INCS    :=$(foreach dir, $(INCDIR), -I$(dir))
+
+
+ifeq ($(CONFIG_MCU_MIPS32),y)
+AS_OPTS    :=-$(ENDIAN) -mips32r2 -gdwarf2 -G0 -ggdb -defsym CPU=$($(CPU)) $(CC_INCS)
+CC_OPTS    :=-$(ENDIAN) -mips32r2 -gdwarf-2 -ggdb -mno-abicalls -O$(OPTIMIZE) -G0 -D'CPU=$(CPU)' -D'$(CHIP)' $(CC_INCS) -include include/autoconf.h
+ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+LD_OPTS    :=-$(ENDIAN) -nostdlib -static -defsym APP_BIN=$(APP_BIN) -defsym APP_ENTRY=$(APP_ENTRY) --sort-common --sort-section alignment --gc-sections -T ./$(LD_FILE) -Map $(BIN_PATH)/link.map
+else
+LD_OPTS    :=-$(ENDIAN) -nostdlib -static -defsym APP_BIN=$(APP_BIN) -defsym APP_ENTRY=$(APP_ENTRY) -T ./$(LD_FILE) -Map $(BIN_PATH)/link.map
+endif
+else ifeq ($(CONFIG_MCU_ARM),y)
+ifeq ($(CONFIG_ARMv8_64BIT_SBOOT),y)
+AS_OPTS    := -gdwarf-2 -march=armv7-a -mfpu=neon -mfloat-abi=soft -ggdb -defsym CPU=$($(CPU)) $(CC_INCS)
+CC_OPTS    := -fomit-frame-pointer -static-libgcc  -fno-pic -Os -march=armv8-a -mabi=lp64 -mlittle-endian -mtune=cortex-a53 -D'CPU=$(CPU)' -D'$(CHIP)' $(CC_INCS) -include include/autoconf.h
+LD_OPTS    := -nostdlib -static -defsym  APP_BIN=$(APP_BIN) -defsym  APP_ENTRY=$(APP_ENTRY) -T ./$(LD_FILE) -Map $(BIN_PATH)/link.map
+else
+CC_VERSION=4.5.2
+STD_LIB_ROOT=$(shell $(CC) -print-sysroot)/../lib/gcc/arm-none-eabi/$(CC_VERSION)
+AS_OPTS    := -gdwarf-2 -march=armv7-a -mfpu=neon -mfloat-abi=soft -ggdb -defsym CPU=$($(CPU)) $(CC_INCS)
+CC_OPTS    := -gdwarf-2 -march=armv7-a -ggdb -O$(OPTIMIZE) -fomit-frame-pointer -D'CPU=$(CPU)' -D'$(CHIP)' $(CC_INCS) -include include/autoconf.h
+LD_OPTS    := -nostdlib -static -defsym  APP_BIN=$(APP_BIN) -defsym  APP_ENTRY=$(APP_ENTRY) -T ./$(LD_FILE) -Map $(BIN_PATH)/link.map $(STD_LIB_ROOT)/libgcc.a
+CC_OPTS    += -mcpu=cortex-a9
+endif
+endif
+
+ifeq ($(CONFIG_ENABLE_SBOOT_BOOT_LOGO),y)
+CC_OPTS += -D'MSOS_TYPE_NOS'
+LD_OPTS += --gc-sections
+endif
+
+# **********************************************
+# Rules
+# **********************************************
+.PHONY : all clean sboot test mboot str2unicode gen_ld
+
+
+# Project Build
+ifeq ($(origin TOOLCHAIN_VERSION),undefined)
+all : version parse_miu_script setup bin mboot
+else
+all : check_build_toolver version parse_miu_script setup bin mboot
+endif
+	@echo "  [DONE]"
+
+
+log_gccver:
+	@$(CC) -v > .GCCver.log 2>&1
+
+check_build_toolver: log_gccver
+	@echo         "### Start checking workspace tool chain version against $(CROSS_COMPILE) $(TOOLCHAIN_VERSION) ###"
+	@if [ '$(shell grep "gcc version $(TOOLCHAIN_VERSION)" .GCCver.log)' ] ;\
+		then echo "### Pass checking workspace tool chain version ###" ;\
+			 rm .GCCver.log ;\
+		else echo "[Error] Tool chain version should be $(CROSS_COMPILE) $(TOOLCHAIN_VERSION). please check it!!" ;\
+			 echo "Your workspace tool chain version:" ;\
+			 $(CC) -v ;\
+			 echo "### End checking workspace tool chain version  ###" ;\
+			 rm .GCCver.log ;exit 99;\
+	fi
+
+ifeq ($(CONFIG_ECOS_AS_2ED_LOADER),y)
+BINOUT := bin
+SECURITY_BIN    = $(BINOUT)/secure_info.bin
+endif
+
+ifeq ($(CONFIG_ECOS_AS_2ED_LOADER),y)
+mboot:
+	@echo "  [APPEND] Append eCos"
+	@$(OBJCOPY) -O binary $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN)
+    ifeq ($(CONFIG_LD_BOOT_FROM_OTP), y)
+	@rm -f $(ECOS_COMPRESSED_BIN)
+	@cat $(ECOS_BIN) >> $(ECOS_COMPRESSED_BIN);
+    else ifeq ($(CONFIG_LD_BOOT_OTP_SIMULATE_ON_SPINOR), y)
+	@rm -f $(UBOOT_COMPRESSED_BIN)
+	@cat $(ECOS_BIN) >> $(ECOS_COMPRESSED_BIN);
+    else
+        ifeq ($(CONFIG_LDR_LZMA_COMPRESS),y)
+	@echo "lzma compress start..."
+	@$(MSCOMPDIR)/lzma e $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) b$(CONFIG_DECOMPRESS_POOL_LENGTH) -lc0 -lp2 -pb2 -d19
+        endif
+ifeq ($(CONFIG_LDR_NOCOMPRESS),y)
+	@echo "no compress process"
+	@rm -f $(ECOS_COMPRESSED_BIN)
+	@cat $(ECOS_BIN) >> $(ECOS_COMPRESSED_BIN);
+else
+ifeq ($(CONFIG_MSCOMPRESS),y)
+	@echo "ecos compress process"
+	@rm -f $(ECOS_COMPRESSED_BIN)
+	$(MSCOMPDIR)/mscompress -c -u 0 $(ECOS_BIN) > $(ECOS_COMPRESSED_BIN)	
+else ifeq	($(CONFIG_MSCOMPRESS7),y)
+	@echo "ecos compress7 process"
+	@rm -f $(ECOS_COMPRESSED_BIN)
+	$(MSCOMPDIR)/mscompress7 e 0 $(ECOS_BIN) $(ECOS_COMPRESSED_BIN)
+endif
+endif
+    endif
+ifeq ($(CONFIG_2ND_LOADER_ENCRYPTION),y)
+ifneq ($(CONFIG_MSTAR_NS_UBOOT_BRINGUP),y)
+	@echo "encrypt process"
+	cp $(ECOS_COMPRESSED_BIN) $(ECOS_COMPRESSED_BIN).org
+	$(SECUREDIR)/aescrypt2.exe 0 $(ECOS_COMPRESSED_BIN).org $(ECOS_COMPRESSED_BIN) $(REE_AES_KEY)
+endif
+endif
+ifeq ($(CONFIG_2ND_LOADER_VERIFICATION_BY_FASTCALL),y)
+ifneq ($(CONFIG_MSTAR_NS_UBOOT_BRINGUP),y)
+	@echo "signing process"
+	$(SECUREDIR)/SubSecureInfoGen.exe $(ECOS_COMPRESSED_BIN).sig $(ECOS_COMPRESSED_BIN) $(REE_RSA_PRIVATE_KEY) $(REE_RSA_PUBLIC_KEY) 0  8 0 $(BLOCK_SIZE) 0 $(SECUREDIR);
+	cat $(ECOS_COMPRESSED_BIN) > $(ECOS_COMPRESSED_BIN).aes.sig.bin
+	cat $(ECOS_COMPRESSED_BIN).sig >> $(ECOS_COMPRESSED_BIN).aes.sig.bin
+	mv $(ECOS_COMPRESSED_BIN).aes.sig.bin $(ECOS_COMPRESSED_BIN)
+endif
+else ifeq ($(CONFIG_2ND_LOADER_VERIFICATION),y)   # security boot
+	@echo "signing process"
+	$(SECUREDIR)/SubSecureInfoGen.exe $(ECOS_COMPRESSED_BIN).sig $(ECOS_COMPRESSED_BIN) $(RSA_BOOT_PRIVATE_KEY) $(RSA_BOOT_PUBLIC_KEY) 0  8 0 $(BLOCK_SIZE) 0 $(SECUREDIR);
+	cat $(ECOS_COMPRESSED_BIN) > $(ECOS_COMPRESSED_BIN).aes.sig.bin
+	cat $(ECOS_COMPRESSED_BIN).sig >> $(ECOS_COMPRESSED_BIN).aes.sig.bin
+	mv $(ECOS_COMPRESSED_BIN).aes.sig.bin $(ECOS_COMPRESSED_BIN)
+endif
+
+ifeq ($(CONFIG_ARMv8_64BIT_SBOOT),y)
+ifeq ($(CONFIG_LD_BOOT_MIU_DQS_ON_SRAM),y)
+	@./app_append_64bit_4dqs.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head na na arm $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na ${DQS_PATH}
+else
+	@./app_append_64bit.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head na na arm $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+else ifeq ($(CONFIG_ARMv8_32BIT_SBOOT),y)
+ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	@./app_append.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head bfn na arm $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) $(CONFIG_LD_BFN_VERSION)
+else ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	@./app_append.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head bfe na arm $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+	@./app_append.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head tvbfr na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else
+	@./app_append.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head na na arm $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+else
+ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	@./app_append.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head bfn na mips $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) $(CONFIG_LD_BFN_VERSION)
+else ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	@./app_append.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head bfe na mips $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+	@./app_append.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head tvbfr na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else
+	@./app_append.py $(BINDIR) $(CONFIG_ECOS_ELF_PATH) $(ECOS_BIN) $(ECOS_COMPRESSED_BIN) ecos no_trunk_head na na mips $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+endif
+    ifeq ($(CONFIG_MSTAR_NS_UBOOT),y)
+	$(MAKE) -f Makefile.mboot $(SECURITY_BIN)
+	@cat $(SECURITY_BIN) >> $(BIN_PATH)/flash_with_ecos.bin
+    endif
+
+else ifeq ($(CONFIG_UBOOT_AS_2ED_LOADER),y)
+mboot: $(UBOOT_BIN)
+	@echo "  [APPEND] Append u-boot"
+
+ifeq ($(CONFIG_LDR_LZMA_COMPRESS),y)
+	@echo "lzma start ..."
+	@$(MSCOMPDIR)/lzma e $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) b$(CONFIG_DECOMPRESS_POOL_LENGTH) -lc0 -lp2 -pb2 -d19
+endif
+
+ifeq ($(CONFIG_LDR_NOCOMPRESS),y)
+	@echo "no compress process"
+	@rm -f $(UBOOT_COMPRESSED_BIN)
+	@cat $(UBOOT_BIN) >> $(UBOOT_COMPRESSED_BIN);
+endif
+
+ifeq ($(CONFIG_COMPRESSED_UBOOT),y)
+	@echo "Mscompress process"
+	@rm -f $(UBOOT_COMPRESSED_BIN)
+ifeq ($(CONFIG_MSCOMPRESS7),y)
+	$(MSCOMPDIR)/mscompress7 e 0 $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN)
+else
+	$(MSCOMPDIR)/mscompress -c -u 0 $(UBOOT_BIN) > $(UBOOT_COMPRESSED_BIN)
+endif
+endif
+
+ifeq ($(CONFIG_2ND_LOADER_ENCRYPTION),y)
+ifneq ($(CONFIG_MSTAR_NS_UBOOT_BRINGUP),y)
+	@echo "encrypt process"
+	cp $(UBOOT_COMPRESSED_BIN) $(UBOOT_COMPRESSED_BIN).org
+	$(SECUREDIR)/aescrypt2.exe 0 $(UBOOT_COMPRESSED_BIN).org $(UBOOT_COMPRESSED_BIN) $(REE_AES_KEY)
+endif
+endif
+
+ifeq ($(CONFIG_2ND_LOADER_VERIFICATION_BY_FASTCALL),y)
+ifneq ($(CONFIG_MSTAR_NS_UBOOT_BRINGUP),y)
+	@echo "signing process"
+	$(SECUREDIR)/SubSecureInfoGen.exe $(UBOOT_COMPRESSED_BIN).sig $(UBOOT_COMPRESSED_BIN) $(REE_RSA_PRIVATE_KEY) $(REE_RSA_PUBLIC_KEY) 0  8 0 $(BLOCK_SIZE) 0 $(SECUREDIR);
+	cat $(UBOOT_COMPRESSED_BIN) > $(UBOOT_COMPRESSED_BIN).aes.sig.bin
+	cat $(UBOOT_COMPRESSED_BIN).sig >> $(UBOOT_COMPRESSED_BIN).aes.sig.bin
+	mv $(UBOOT_COMPRESSED_BIN).aes.sig.bin $(UBOOT_COMPRESSED_BIN)
+endif
+else ifeq ($(CONFIG_2ND_LOADER_VERIFICATION),y)   # security boot
+	@echo "signing process"
+	$(SECUREDIR)/SubSecureInfoGen.exe $(UBOOT_COMPRESSED_BIN).sig $(UBOOT_COMPRESSED_BIN) $(RSA_BOOT_PRIVATE_KEY) $(RSA_BOOT_PUBLIC_KEY) 0  8 0 $(BLOCK_SIZE) 0 $(SECUREDIR);
+	cat $(UBOOT_COMPRESSED_BIN) > $(UBOOT_COMPRESSED_BIN).aes.sig.bin
+	cat $(UBOOT_COMPRESSED_BIN).sig >> $(UBOOT_COMPRESSED_BIN).aes.sig.bin
+	mv $(UBOOT_COMPRESSED_BIN).aes.sig.bin $(UBOOT_COMPRESSED_BIN)
+endif
+
+ifeq ($(CONFIG_ARMv8_64BIT_SBOOT),y)
+
+ifeq ($(CONFIG_LD_BOOT_MIU_DQS_ON_SRAM),y)
+ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	./app_append_64bit_4dqs.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head bfn na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) $(CONFIG_LD_BFN_VERSION) ${DQS_PATH}
+else ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	./app_append_64bit_4dqs.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head bfe na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na ${DQS_PATH}
+ifeq ($(CONFIG_MSTAR_M02_GENERIC_DRM),y)
+	./util/M02_fix.py $(BIN_PATH)/bfe_boot.bin
+endif
+else
+	./app_append_64bit_4dqs.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head na na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na ${DQS_PATH}
+endif
+else
+ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	./app_append_64bit.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head bfn na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) $(CONFIG_LD_BFN_VERSION)
+else ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	./app_append_64bit.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head bfe na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else
+	./app_append_64bit.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head na na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+endif
+else ifeq ($(CONFIG_ARMv8_32BIT_SBOOT),y)
+ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head bfn na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) $(CONFIG_LD_BFN_VERSION)
+else ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head bfe na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head na na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+else
+ifneq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+ifneq ($(CONFIG_MSTAR_NOCS3_ENABLE),y)
+ifeq ($(CONFIG_LD_BFN_VERSION), $(filter $(CONFIG_LD_BFN_VERSION),4 5))
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head bfn na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) $(CONFIG_LD_BFN_VERSION)
+else
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head na na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+else
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot no_trunk_head bfn bfn_miu_with_hash0 na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+endif
+endif
+
+ifeq ($(CONFIG_RESERVED_CHUNK_HEADER),y)
+	$(Q)$(MAKE) -f Makefile.mboot
+ifneq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+ifeq ($(CONFIG_ARMv8_64BIT_SBOOT),y)
+
+ifeq ($(CONFIG_LD_BOOT_MIU_DQS_ON_SRAM),y)
+ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	./app_append_64bit_4dqs.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head bfn arm na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na na ${DQS_PATH}
+else ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	./app_append_64bit_4dqs.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head bfe arm na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na na ${DQS_PATH}
+else
+	./app_append_64bit_4dqs.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head na na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na na ${DQS_PATH}
+endif
+
+else
+ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	./app_append_64bit.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head bfn arm na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	./app_append_64bit.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head bfe arm na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else
+	./app_append_64bit.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head na na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+endif
+else ifeq ($(CONFIG_ARMv8_32BIT_SBOOT),y)
+ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head bfn arm na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head bfe arm na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head na na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+else
+ifeq ($(CONFIG_LD_BFN_VERSION), $(filter $(CONFIG_LD_BFN_VERSION),4 5))
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head bfn mips na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+else
+	./app_append.py $(BINDIR) $(UBOOT_ELF) $(UBOOT_BIN) $(UBOOT_COMPRESSED_BIN) uboot has_trunk_head na na na $(CONFIG_TEE_LOADER) $(CONFIG_APP_HEADER_SIZE) na
+endif
+endif
+endif
+endif
+
+else
+mboot:
+	@echo "  [APPEND] No second loader. Skip."
+endif
+
+
+$(UBOOT_BIN): $(AUTOCONF_H)
+	@$(CC) -v 2>/dev/null
+ifeq ($(CHIP), $(filter $(CHIP),$(UBOOT_2011_06_CHIPS)))
+	@rm -rf ../sboot/inc
+	@mkdir inc
+	@mkdir ./inc/$(CHIP)
+	@mkdir ./inc/$(CHIP)/board
+	@cp -r board/$(CHIP)/* ../sboot/inc/$(CHIP)/board
+endif
+	@echo "  [GEN]     uboot_module_config.h"
+	@echo "/* Automatically generated module config: don't edit */" > $(UBOOT_MODULE_CONFIG_H)
+	@$(AWK) -f scripts/uboot-module-config.awk $(AUTOCONF_H) >> $(UBOOT_MODULE_CONFIG_H)
+	@echo "  [GEN]     uboot_board_config.h"
+	@echo "/* Automatically generated board config: don't edit */" > $(UBOOT_BOARD_CONFIG_H)
+	@$(AWK) -f scripts/uboot-board-config.awk $(AUTOCONF_H) >> $(UBOOT_BOARD_CONFIG_H)
+ifneq ($(CONFIG_MSTAR_MANUAL), y)
+ifeq ($(CONFIG_CPU_216MHZ), y)
+	@echo "#define CPU_CLOCK 216000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_288MHZ), y)
+	@echo "#define CPU_CLOCK 288000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_312MHZ), y)
+	@echo "#define CPU_CLOCK 312000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_348MHZ), y)
+	@echo "#define CPU_CLOCK 348000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_396MHZ), y)
+	@echo "#define CPU_CLOCK 396000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_384MHZ), y)
+	@echo "#define CPU_CLOCK 384000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_432MHZ), y)
+	@echo "#define CPU_CLOCK 432000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_456MHZ), y)
+	@echo "#define CPU_CLOCK 456000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_504MHZ), y)
+	@echo "#define CPU_CLOCK 504000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_552MHZ), y)
+	@echo "#define CPU_CLOCK 552000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_576MHZ), y)
+	@echo "#define CPU_CLOCK 576000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_600MHZ), y)
+	@echo "#define CPU_CLOCK 600000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_624MHZ), y)
+	@echo "#define CPU_CLOCK 624000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_648MHZ), y)
+	@echo "#define CPU_CLOCK 648000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_696MHZ), y)
+	@echo "#define CPU_CLOCK 696000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_720MHZ), y)
+	@echo "#define CPU_CLOCK 720000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_756MHZ), y)
+	@echo "#define CPU_CLOCK 756000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_792MHZ), y)
+	@echo "#define CPU_CLOCK 792000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_840MHZ), y)
+	@echo "#define CPU_CLOCK 840000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_900MHZ), y)
+	@echo "#define CPU_CLOCK 900000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_984MHZ), y)
+	@echo "#define CPU_CLOCK 984000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+ifeq ($(CONFIG_CPU_1008MHZ), y)
+	@echo "#define CPU_CLOCK 1008000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+else
+	@echo "#define CPU_CLOCK $(CONFIG_MSTAR_OTHERS)000000UL" >> $(UBOOT_BOARD_CONFIG_H)
+endif
+	@echo "  [GEN]     uboot_panel_config.h"
+	@echo "/* Automatically generated panel type config: don't edit */" > $(UBOOT_PANEL_CONFIG_H)
+	@$(AWK) -f scripts/uboot-panel-config.awk $(AUTOCONF_H) >> $(UBOOT_PANEL_CONFIG_H)
+ifeq ($(CHIP), $(filter $(CHIP),$(UBOOT_2011_06_CHIPS)))
+	@cd ../u-boot-2011.06/;make -s $(CHIP)_config; sh build.sh
+else
+	@cd ../u-boot-1.1.6/;make -s $(CHIP)_config;make -s
+endif
+	@echo "Build MBoot End"
+
+
+
+	
+
+
+TODAY=$(shell date '+%Y%m%d')
+NOW=$(shell date '+00%H%M%S')
+version :
+	echo "  [VERSION] Update version.inc"
+	@perl -w -p -i -e 's/(\s*BUILD_DATE\s*=\s+0x)[[:xdigit:]]+/$${1}$(TODAY)/g' version.inc
+	@perl -w -p -i -e 's/(\s*BUILD_TIME\s*=\s+0x)[[:xdigit:]]+/$${1}$(NOW)/g' version.inc
+
+
+
+build : $(OBJ_S) $(OBJ_BIG_S) $(OBJ_C)
+
+# build TEST app for app.bin
+test : build
+	$(OBJCOPY) -O binary $(OBJ_PATH)/test.o $(BIN_PATH)/app.bin
+
+gen_ld :
+ifeq ($(CONFIG_TEE_LOADER),y)
+ifeq ($(CONFIG_ENCRYPTED_TEE_LOADER),y)
+ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	@cp chip/$(CHIP)/teeloader/encrypted/$(VENDOR)/tee_loader_bfe.bin chip/$(CHIP)/tee_loader.bin
+else ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	@cp chip/$(CHIP)/teeloader/encrypted/$(VENDOR)/tee_loader_bfn.bin chip/$(CHIP)/tee_loader.bin
+else
+	@cp chip/$(CHIP)/teeloader/encrypted/$(VENDOR)/tee_loader.bin chip/$(CHIP)/tee_loader.bin
+endif
+else
+ifeq ($(CONFIG_LD_BOOT_MIU_DQS_ON_SRAM),y)
+ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	@cp chip/$(CHIP)/teeloader/clear/$(VENDOR)/tee_loader_bfe_dqs.bin chip/$(CHIP)/tee_loader.bin
+else ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	@cp chip/$(CHIP)/teeloader/clear/$(VENDOR)/tee_loader_bfn_dqs.bin chip/$(CHIP)/tee_loader.bin
+else
+	@cp chip/$(CHIP)/teeloader/clear/$(VENDOR)/tee_loader_dqs.bin chip/$(CHIP)/tee_loader.bin
+endif
+else
+ifeq ($(CONFIG_MSTAR_BFE_EN),y)
+	@cp chip/$(CHIP)/teeloader/clear/$(VENDOR)/tee_loader_bfe.bin chip/$(CHIP)/tee_loader.bin
+else ifeq ($(CONFIG_MSTAR_BFN_EN),y)
+	@cp chip/$(CHIP)/teeloader/clear/$(VENDOR)/tee_loader_bfn.bin chip/$(CHIP)/tee_loader.bin
+else
+	@cp chip/$(CHIP)/teeloader/clear/$(VENDOR)/tee_loader.bin chip/$(CHIP)/tee_loader.bin
+endif
+endif
+endif
+	@$(MSCOMPDIR)/Bin2Dat chip/$(CHIP)/tee_loader.bin
+endif
+	@echo "  [LDS] "$(LD_FILE)
+ifeq ($(CONFIG_MSTAR_NS_UBOOT), y)
+ifeq ($(CONFIG_MSTAR_BUILD_TEE_LOADER_DAT), y)
+	@$(CC) -D__ASSEMBLY__=1 -I /include -E -P ../tee_loader/ld/$(CHIP)/tee_ldr.ld.S -o tee_ldr.ld
+# Extract libgcc.a to sboot dir due to _udivsi3.o and _dvmd_tls.o must be linked into teeloader on arm compiler for EMMC
+ifeq ($(CC_VERSION), 4.5.2)
+ifeq ($(CONFIG_MMC), y)
+	@ar -xv $(STD_LIB_ROOT)/libgcc.a _udivsi3.o _dvmd_tls.o
+	@mv _udivsi3.o _dvmd_tls.o obj/
+endif
+endif
+else ifneq ($(CONFIG_TEE_LOADER), y)
+	@$(CC) -D__ASSEMBLY__=1 -I /include -E -P ../tee_loader/ld/$(CHIP)/tee_ldr.ld.S -o tee_ldr.ld
+endif
+endif
+	@$(CC) -D__ASSEMBLY__=1 -I /include -E -P $(LD_S_FILE) -o $(LD_FILE)
+
+
+sboot : gen_ld build
+	@echo "  [APP] Pack $(BIN_PATH)/app.bin"
+	@$(LD) -EL -r -b binary -o $(OBJ_PATH)/app.bin.o $(BIN_PATH)/app.bin
+	@if [ -e $(BIN_PATH)/pm/$(PM).bin ]; then \
+		echo "  [PM] Pack  $(BIN_PATH)/pm/$(PM).bin"; \
+		$(LD) -EL -r -b binary -o $(OBJ_PATH)/pm.bin.o $(BIN_PATH)/pm/$(PM).bin; \
+	else \
+		echo "  [PM] Pack $(BIN_PATH)/pm/null.bin"; \
+		$(LD) -EL -r -b binary -o $(OBJ_PATH)/pm.bin.o $(BIN_PATH)/pm/null.bin; \
+	fi;
+	@echo "  [LD] $(BIN_PATH)/$(IMAGE).elf"
+	@$(LD) $(LD_OPTS) -o $(BIN_PATH)/$(IMAGE).elf
+
+
+$(OBJ_S) : $(OBJ_PATH)/%.o : %.s
+	@echo "  [AS] $@"
+	@$(AS) $(AS_OPTS) -o $@ $<
+
+$(OBJ_BIG_S) : $(OBJ_PATH)/%.o : %.S
+	@echo "  [CC] $@"
+	@$(CC) $(CC_OPTS) -o $@ -c $<
+
+$(OBJ_C) : $(OBJ_PATH)/%.o : %.c
+	@echo "  [CC] $@"
+	@$(CC) $(CC_OPTS) -o $@ -c $<
+
+parse_miu_script :
+ifeq ($(CONFIG_MSTAR_KAYLA), y)
+	@python miu_script2hash1.py ./chip/$(CHIP)/miu_script/$(CONFIG_MIU_SCRIPT_FILE) 0xbf
+endif
+ifeq ($(CONFIG_MSTAR_K6), y)
+	@python miu_script2hash1.py ./chip/$(CHIP)/miu_script/$(CONFIG_MIU_SCRIPT_FILE) 0x1f
+endif
+ifeq ($(CONFIG_MSTAR_K5TN), y)
+	@python miu_script2hash1.py ./chip/$(CHIP)/miu_script/$(CONFIG_MIU_SCRIPT_FILE) 0xbf
+ifeq ($(CONFIG_MSTAR_DRAMBRAND_MIXED_ENABLE), y)
+	@python miu_script2hash1.py ./chip/$(CHIP)/miu_script/$(CONFIG_MIU_SCRIPT_FILE1) 0xbf
+endif
+endif
+
+# Project Setup
+setup :
+	-@mkdir -p $(OBJ_PATH) 2> /dev/null
+	-@mkdir -p $(BIN_PATH) 2> /dev/null
+
+bin : sboot
+	@echo "  [OBJCOPY] $(BIN_PATH)/$(IMAGE).elf -> $(BIN_PATH)/flash.bin"
+	@$(OBJCOPY) -O binary $(BIN_PATH)/$(IMAGE).elf $(BIN_PATH)/flash.bin -R .dummy
+ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+	@gcc -o ./scripts/pad_version ./scripts/pad_version.c
+	@./scripts/pad_version $(BIN_PATH)/flash.bin $(MBOOT_CL)
+endif
+ifeq ($(CONFIG_ENCRYPTED_TEE_LOADER),y)
+	@python $(SECUREDIR)/InsertEBLCK.py $(BIN_PATH)/flash.bin $(SECUREDIR)/EBLCK1.bin $(SECUREDIR)/EBLCK2.bin
+endif
+
+str2unicode :
+	@echo "string to unicode"
+	@cd $(UBOOT_STR2UNICODE);./str2unicode
+
+# Project Clean
+clean :
+	@echo "  [CLEAN] $(IMAGE) project..."
+	@rm -f $(OBJ_PATH)/*.o
+	@rm -f $(BIN_PATH)/link.map
+	@rm -f $(BIN_PATH)/$(IMAGE).*
+	@rm -f $(BIN_PATH)/flash.bin
+	@rm -f $(UBOOT_BIN)
+	@rm -f $(UBOOT_COMPRESSED_BIN)
+	@rm -f $(BIN_PATH)/flash_with_uboot.bin
+	@rm -f $(ECOS_BIN)
+	@rm -f $(ECOS_COMPRESSED_BIN)
+	@rm -f $(BIN_PATH)/flash_with_ecos.bin
+	@rm -f $(BIN_PATH)/bfs_boot.bin
+	@rm -f $(BIN_PATH)/bfn_miu.bin
+	@rm -f $(BIN_PATH)/bfn_loader.bin
+	@rm -f $(BIN_PATH)/bfn_app.bin
+	@rm -f $(BIN_PATH)/bfe_app.bin
+	@rm -f $(BIN_PATH)/bfe_boot.bin
+	@rm -f $(BIN_PATH)/bfe_usb_upgrade_loader.bin
+	@rm -f $(BIN_PATH)/hash*
+	@rm -f $(BIN_PATH)/chunk_header.*
+	@rm -f $(BIN_PATH)/secure_info.bin
+ifeq ($(CHIP), $(filter $(CHIP),$(UBOOT_2011_06_CHIPS)))
+ifeq ($(CONFIG_UBOOT_AS_2ED_LOADER),y)
+	$(Q)make -C ../$(UBOOT) distclean
+endif
+	$(Q)make -f Makefile.mboot binaclean
+endif
+

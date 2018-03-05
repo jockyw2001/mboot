@@ -1,0 +1,6 @@
+87aa6c8ecf7436ea532510549f4d37d637b77085 @ mstar/mboot/MstarApp
+5cf381f5d3e1c42ed671bd15b694501a955bdb10 @ mstar/mboot/MstarCore
+b920bbe68555cf53d583a72bb33e4f0b73c48c11 @ mstar/mboot/MstarCustomer
+71a0060607bf56bf54362ca06e8792fb306d993c @ mstar/stb_sboot
+d12fcb7fe2b9cd9fe5c3667451c6754aa87bff2e @ mstar/STB_Mboot
+e9ec27e89c024ed6af11534b5e10765f2b6e3aa5 @ mstar/mboot/u-boot-2011.06

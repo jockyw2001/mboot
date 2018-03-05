@@ -1,0 +1,235 @@
+//--------------------------------
+// Prepare
+//--------------------------------
+
+swch 4
+wriu -w 0x110A22 0x0100 //stop cpu clk (reg_mipspll_pd & reg_mipspll_en_cpuclk)
+
+swch 3
+
+wriu -w 0x2b80 0x0000   //dram address offset :64kB unit
+
+wriu -w 0x1008 0x0000   //pm51 dram start addr high
+wriu -w 0x100c 0x0000   //pm51 dram start addr low
+
+wriu    0x1018 0x0004   //dram enable, spi dram diasble
+
+//wriu    0x0e53 0x10   //[4]mcu0 rstz
+
+//--------------------------------
+// PLL
+//--------------------------------
+//turn on xtal
+swch 3
+wriu    0x00000e7a 0x00
+wriu    0x00000e7b 0x00
+//MPLL Power on
+swch 4
+wriu    0x00110b02 0x00
+wriu    0x00110b03 0x00
+wriu    0x00110b08 0x11
+wriu    0x00110b00 0x13
+wriu    0x00110b01 0x00
+//EVDPLL Power on
+wriu    0x00110988 0x11
+// pd 83[0]
+wriu    0x00110983 0x00
+
+//ARMPLL_CLKOUT_CPU, VCO/2 800Mhz setting
+wriu    0x00110a23 0x01
+wriu    0x00110ac0 0xb8
+wriu    0x00110ac1 0x1e
+wriu    0x00110ac2 0x45
+wriu    0x00110ac3 0x00
+wriu    0x00110ac4 0x01
+wriu    0x00110ac5 0x00
+//ARMPLL Power on
+wriu    0x00110a23 0x00
+wriu    0x00110a20 0x09
+
+//MIU128PLL Power on
+wriu    0x00110968 0x11
+// pd 63[0]
+wriu    0x00110963 0x00
+//MIU256PLL Power on
+wriu    0x00110978 0x11
+// pd 73[0]
+wriu    0x00110973 0x00
+
+
+
+//DACPLL (216MHz)
+wriu -w 0x0012112c 0x00005101
+wriu    0x0012112f 0x00
+//dac synth
+wriu -w 0x00121162 0x00000000
+wriu -w 0x00121164 0x00000040
+wriu -w 0x0012116a 0x00000000
+wriu -w 0x00121166 0x00000000
+wriu -w 0x00121168 0x00000000
+
+// GMACPLL
+swch 4
+
+wriu 0x100bc6 0x00
+wriu 0x110cd2 0x1b
+wriu 0x110cc6 0x00
+
+
+//turn on all UPLL and UTMI
+//UPLL0
+wriu 0x100800 0xc0
+wriu 0x10080e 0x01
+wriu 0x100804 0x10
+wriu 0x100805 0x01
+
+//UPLL1
+wriu 0x100820 0xc0
+wriu 0x10082e 0x01
+wriu 0x100824 0x10
+wriu 0x100825 0x01
+
+
+//utmi0
+wriu 0x103A88 0x0f
+wriu 0x103A89 0x04
+
+wriu 0x103A80 0x01
+wriu 0x103A81 0x00
+
+//utmi1
+wriu 0x103A08 0x0f
+wriu 0x103A09 0x04
+
+wriu 0x103A00 0x01
+wriu 0x103A01 0x00
+
+//utmi2
+wriu 0x103908 0x0f
+wriu 0x103909 0x04
+
+wriu 0x103900 0x01
+wriu 0x103901 0x00
+
+
+//[GPUPLL Synth setting as 550MHz]
+swch 4
+wriu    0x001604c0 0x7a
+wriu    0x001604c1 0x14
+wriu    0x001604c2 0x2e
+wriu    0x001604c3 0x00
+wriu    0x001604c4 0x01
+//power on mpll
+wriu    0x00110b03 0x00
+//power on g3d pll
+wriu    0x00160423 0x00
+
+//--------------------------------
+// CLKGEN
+//--------------------------------
+//switch miu128 clk_miu to miupll
+4d00100b3e, 8w08
+4d00100b3f, 8w00
+//switch miu256 clk_miu to miupll
+4d00100a40, 8w08
+4d00100a41, 8w00
+//clk_ge_p
+4d00100b90, 8w00
+//clk_njpd_p
+4d00100a22, 8w00
+//clk_mfe_p
+4d00100a20, 8w0c
+//clk_mvd_p
+4d00100b72, 8w00
+//clk_zdec_vld_p
+4d00100a26, 8w00
+//clk_zdec_lzd_p
+4d00100a28, 8w00
+//clk_gmac_ahb
+4d00100a03, 8w0c
+//clk_secgmac_ahb
+4d00103364, 8w08
+//clk_tsp_p
+4d00100b54, 8w20
+//clk_parser_p
+4d00100b73, 8w04
+//clk_stamp_p
+4d00100b5f, 8w00
+//clk_27m_p
+4d00100b55, 8w00
+//clk_27m2_p
+4d00100b55, 8w00
+//clk_spi_p1
+4d00100b2c, 8w18
+//clk_spi_p
+4d00100b2c, 8w58
+//clk_miic
+4d00103360, 8w14
+//clk_miic2
+4d00103360, 8w44
+//clk_miic3
+4d00103361, 8w04
+//clk_miic4
+4d00100a74, 8w04
+//clk_miic4
+4d00100a74, 8w44
+//clk_miic6
+4d00100a75, 8w04
+//clk_faurt
+4d00100b2e, 8w10
+//clk_uart0
+4d00100b27, 8w0c
+//clk_uart1
+4d00100b28, 8w0c
+//clk_mspi0
+4d00100b2d, 8w18
+//clk_mspi1
+4d00100b2d, 8w88
+//clk_bdma
+4d00100bcc, 8w04
+//clk_mcu_p1
+4d00100b21, 8w00
+//clk_mcu_p
+4d00100b20, 8w01
+//clk_miu_p
+4d00100b3e, 8w08
+//clk_ddr_syn
+4d00100bfa, 8w04
+//clk_mpll_syn
+4d00100b3a, 8w00
+//clk_mpll_syn2
+4d00100b3b, 8w00
+//clk_fuart0_synth_in
+4d00100b2e, 8w00
+//clk_syn_gmac
+4d00100bc6, 8w00
+//clk_smart_p
+4d00100a24, 8w00
+//clk_r2_secure_p1
+4d00100b62, 8w0c
+//clk_r2_secure_p1
+4d00100b62, 8w20
+//clk_v9mcu_p
+4d0010336a, 8w00
+//clk_dc0_p
+4d00100b98, 8w00
+//clk_sub_dc0_p
+4d00100baf, 8w00
+//clk_fclk_p
+4d00100ba5, 8w00
+//clk_dip_fclk_p
+4d00100ba9, 8w00
+//clk_od2ve_p
+4d00100ba4, 8w00
+//clk_edclk_f2_p
+4d00100bb7, 8w00
+//clk_sc1_edclk_p
+4d00100bbb, 8w00
+//clk_sc1_fclk_p
+4d00100bbb, 8w00
+//clk_afbc_p
+4d00100bbe, 8w00
+//clk_gop_mix_hd_eng_p
+4d00100ba0, 8w00
+//clk_gop_mix_sd_eng_p
+4d00100ba1, 8w00

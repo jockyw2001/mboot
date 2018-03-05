@@ -1,0 +1,13 @@
+swch 4
+wriu -w 0x100B22 0x8100 //stop mips clk
+
+swch 3
+
+wriu -w 0x2b80 0x0000   //dram address offset :64kB unit
+
+wriu -w 0x1008 0x0000   //pm51 dram start addr high
+wriu -w 0x100c 0x0000   //pm51 dram start addr low
+
+wriu    0x1018 0x0004   //dram enable, spi dram diasble
+
+//wriu    0x0e53 0x10     //[4]mcu0 rstz

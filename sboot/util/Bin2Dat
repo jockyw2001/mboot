@@ -1,0 +1,31 @@
+#!/usr/bin/python
+
+import os
+import sys
+
+IN_FILE = sys.argv[1]
+
+if not os.path.isfile(IN_FILE):
+    sys.exit("%s not found" % IN_FILE)
+
+if not IN_FILE.endswith('.bin'):
+    sys.exit('File extension is not .bin')
+
+OUT_FILE = IN_FILE[:-4] + '.dat'
+
+content = open(IN_FILE, 'rb').read()
+content_size = len(content)
+cnt = 0
+
+output = open(OUT_FILE, 'w')
+
+for c in content:
+    output.write("0x{:02x}, ".format(ord(c)))
+    cnt +=1
+    if cnt == 16:
+        output.write('\n')
+        cnt = 0
+
+output.close()
+
+print '[Output] BintoDat: %s' % OUT_FILE

@@ -1,0 +1,21 @@
+B::
+
+//[Reset]
+res
+System.CPU MIPS34K
+System.Option E Little
+SYStem.Mode UP
+
+//stop COUNT at debug mode
+PER.S CP0:0x17 %LONG 0x40110002
+
+Data.Set D:0xbf006010 %LE %LONG 0x0000                  // watch dog -> MCU  55aa->aa55
+Data.Set D:0xbf006014 %LE %LONG 0x0000                  // watch dog -> MCU  55aa->aa55
+
+SYStem.Option MonBase 0xA1400000   // use a memory area not used by startup
+
+DATA.LOAD.ELF "..\bin\sboot.elf" /SOURCEPATH "Y:\PERFORCE\DAILEO\MBoot_Branch\MBoot_STB\sboot" /STRIPPART "/home/chm/s/PERFORCE/DAILEO/MBoot_Branch/MBoot_STB/sboot" /VM /AnySym
+
+DO source.cmm
+DO break.cmm
+DO window.cmm

@@ -1,0 +1,639 @@
+BOOTSPI
+SPI AC ON
+MIU0_DQS-OK
+MIU1_DQS-OK
+BIST_0 OK
+BIST_1 OK
+decomp
+done
+done
+
+Relocation Offset is: 01100000
+[AT][MB][start ub][790]
+
+U-Boot 2011.06-dirty (Dec 11 2015 - 17:13:56)  MBOT-1106.0.1.Macan.a8
+
+
+Function = SYSOpen, Line = 810, current resource pri_shm content is: 0
+Function = SYSOpen, Line = 829, [SYS INFO] OPEN INSTANCE...
+create instance at 2BAF9800 with private size 108 bytes at 2BAF9848
+
+[MIU INFO] miu opencreate instance at 2BAF98B8 with private size 80 bytes at 2BAF9900
+SPI:  Flash is detected (0x0512, 0xC2, 0x9E, 0x16)
+MDrv_SERFLASH_GetInfo()
+        u32AccessWidth = 1
+        u32TotalSize   = 4194304
+        u32SecNum      = 64
+        u32SecSize     = 65536
+create instance at 2BAF9958 with private size 48 bytes at 2BAF99A0
+
+uboot held at [2B8DDF60~2D000000],size=017220A0
+CPU  : Kano
+Board: BD_MST231B_D01A_S
+DRAM:  208 MiB
+Now running in RAM - U-Boot at: 2C100000
+[ eMMC_LoadTimingTable() ] eMMC Warn: no Table
+[ eMMC_LoadTimingTable() ] eMMC Err: load Tables fail, 8000001Ch
+[ eMMC_FCIE_EnableFastMode() ] eMMC Warn: no Timing Table, 8000001Ch
+eMMC Info: building HS200 table, please wait...
+
+clk: 200MHz
+
+  eMMC ATop Timing Table: Ver:6h Cnt:1 CurIdx:0
+    Set:0: Clk: 0090h, Result: 0003FCFFh, Reg2Ch: 01h, Skew4: 08h
+      Skew2: 00h, RXDLL: 0h, RXDLLCnt: 00h
+
+OK
+set trigger level to 0, emmc_pll[0x20] = 0600h
+
+set trigger level to 0, emmc_pll[0x20] = 0400h
+
+HS400 Skew4 11h
+set trigger level to 0, emmc_pll[0x20] = 0400h
+
+
+  Skew4[-2]: inv: 1h, Skew4: 6h
+
+scan RXDLL
+u32_RXDLLResult:0x1FFC
+BestDelayLine:0x7
+00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+ X  X  O  O  O  O  O  O  O  O  O  O  O  X  X  X
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+  Skew4[-1]: inv: 1h, Skew4: 7h
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+  Skew4[0]: inv: 1h, Skew4: 8h
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+  Skew4[1]: inv: 0h, Skew4: 0h
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+  Skew4[2]: inv: 0h, Skew4: 1h
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+scan Skew2
+u32_SKew2Result:0x7E
+BestSkew2:0x4
+
+  eMMC ATop Timing Table: Ver:6h Cnt:1 CurIdx:0
+    Set:0: Clk: 0090h, Result: 0003FCFFh, Reg2Ch: 01h, Skew4: 06h
+      Skew2: 04h, RXDLL: 7h, RXDLLCnt: 0Bh
+
+  eMMC General Timing Table: Ver:6h Cnt:5 CurIdx:0 SpeedMode:6h
+CID in GT Table
+ 0x2CB427F2: 3Fh 90h 01h 4Ah 48h 38h 47h 31h 65h 05h 07h D3h 69h B1h 97h 00h  | ?..JH8G1e...i...
+OpCode Address Value Mask
+==========Set 0x0==========
+0x3 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x6000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+==========Set 0x1==========
+0x3 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x7000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+==========Set 0x2==========
+0x3 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x8000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+==========Set 0x3==========
+0x2 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x0000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+==========Set 0x4==========
+0x2 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x1000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+
+eMMC: HS400 200MHz
+eMMC 7.28 GB [E8FFF8h]
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+[CPU INFO] cpu opencreate instance at 2BB09E10 with private size 44 bytes at 2BB09E58
+CPUIoctl - MDrv_CMD_CPU_QueryClock
+[UTOPIA INFO] close moduleNames[tu]: , ,à, ,`,à,xV4
+
+[AT][MBoot][Driver Init][3581]
+
+Changelist:     00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:705: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+
+** Unable to use mmc 0:1 for fatload **
+
+** Unable to use mmc 0:1 for fatload **
+Kano#
+Kano#
+Kano#
+Kano# usb start 0
+(Re)start USB 0...
+Check USB port[0]:
+[USB] usb_lowlevel_init++
+[USB] USB EHCI LIB VER: 2014.10.02
+[USB] Port 0 is Enabled
+[USB] TV_usb_init (UTMI Init) ++
+[USB] UTMI Base 1F207500
+[USB] UHC Base 1F204800
+[USB] USBC Base 1F200E00
+[USB] BC Base 1F226E00
+[USB] config miu select [70] [B8] [FF] ][FF]
+[USB] TV_usb_init--
+[USB] Usb_host_Init++
+[USB] Async base addr: 0xCF99080
+[USB] Reg 0x28: 0x9080 0xCF9
+[USB] disable run
+[USB] Host Speed:2
+[USB] enable aynch
+[USB] Usb_host_Init--
+[USB] usb_lowlevel_init--
+scanning bus for devices... [USB] control1 max:40
+
+[USB] interface[0] conf:1 value 8:
+1 USB Device(s) found
+       scanning bus for storage devices...
+[USB] bulk max packet size: ep(out) 0x200, ep2(in) 0x200
+[USB] bulk0 is out
+max lun:0
+1 Storage Device(s) found
+Kano# mmc erase.boot 1
+MMC erase: dev # 0, boot part, block # 0, count 8192 (unit: sector)...
+8192 blocks erase: OK
+Kano# fatload usb 0 0x20150000 bfe_boot.bin
+reading bfe_boot.bin
+
+77828 bytes read
+Kano# mmc write.boot 1  0x20150000 0  0x13004
+153 blocks written: OK
+Kano# mmc erase
+MMC erase: dev # 0, user area part, block # 0, count 15269880 (unit: sector)...
+15269880 blocks erase: OK
+Kano# fatload usb 0 0x20150000 bfe_app.bin
+reading bfe_app.bin
+
+1904900 bytes read
+Kano# mmc write 0x20150000 0x1000  0x1D1104
+3721 blocks written: OK
+Kano#
+BOOT01_OKEMMC
+
+Relocation Offset is: 0DF00000
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-dirty (Dec 22 2015 - 20:45:53)  MBOT-1106.0.8.KANO.a5
+
+
+Function = SYSOpen, Line = 812, current resource pri_shm content is: 0
+Function = SYSOpen, Line = 831, [SYS INFO] OPEN INSTANCE...
+create instance at 2EAF97F8 with private size 108 bytes at 2EAF9840
+
+[MIU INFO] miu opencreate instance at 2EAF98B0 with private size 80 bytes at 2EAF98F8
+Flash is detected (0x0512, 0xC2, 0x9E, 0x16)
+create instance at 2EAF9950 with private size 48 bytes at 2EAF9998
+
+uboot held at [2E8DDF60~30000000],size=017220A0
+CPU  : Kano
+Board: BD_MST231B_D01A
+DRAM:  256 MiB
+Now running in RAM - U-Boot at: 2F100000
+[ eMMC_LoadTimingTable() ] eMMC Warn: no Table
+[ eMMC_LoadTimingTable() ] eMMC Err: load Tables fail, 8000001Ch
+[ eMMC_FCIE_EnableFastMode() ] eMMC Warn: no Timing Table, 8000001Ch
+eMMC Info: building HS200 table, please wait...
+
+clk: 200MHz
+
+  eMMC ATop Timing Table: Ver:6h Cnt:1 CurIdx:0
+    Set:0: Clk: 0090h, Result: 0003FCFFh, Reg2Ch: 01h, Skew4: 08h
+      Skew2: 00h, RXDLL: 0h, RXDLLCnt: 00h
+
+OK
+set trigger level to 0, emmc_pll[0x20] = 0600h
+
+set trigger level to 0, emmc_pll[0x20] = 0400h
+
+HS400 Skew4 11h
+set trigger level to 0, emmc_pll[0x20] = 0400h
+
+
+  Skew4[-2]: inv: 1h, Skew4: 6h
+
+scan RXDLL
+u32_RXDLLResult:0x1FFC
+BestDelayLine:0x7
+00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+ X  X  O  O  O  O  O  O  O  O  O  O  O  X  X  X
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+  Skew4[-1]: inv: 1h, Skew4: 7h
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+  Skew4[0]: inv: 1h, Skew4: 8h
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+  Skew4[1]: inv: 0h, Skew4: 0h
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+  Skew4[2]: inv: 0h, Skew4: 1h
+             RXDLL: 7h, RXDLLResult: 1FFCh, OkCnt: 11
+
+scan Skew2
+u32_SKew2Result:0x7E
+BestSkew2:0x4
+
+  eMMC ATop Timing Table: Ver:6h Cnt:1 CurIdx:0
+    Set:0: Clk: 0090h, Result: 0003FCFFh, Reg2Ch: 01h, Skew4: 06h
+      Skew2: 04h, RXDLL: 7h, RXDLLCnt: 0Bh
+
+  eMMC General Timing Table: Ver:6h Cnt:5 CurIdx:0 SpeedMode:6h
+CID in GT Table
+ 0x2FB487F2: 3Fh 90h 01h 4Ah 48h 38h 47h 31h 65h 05h 07h D3h 69h B1h 97h 00h  | ?..JH8G1e...i...
+OpCode Address Value Mask
+==========Set 0x0==========
+0x3 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x6000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+==========Set 0x1==========
+0x3 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x7000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+==========Set 0x2==========
+0x3 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x8000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+==========Set 0x3==========
+0x2 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x0000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+==========Set 0x4==========
+0x2 0x00047FB0 0x0080 0x0080
+0x3 0x00047E0C 0x1000 0xF000
+0x3 0x00047E24 0x0032 0x00F2
+0x3 0x00047E0C 0x0040 0x00F0
+
+eMMC: HS400 200MHz
+eMMC 7.28 GB [E8FFF8h]
+Need write new driver description table!
+Add new partition MBOOT success!
+Add new partition MPOOL success!
+Using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+[CPU INFO] cpu opencreate instance at 2EB09E98 with private size 44 bytes at 2EB09EE0
+CPUIoctl - MDrv_CMD_CPU_QueryClock
+[UTOPIA INFO] close moduleNames[tu]: / /à/ /`/à/xV4
+
+[AT][MBoot][Driver Init][0]
+mmc change mount : CONFIG
+[ERROR] del_bootargs_cfg:371: No env 'bootargs'
+** Bad Signature on 0:3: expected 0x5840, got 0x0000
+** Partition 0 not valid on device 0 **
+Unable to use mmc 0:0 for fattable
+[ERROR] LoadMMAP:703: get the file size of /mmap.ini fail
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] del_bootargs_cfg:371: No env 'bootargs'
+[ERROR] del_bootargs_cfg:371: No env 'bootargs'
+[ERROR] del_bootargs_cfg:371: No env 'bootargs'
+[ERROR] syncMmap2bootargs:943: sync LX_MEM fail
+[ERROR] do_sync_mmap_to_env:1280: sync the part of mmap info to bootargs fail
+
+Changelist:     00112233
+============= set bootargs ===============
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+[ERROR] del_bootargs_cfg:371: No env 'bootargs'
+[ERROR] set_panelinit_cfg:705: set BOOTLOGO_IN_MBOOT to bootargs fail
+Warnning!!!!
+bootargs doesn't exist, add a new one!!
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+Saving Environment to MMC...
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+Saving Environment to MMC...
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+Writing to MMC(0)... 128 blocks written: OK
+128 blocks written: OK
+done
+
+** Unable to use mmc 0:1 for fatload **
+
+** Unable to use mmc 0:1 for fatload **
+Kano#
+BOOT01_OKEMMC
+
+Relocation Offset is: 0DF00000
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-dirty (Dec 22 2015 - 20:45:53)  MBOT-1106.0.8.KANO.a5
+
+
+Function = SYSOpen, Line = 812, current resource pri_shm content is: 0
+Function = SYSOpen, Line = 831, [SYS INFO] OPEN INSTANCE...
+create instance at 2EAF97F8 with private size 108 bytes at 2EAF9840
+
+[MIU INFO] miu opencreate instance at 2EAF98B0 with private size 80 bytes at 2EAF98F8
+Flash is detected (0x0512, 0xC2, 0x9E, 0x16)
+create instance at 2EAF9950 with private size 48 bytes at 2EAF9998
+
+uboot held at [2E8DDF60~30000000],size=017220A0
+CPU  : Kano
+Board: BD_MST231B_D01A
+DRAM:  256 MiB
+Now running in RAM - U-Boot at: 2F100000
+
+eMMC: HS400 200MHz
+eMMC 7.28 GB [E8FFF8h]
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+[CPU INFO] cpu opencreate instance at 2EB09E08 with private size 44 bytes at 2EB09E50
+CPUIoctl - MDrv_CMD_CPU_QueryClock
+[UTOPIA INFO] close moduleNames[tu]: / /à/ /`/à/xV4
+
+[AT][MBoot][Driver Init][0]
+mmc change mount : CONFIG
+** Bad Signature on 0:3: expected 0x5840, got 0x0000
+** Partition 0 not valid on device 0 **
+Unable to use mmc 0:0 for fattable
+[ERROR] LoadMMAP:703: get the file size of /mmap.ini fail
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] LoadMMAP:688: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:517: load mmap fail
+[ERROR] get_mmap:485: init mmap fail
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:813: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] syncMmap2bootargs:943: sync LX_MEM fail
+[ERROR] do_sync_mmap_to_env:1280: sync the part of mmap info to bootargs fail
+
+Changelist:     00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:705: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+
+** Unable to use mmc 0:1 for fatload **
+
+** Unable to use mmc 0:1 for fatload **
+Kano#

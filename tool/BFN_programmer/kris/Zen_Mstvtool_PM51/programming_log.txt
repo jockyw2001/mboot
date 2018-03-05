@@ -1,0 +1,902 @@
+þð?~øþþþþÀþüþüÿþþþþÀÿþþÿÿðÿþÿÿÿþþþààðþ¿~øþÿþÿþÀþÿþÿþþðàðþôÿ ~þþÿ~ßþÀþÿþÿþÿþàýÿøÿ$øÿààààð@ÿ@ððþè~? àþþþþàþÿþÿþÿÿþþøÿþþÿøÿþÿÿþþà~àààð@ÿ@ðð~þ?@ðþþàþþþÀþÿþøÿÿþüÿþüÿþþÿøÿþÿþþàþààðþð?þ~þþÿþÿþàþ@ÿþÿÿþøÿþÿÿÿPM51 APP build code time Jun 17 2015  11:43:10
+----- STB BFN -----reg_nf_en=30
+NAND ID:0x2C 0xDA 0x90 0x95 0x4 0x0 0x0 0x0 0x2C 0xDA 0x90 0x95 0x4 0x0 0x0
+Begin Search CIS in DRAM
+Found NandInfo in given memory, index 20
+u16_PageByteCnt = 800h
+u16_SpareByteCnt = E0h
+u16_BlkPageCnt = 40h
+u16_BlkCnt = 800h
+u16_ECCType = 3h
+u8_AddrCycleIdx = 0h
+u8_CellType = 0h
+u8_PairPageMapLoc = 0h
+u8_PairPageMapType = 0h
+Found PartInfo in given memory, index 4
+Hash left 0AD00
+Write blk10 ok
+LDR write end blk 10
+Hash left 0AD00
+Write blk11 ok
+Backup LDR write end blk 11
+Hash left 1AFAAC
+Write blk12 ok
+Hash left 18FAAC
+Write blk13 ok
+Hash left 16FAAC
+Write blk14 ok
+Hash left 14FAAC
+Write blk15 ok
+Hash left 12FAAC
+Write blk16 ok
+Hash left 10FAAC
+Write blk17 ok
+Hash left EFAAC
+Write blk18 ok
+Hash left CFAAC
+Write blk19 ok
+Hash left AFAAC
+Write blk20 ok
+Hash left 8FAAC
+Write blk21 ok
+Hash left 6FAAC
+Write blk22 ok
+Hash left 4FAAC
+Write blk23 ok
+Hash left 2FAAC
+Write blk24 ok
+Hash left 0FAAC
+Write blk25 ok
+APP write end blk 25
+Hash left 1AFAAC
+Write blk26 ok
+Hash left 18FAAC
+Write blk27 ok
+Hash left 16FAAC
+Write blk28 ok
+Hash left 14FAAC
+Write blk29 ok
+Hash left 12FAAC
+Write blk30 ok
+Hash left 10FAAC
+Write blk31 ok
+Hash left EFAAC
+Write blk32 ok
+Hash left CFAAC
+Write blk33 ok
+Hash left AFAAC
+Write blk34 ok
+Hash left 8FAAC
+Write blk35 ok
+Hash left 6FAAC
+Write blk36 ok
+Hash left 4FAAC
+Write blk37 ok
+Hash left 2FAAC
+Write blk38 ok
+Hash left 0FAAC
+Write blk39 ok
+Backup APP write end blk 39
+check good blk:0x0
+Write MIU image in page 10
+Write MIU image in page 11
+Write MIU image in page 12
+Write MIU image in page 13
+Write MIU image in page 14
+Write MIU image in page 15
+Write MIU image in page 16
+Write MIU image in page 17
+CIS is written to blk 0x0
+check good blk:0x1
+Write MIU image in page 74
+Write MIU image in page 75
+Write MIU image in page 76
+Write MIU image in page 77
+Write MIU image in page 78
+Write MIU image in page 79
+Write MIU image in page 80
+Write MIU image in page 81
+CIS is written to blk 0x1
+erase blk:2erase blk:3erase blk:4erase blk:5erase blk:6erase blk:7erase blk:8erase blk:9----- END STB BFN ---------- end of main loop -----
+BOOT_OKHit CIS
+Hit BIN
+J2APP
+[AT][MB][start ub][0]
+
+U-Boot 2011.06 (Jun 22 2015 - 16:02:39)  MBOT-1106.0.10.1260807
+
+
+DRAM:  256 MiB
+
+Hello U-Boot
+Stack Pointer at: 87f098c0
+mem initial, start 0x86dd0180, len 0x420000
+
+[MIU INFO] miu opencreate instance at 86fe0a88 with private size 80 bytes at 86fe0ad0
+create instance at 86fe0b28 with private size 48 bytes at 86fe0b70
+uboot held at [8f000000~90000000]
+Now running in RAM - U-Boot at: 871f0180
+NAND:  CIS is found @Blk0
+FCIE is set to 62MHz
+256 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+Bad block table found at page 131008, version 0x01
+Bad block table found at page 130944, version 0x01
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     0
+UBI: available PEBs:             10
+UBI: total number of reserved PEBs: 6
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 1/1
+Volume  not found!
+
+NAND read: device 0 offset 0x140000, size 0xa8
+ 168 bytes read: OK
+MPOOL volume not found
+Volume MPOOL not found!
+Found no MPOOL Volume
+ Create MPOOL volume
+Creating dynamic volume MPOOL of size 1142784
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1b: 0xba:0x2: 0xdb
+UBI: mtd1 is detached from ubi0
+incorrect device type in UBI
+Partition UBI not found!
+Creating 1 MTD partitions on "nand0":
+0x000000140000-0x000000640000 : "mtd=0"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI error: ubi_read_volume_table: the layout volume was not found
+UBI error: ubi_init: cannot attach mtd1
+UBI error: ubi_init: UBI error: cannot initialize UBI, error -22
+UBI init error 22
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+Volume  not found!
+UBIFS error (pid 0): ubifs_get_sb: cannot open "ubi:CONFIG", error -19
+Error reading superblock on volume 'ubi:CONFIG'!
+[ERROR] vfs_mount:201: error partition symbol
+[ERROR] LoadMMAP:673: mount CONFIG fail
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] syncMmap2bootargs:940: sync LX_MEM fail
+[ERROR] do_sync_mmap_to_env:1406: sync the part of mmap info to bootargs fail
+============= set bootargs ===============
+Write Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+Volume  not found!
+done
+[ERROR] del_bootargs_cfg:372: No env 'bootargs'
+[ERROR] set_panelinit_cfg:706: set BOOTLOGO_IN_MBOOT to bootargs fail
+Warnning!!!!
+bootargs doesn't exist, add a new one!!
+Write Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+Volume  not found!
+done
+Write Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+Volume  not found!
+done
+Write Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes
+                          ÂjT%Jº? ?±¥¹¡É?(±éªjT%Jr ?8¹Ñ?±½±ÕµÍé
+                                                               jT%Jr?   É8??½±?Íé
+                                                                                 jT%J
+                                                                                     ?¥±       ±       Íé
+                  jT%J¢½Ñ±0?    É8?ÉÙ   Íé
+                                          ªjT%Jr?       É8      ?ÍÉÙ½É  ¹±¥¹éjT%Jjá½ ¹?
+½Õ¹?Ééz
+       jd‚Àµr½Ñ½Õ¹ R"½¹5þWrite Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+Volume  not found!
+done
+Write Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number ob P9ed for bad PB¹±¥¹      jT%Jj
+                                             ¹?Écounter: 2
+Volume  ?
+         R¬«*
+             R‚ŸÐE%j4A¥¸(ËKÃË««
+                               ×
+                                TÉÉýre Env to 9000...
+þÀþüûÿûÿûÿûÿWrite Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+Volume  not found!
+done
+Saving Environment to UBI...
+Write Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/2
+Volume  not found!
+done
+AC on
+Write Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 3/2
+Volume  not found!
+done
+Write Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 3/2
+Volume  not found!
+done
+Unknown command 'mmc' - try 'help'
+Kris# úøýø@``ðà
+syntax error
+Kris#
+Kris#
+Kris# mtd
+
+device nand0 <edb64M-nand>, # parts = 2
+ #: name                size            offset          mask_flags
+ 0: MBOOT               0x00500000      0x00140000      0
+ 1: UBILD               0x00200000      0x00640000      0
+
+active partition: nand0,0 - (MBOOT) 0x00500000 @ 0x00140000
+
+defaults:
+mtdids  : nand0=edb64M-nand
+mtdparts: mtdparts=nand:0x40000(NPT),0x40000(KL_BP),0x500000(KL),0x7500000(UBI)
+Kris# pri
+51OnRam=0
+MstarUpgrade_complete=0
+UARTOnOff=on
+baudrate=115200
+bootargs=ENV_VAR_OFFSET=0xD9000 ENV_VAR_SIZE=0x10000 ENV=NAND SECURITY=OFF
+bootcmd=if mmc rescan ${mmcdev}; then if run loadbootscript; then run bootscript; else if run loaduimage; then run mmcboot; fi; fi; fi
+bootdelay=0
+bootscript=echo Running bootscript from mmc${mmcdev} ...; source ${loadaddr}
+console=ttyS2,115200n8
+dc_poweroff=0
+factory_poweron_mode=direct
+info_exchange=ubifile
+loadaddr=0x82000000
+loadbootscript=fatload mmc ${mmcdev} ${loadaddr} boot.scr
+loaduimage=fatload mmc ${mmcdev} ${loadaddr} uImage
+mmcargs=setenv bootargs console=${console} vram=${vram} root=${mmcroot} rootfstype=${mmcrootfstype}
+mmcboot=echo Booting from mmc${mmcdev} ...; run mmcargs; bootm ${loadaddr}
+mmcdev=0
+mmcroot=/dev/mmcblk0p2 rw
+mmcrootfstype=ext3 rootwait
+mtddevname=MBOOT
+mtddevnum=0
+mtdids=nand0=edb64M-nand
+mtdparts=mtdparts=edb64M-nand:5120k@1280k(MBOOT),2048k(UBILD)
+osd_language=English
+partition=nand0,0
+stderr=serial
+stdin=serial
+stdout=serial
+ubispeedup=UBI
+upgrade_mode=null
+usbtty=cdc_acm
+vram=16M
+
+Environment size: 1137/65532 bytes
+Kris# set env ztest 12345
+Unknown command 'set' - try 'help'
+Kris# setenv ztest 12345
+Kris# saveenv
+Saving Environment to UBI...
+Write Env to D9000...
+Write Backup Env to F8000...
+UBI: mtd1 is detached from ubi0
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 3/2
+Volume  not found!
+done
+Kris#
+BOOT_OKHit CIS
+Hit BIN
+J2APP
+[AT][MB][start ub][0]
+
+U-Boot 2011.06 (Jun 22 2015 - 16:02:39)  MBOT-1106.0.10.1260807
+
+
+DRAM:  256 MiB
+
+Hello U-Boot
+Stack Pointer at: 87f098c0
+mem initial, start 0x86dd0180, len 0x420000
+
+[MIU INFO] miu opencreate instance at 86fe0a88 with private size 80 bytes at 86fe0ad0
+create instance at 86fe0b28 with private size 48 bytes at 86fe0b70
+uboot held at [8f000000~90000000]
+Now running in RAM - U-Boot at: 871f0180
+NAND:  CIS is found @Blk0
+FCIE is set to 62MHz
+256 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+Bad block table found at page 131008, version 0x01
+Bad block table found at page 130944, version 0x01
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 3/2
+Volume  not found!
+
+NAND read: device 0 offset 0x140000, size 0xa8
+ 168 bytes read: OK
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1b: 0xba:0x2: 0xdb
+UBI: mtd1 is detached from ubi0
+incorrect device type in UBI
+Partition UBI not found!
+Creating 1 MTD partitions on "nand0":
+0x000000140000-0x000000640000 : "mtd=0"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI error: ubi_read_volume_table: the layout volume was not found
+UBI error: ubi_init: cannot attach mtd1
+UBI error: ubi_init: UBI error: cannot initialize UBI, error -22
+UBI init error 22
+Creating 1 MTD partitions on "nand0":
+0x000000640000-0x000000840000 : "mtd=1"
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   131072 bytes (128 KiB)
+UBI: logical eraseblock size:    126976 bytes
+UBI: smallest flash I/O unit:    2048
+UBI: VID header offset:          2048 (aligned 2048)
+UBI: data offset:                4096
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=1"
+UBI: MTD device size:            2 MiB
+UBI: number of good PEBs:        16
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    250
+UBI: number of internal volumes: 1
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 15
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 3/2
+Volume  not found!
+UBIFS error (pid 0): ubifs_get_sb: cannot open "ubi:CONFIG", error -19
+Error reading superblock on volume 'ubi:CONFIG'!
+[ERROR] vfs_mount:201: error partition symbol
+[ERROR] LoadMMAP:673: mount CONFIG fail
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] LoadMMAP:667: LoadMMAP fail last time, skip it!
+[ERROR] init_mmap:514: load mmap fail
+[ERROR] get_mmap:482: init mmap fail
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] pattern_search:807: One of the parameters is null pointer
+no miu_setting information in mmap.ini
+[ERROR] syncMmap2bootargs:940: sync LX_MEM fail
+[ERROR] do_sync_mmap_to_env:1406: sync the part of mmap info to bootargs fail
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:706: set BOOTLOGO_IN_MBOOT to bootargs fail
+Hit any key to stop autoboot:  0
+AC on
+Unknown command 'mmc' - try 'help'
+Kris# pri
+51OnRam=0
+MstarUpgrade_complete=0
+UARTOnOff=on
+baudrate=115200
+bootargs=ENV_VAR_OFFSET=0xD9000 ENV_VAR_SIZE=0x10000 ENV=NAND SECURITY=OFF
+bootcmd=if mmc rescan ${mmcdev}; then if run loadbootscript; then run bootscript; else if run loaduimage; then run mmcboot; fi; fi; fi
+bootdelay=0
+bootscript=echo Running bootscript from mmc${mmcdev} ...; source ${loadaddr}
+console=ttyS2,115200n8
+dc_poweroff=0
+factory_poweron_mode=direct
+info_exchange=ubifile
+loadaddr=0x82000000
+loadbootscript=fatload mmc ${mmcdev} ${loadaddr} boot.scr
+loaduimage=fatload mmc ${mmcdev} ${loadaddr} uImage
+mmcargs=setenv bootargs console=${console} vram=${vram} root=${mmcroot} rootfstype=${mmcrootfstype}
+mmcboot=echo Booting from mmc${mmcdev} ...; run mmcargs; bootm ${loadaddr}
+mmcdev=0
+mmcroot=/dev/mmcblk0p2 rw
+mmcrootfstype=ext3 rootwait
+mtddevname=MBOOT
+mtddevnum=0
+mtdids=nand0=edb64M-nand
+mtdparts=mtdparts=edb64M-nand:5120k@1280k(MBOOT),2048k(UBILD)
+osd_language=English
+partition=nand0,0
+stderr=serial
+stdin=serial
+stdout=serial
+ubispeedup=UBI
+upgrade_mode=null
+usbtty=cdc_acm
+vram=16M
+ztest=12345
+
+Environment size: 1151/65532 bytes
+Kris#

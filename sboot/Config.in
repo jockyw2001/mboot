@@ -1,0 +1,2595 @@
+#
+# For a description of the syntax of this configuration file,
+# see scripts/kbuild/config-language.txt.
+#
+
+mainmenu "SBoot Configuration"
+
+config HAVE_DOT_CONFIG
+    bool
+    default y
+
+menu "Platform Configuration"
+
+#
+# Choose the project chip
+# U4, K1, K2, K3, Kappa, Keltic, Kriti
+#
+choice
+    prompt "MStar Chip Family"
+    default MSTAR_KRONUS
+
+    config MSTAR_URANUS4
+        bool "Uranus 4"
+
+    config MSTAR_KRONUS
+        bool "Kronus"
+
+    config MSTAR_KAISERIN
+        bool "Kaiserin"
+
+    config MSTAR_KAISER
+        bool "Kaiser"
+
+    config MSTAR_KAPPA
+        bool "Kappa"
+
+    config MSTAR_KELTIC
+        bool "Keltic"
+
+    config MSTAR_KRITI
+        bool "Kriti"
+
+    config MSTAR_KERES
+        bool "Keres"
+
+    config MSTAR_KIRIN
+        bool "Kirin"
+
+    config MSTAR_KRIS
+        bool "Kris"
+
+    config MSTAR_KAYLA
+        bool "Kayla"
+
+    config MSTAR_KRATOS
+        bool "Kratos"
+
+    config MSTAR_KIWI
+        bool "Kiwi"
+
+    config MSTAR_KANO
+        bool "Kano"
+
+    config MSTAR_CURRY
+    bool "Curry"
+
+    config MSTAR_K6
+        bool "K6"
+
+    config MSTAR_K6LITE
+        bool "K6LITE"
+
+    config MSTAR_K5TN
+        bool "K5TN"
+
+    config MSTAR_K7U
+        bool "K7U"
+
+endchoice
+
+#===================================================
+# MStar Chip Name (auto-select)
+#===================================================
+config MSTAR_CHIP_NAME
+        string
+        default "kronus" if MSTAR_KRONUS
+        default "kaiserin" if MSTAR_KAISERIN
+        default "kaiser" if MSTAR_KAISER
+        default "kappa" if MSTAR_KAPPA
+        default "keltic" if MSTAR_KELTIC
+        default "kriti" if MSTAR_KRITI
+        default "keres" if MSTAR_KERES
+        default "kirin" if MSTAR_KIRIN
+        default "kris" if MSTAR_KRIS
+        default "kayla" if MSTAR_KAYLA
+        default "kratos" if MSTAR_KRATOS
+        default "kiwi" if MSTAR_KIWI
+        default "kano" if MSTAR_KANO
+        default "curry" if MSTAR_CURRY
+        default "k6" if MSTAR_K6
+        default "k6lite" if MSTAR_K6LITE
+        default "k5tn" if MSTAR_K5TN
+        default "k7u" if MSTAR_K7U
+
+    config BRAND_NAME
+        string "BRAND_NAME"
+        default "mstar"
+        help
+            Define BRAND_NAME.
+
+    config MAGIC_STRING
+        string "MAGIC_STRING"
+        default "1234567890"
+        help
+            Define MAGIC_NUMBER for usb_upgrade.
+#
+# Choose the project chip's CPU core
+# mips32, arm
+#
+choice
+    prompt "CPU Core Selection"
+    default MCU_MIPS32
+
+    config MCU_MIPS32
+        bool "MIPS32"
+        depends on (!MSTAR_KAISER)
+
+    config MCU_ARM
+        bool "ARM"
+        depends on (MSTAR_KAISER) || (MSTAR_KANO) || (MSTAR_CURRY) || (MSTAR_K6) || (MSTAR_K6LITE) || (MSTAR_K7U)
+endchoice
+
+#
+# Choose the project chip's clock
+#
+#
+choice
+    prompt "CPU Clock Selection"
+
+    default CPU_504MHZ if(MSTAR_URANUS4)
+    default CPU_552MHZ if(MSTAR_KRONUS)
+    default CPU_792MHZ if(MSTAR_KAISERIN)
+    default CPU_900MHZ if(MSTAR_KAISER)
+    default CPU_600MHZ if(MSTAR_KAPPA)
+    default CPU_312MHZ if(MSTAR_KELTIC)
+    default CPU_576MHZ if(MSTAR_KRITI)
+    default CPU_1008MHZ if(MSTAR_KERES)
+    default CPU_1008MHZ if(MSTAR_KIRIN)
+    default CPU_1008MHZ if(MSTAR_KRIS)
+    default CPU_1000MHZ if(MSTAR_K5TN)
+    default CPU_750MHZ if(MSTAR_KAYLA)
+    default CPU_756MHZ if(MSTAR_KRATOS)
+    default CPU_756MHZ if(MSTAR_KIWI)
+    default CPU_800MHZ if(MSTAR_KANO)
+    default CPU_800MHZ if(MSTAR_CURRY)
+    default CPU_800MHZ if(MSTAR_K6)
+    default CPU_800MHZ if(MSTAR_K6LITE)
+    default CPU_800MHZ if(MSTAR_K7U)
+
+  if(MSTAR_KRIS||MSTAR_KIRIN||MSTAR_KERES)
+      config CPU_667MHZ
+           bool "667MHz"
+           help
+                CPU Clock: 667MHz
+
+      config CPU_1008MHZ
+            bool "1008MHz"
+            help
+                CPU Clock: 1008MHz
+  endif
+
+  if(MSTAR_KRATOS||MSTAR_KIWI)
+      config CPU_756MHZ
+            bool "756MHZ"
+            help
+                CPU Clock: 756MHZ
+  endif
+
+  if(MSTAR_KAYLA)
+      config CPU_750MHZ
+            bool "750MHZ"
+            help
+                CPU Clock: 750MHZ
+  endif
+
+  if(MSTAR_K5TN)
+      config CPU_506MHZ
+           bool "506MHz"
+           help
+                CPU Clock: 506MHz
+
+      config CPU_1000MHZ
+            bool "1000MHZ"
+            help
+                CPU Clock: 1000MHZ
+  endif
+
+
+  if(MSTAR_KANO||MSTAR_CURRY||MSTAR_KERES||MSTAR_K6||MSTAR_K6LITE||MSTAR_K7U)
+      config CPU_600MHZ
+        bool "600MHz"
+        help
+            CPU Clock: 600MHz
+
+      config CPU_700MHZ
+        bool "700MHz"
+        help
+            CPU Clock: 700MHz
+
+      config CPU_800MHZ
+        bool "800MHz"
+        help
+            CPU Clock: 800MHz
+
+      config CPU_1000MHZ
+        bool "1000MHz"
+        help
+            CPU Clock: 1000MHz
+
+      config CPU_1200MHZ
+        bool "1200MHz"
+        help
+            CPU Clock: 1200MHz
+
+      config CPU_1300MHZ
+        bool "1300MHz"
+        help
+            CPU Clock: 1300MHz
+
+      config CPU_1500MHZ
+        bool "1500MHz"
+        help
+            CPU Clock: 1500MHz
+
+  if(MSTAR_K6)
+      config CPU_1650MHZ
+        bool "1650MHz"
+        help
+            CPU Clock: 1650MHz
+
+      config CPU_1700MHZ
+        bool "1700MHz"
+        help
+            CPU Clock: 1700MHz
+  endif
+  endif
+
+  if!(MSTAR_K7U||MSTAR_K6LITE||MSTAR_K6||MSTAR_CURRY||MSTAR_KANO||MSTAR_KRIS||MSTAR_KAYLA||MSTAR_KIRIN||MSTAR_KERES||MSTAR_K5TN)
+  config CPU_984MHZ
+        bool "984MHz"
+        help
+            CPU Clock: 984MHz
+
+  config CPU_1008MHZ
+        bool "1008MHz"
+        help
+            CPU Clock: 1008MHz
+
+  config CPU_900MHZ
+        bool "900MHz"
+        help
+            CPU Clock: 900MHz
+
+    config CPU_840MHZ
+        bool "840MHz"
+        help
+            CPU Clock: 840MHz
+
+    config CPU_792MHZ
+        bool "792MHz"
+        help
+            CPU Clock: 792MHz
+
+    config CPU_720MHZ
+        bool "720MHz"
+        help
+            CPU Clock: 720MHz
+
+    config CPU_696MHZ
+        bool "696MHz"
+        help
+            CPU Clock: 696MHz
+
+    config CPU_648MHZ
+        bool "648MHz"
+        help
+            CPU Clock: 648MHz
+
+    config CPU_624MHZ
+        bool "624MHz"
+        help
+            CPU Clock: 624MHz
+
+    config CPU_600MHZ
+        bool "600MHz"
+        help
+            CPU Clock: 600MHz
+
+    config CPU_576MHZ
+        bool "576MHz"
+        help
+            CPU Clock: 576MHz
+
+    config CPU_552MHZ
+        bool "552MHz"
+        help
+            CPU Clock: 552MHz
+
+    config CPU_504MHZ
+        bool "504MHz"
+        help
+            CPU Clock: 504MHz
+
+    config CPU_456MHZ
+        bool "456MHZ"
+        help
+            CPU Clock: 456MHZ
+
+    config CPU_432MHZ
+        bool "432MHZ"
+        help
+            CPU Clock: 432MHZ
+
+        config CPU_396MHZ
+        bool "396MHZ"
+        help
+            CPU Clock: 396MHZ
+    config CPU_348MHZ
+        bool "348MHZ"
+        help
+            CPU Clock: 348MHZ
+
+    config CPU_336MHZ
+        bool "336MHZ"
+        help
+            CPU Clock: 336MHZ
+
+    config CPU_324MHZ
+        bool "324MHZ"
+        help
+            CPU Clock: 324MHZ
+
+    config CPU_312MHZ
+        bool "312MHZ"
+        help
+            CPU Clock: 312MHZ
+
+    config CPU_288MHZ
+        bool "288MHZ"
+        help
+            CPU Clock: 288MHZ
+    endif
+
+    config MSTAR_MANUAL
+        bool "Manual Setting"
+        help
+            CPU Clock: Manual Setting
+
+endchoice
+
+  config MSTAR_OTHERS
+      int "Please Input CPU Clock by Decimalism"
+      default "552"
+      depends on MSTAR_MANUAL
+      help
+          Set specific CPU clock by user
+if (MSTAR_KRONUS)
+    choice
+        prompt "CPU version Selection"
+        default KRONUS_U04
+
+        config KRONUS_U04
+            bool "Kronus_u04"
+            help
+                KRONUS version U04
+
+        config KRONUS_U03
+            bool "Kronus_u03"
+            help
+                KRONUS version U03
+    endchoice
+endif
+#
+# Choose the project chip's board
+#
+#
+choice
+    prompt "Board Selection"
+
+    default MSTAR_TITANIA_BD_MST098A_D01A_S if(MSTAR_URANUS4)
+    default MSTAR_CONFIG_MSTAR_BD_JANUS2_FPGA if(MSTAR_JANUS2)
+    default MSTAR_KRONUS_BD_MST124A_D01A_S if(MSTAR_KRONUS)
+    default MSTAR_KAISERIN_BD_MST138A_D01A_S if(MSTAR_KAISERIN)
+    default MSTAR_KAISER_BD_MST170A_D01A_S if(MSTAR_KAISER)
+    default MSTAR_KAPPA_BD_MST173A_D01A if(MSTAR_KAPPA)
+    default MSTAR_KELTIC_FPGA if(MSTAR_KELTIC)
+    default MSTAR_KERES_FPGA if(MSTAR_KERES)
+    default MSTAR_KIRIN_FPGA if(MSTAR_KIRIN)
+    default MSTAR_KRITI_BD_MST204A_D01A_DDR2 if(MSTAR_KRITI)
+    default MSTAR_KRIS_FPGA if(MSTAR_KRIS)
+    default MSTAR_KRATOS_FPGA if(MSTAR_KRATOS)
+    default MSTAR_KIWI_FPGA if(MSTAR_KIWI)
+    default MSTAR_KANO_FPGA if(MSTAR_KANO)
+    default MSTAR_CURRY_FPGA if(MSTAR_CURRY)
+    default MSTAR_K6_FPGA if(MSTAR_K6)
+    default MSTAR_K6LITE_FPGA if(MSTAR_K6LITE)
+    default MSTAR_K7U_FPGA if(MSTAR_K7U)
+    default MSTAR_K5TN_FPGA if(MSTAR_K5TN)
+
+    config MSTAR_TITANIA_BD_FPGA
+        bool "BD_FPGA"
+
+    # Boards for U4 (MSTAR)
+    if (MSTAR_URANUS4)
+        config MSTAR_TITANIA_BD_MST098A_D01A_S
+            bool "BD_MST098A_D01A_S"
+
+        config MSTAR_TITANIA_BD_MST098B_D01A_S
+            bool "BD_MST098B_D01A_S"
+
+        config MSTAR_TITANIA_BD_MST098B_D01A
+            bool "BD_MST098B_D01A"
+
+        config MSTAR_TITANIA_BD_MST098B_D01B
+            bool "BD_MST098B_D01B"
+
+        config MSTAR_TITANIA_BD_MST098C_D01A_S
+            bool "BD_MST098C_D01A_S"
+
+        config MSTAR_TITANIA_BD_MST098D_D01A_S
+            bool "BD_MST098D_D01A_S"
+
+        config MSTAR_TITANIA_BD_MST098E_D01A
+            bool "BD_MST098E_D01A"
+
+        config MSTAR_TITANIA_BD_MST098E_D01B
+            bool "BD_MST098E_D01B"
+
+        config MSTAR_TITANIA_BD_MST098F_D01A
+            bool "BD_MST098F_D01A"
+
+        config MSTAR_TITANIA_BD_MST098F_D01B
+            bool "BD_MST098F_D01B"
+
+        config MSTAR_TITANIA_BD_MST128A_D01A
+            bool "BD_MST128A_D01A"
+
+        config MSTAR_TITANIA_BD_ZDT300_V01
+            bool "BD_ZDT300_V01"
+
+        config MSTAR_TITANIA_BD_CUS75_MBQ213A
+            bool "BD_CUS75_MBQ213A"
+    endif
+
+    # Boards for K1 (MSTAR)
+    if (MSTAR_KRONUS)
+        config MSTAR_KRONUS_BD_MST124A_D01A
+            bool "BD_MST124A_D01A"
+
+        config MSTAR_KRONUS_BD_MST124A_D01A_S
+            bool "BD_MST124A_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST124A_D02A_S
+            bool "BD_MST124A_D02A_S"
+
+        config MSTAR_KRONUS_BD_MST124B_D01A_S
+            bool "BD_MST124B_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST124B_D02A
+            bool "BD_MST124B_D02A"
+
+        config MSTAR_KRONUS_BD_MST124B_D02A_S
+            bool "BD_MST124B_D02A_S"
+
+        config MSTAR_KRONUS_BD_MST124C_D01A_S
+            bool "BD_MST124C_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST124C_D02A
+            bool "BD_MST124C_D02A"
+
+        config MSTAR_KRONUS_BD_MST124D_D01A
+            bool "BD_MST124D_D01A"
+
+        config MSTAR_KRONUS_BD_MST124D_D02A
+            bool "BD_MST124D_D02A"
+
+        config MSTAR_KRONUS_BD_MST124D_D02A_S
+            bool "BD_MST124D_D02A_S"
+
+        config MSTAR_KRONUS_BD_MST124E_D01A_S
+            bool "BD_MST124E_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST124E_D01A_SZ
+            bool "BD_MST124E_D01A_SZ"
+
+        config MSTAR_KRONUS_BD_MST124SZ
+            bool "BD_MST124SZ"
+
+        config MSTAR_KRONUS_BD_MST124G_D01A
+            bool "BD_MST124G_D01A"
+
+        config MSTAR_KRONUS_BD_MST124G_D01A_S
+            bool "BD_MST124G_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST140A_D01A
+            bool "BD_MST140A_D01A"
+
+        config MSTAR_KRONUS_BD_MST140A_D01A_S
+            bool "BD_MST140A_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST163A_D01A_S
+            bool "BD_MST163A_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST124F_D01A_S
+            bool "BD_MST124F_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST124F_SZ_Demo
+            bool "BD_MST124F_SZ_Demo"
+
+        config MSTAR_KRONUS_BD_MST124F_D02A
+            bool "BD_MST124F_D02A"
+
+        config MSTAR_KRONUS_BD_MST124I_D01A_S
+            bool "BD_MST124I_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST124H_D01A
+            bool "BD_MST124H_D01A"
+
+        config MSTAR_KRONUS_BD_MST124K_D01A_S
+            bool "BD_MST124K_D01A_S"
+
+        config MSTAR_KRONUS_BD_MST124K_D01A
+            bool "BD_MST124K_D01A"
+
+        config MSTAR_KRONUS_BD_SS2000_DT0A
+            bool "BD_SS2000_DT0A"
+    endif
+
+    # Boards for K2 (MSTAR)
+    if (MSTAR_KAISERIN)
+        config MSTAR_KAISERIN_BD_MST138A_D01A_S
+            bool "BD_MST138A_D01A_S"
+
+        config MSTAR_KAISERIN_BD_MST138A_D01A
+            bool "BD_MST138A_D01A"
+
+        config MSTAR_KAISERIN_BD_MST138B_D01A_S
+            bool "BD_MST138B_D01A_S"
+
+        config MSTAR_KAISERIN_BD_MST138B_D01A
+            bool "BD_MST138B_D01A or BD_MST138B_D01B"
+
+        config MSTAR_KAISERIN_BD_MST138B_D01D
+            bool "BD_MST138B_D01D"
+
+        config MSTAR_KAISERIN_BD_MST178A_D01A_S
+            bool "BD_MST178A_D01A_S"
+
+        config MSTAR_KAISERIN_BD_MST178A_D01A
+            bool "BD_MST178A_D01A"
+    endif
+
+    # Boards for KAISER (MSTAR)
+    if (MSTAR_KAISER)
+        config MSTAR_KAISER_BD_FPGA
+            bool "BD_KAISER_FPGA"
+        config MSTAR_KAISER_BD_MST170A_D01A_S
+            bool "BD_MST170A_D01A_S"
+        config MSTAR_KAISER_BD_MST170A_D01A
+            bool "BD_MST170A_D01A"
+        config MSTAR_KAISER_BD_MST170A_D01A_SZ
+            bool "BD_MST170A_D01A_SZ"
+        config MSTAR_KAISER_BD_MST170B_D01A_S
+            bool "BD_MST170B_D01A_S"
+        config MSTAR_KAISER_BD_MST170A_D02A
+            bool "BD_MST170A_D02A"
+        config MSTAR_KAISER_BD_D3C_L4D_V01
+            bool "BD_D3C_L4D_V01"
+        config MSTAR_KAISER_BD_D3B_L2S_V01
+            bool "BD_D3B_L2S_V01"
+        config MSTAR_KAISER_BD_MP3050_SR1
+            bool "BD_MP3050_SR1"
+        config MSTAR_KAISER_BD_MP3050_SR2
+            bool "BD_MP3050_SR2"
+        config MSTAR_KAISER_BD_MST187A_D01A
+            bool "BD_MST187A_D01A"
+        config MSTAR_KAISER_BD_MST187C_D01A
+            bool "BD_MST187C_D01A"
+        config MSTAR_KAISER_BD_MST187C_D01A_S
+            bool "BD_MST187C_D01A_S"
+        config MSTAR_KAISER_BD_MST187D_D01A_S
+            bool "BD_MST187D_D01A_S"
+        config MSTAR_KAISER_BD_MST187D_D01A
+            bool "BD_MST187D_D01A"
+    endif
+
+    # Boards for KAPPA (MSTAR)
+    if (MSTAR_KAPPA)
+        config MSTAR_KAPPA_BD_FPGA
+            bool "BD_KAPPA_FPGA"
+
+        config MSTAR_KAPPA_BD_MST173A_D01A_S
+            bool "BD_MST173A_D01A_S"
+
+        config MSTAR_KAPPA_BD_MST173A_D01A
+            bool "BD_MST173A_D01A"
+
+        config MSTAR_KAPPA_BD_MST173A_D02A
+            bool "BD_MST173A_D02A"
+
+        config MSTAR_KAPPA_BD_MST173B_D01A_S
+            bool "BD_MST173B_D01A_S"
+
+        config MSTAR_KAPPA_BD_MST173B_D01A
+            bool "BD_MST173B_D01A"
+
+        config MSTAR_KAPPA_BD_MST173C_D01A_S
+            bool "BD_MST173C_D01A_S"
+
+        config MSTAR_KAPPA_BD_MST173C_D01A
+            bool "BD_MST173C_D01A"
+    endif
+
+    # Boards for KRITI (MSTAR)
+    if (MSTAR_KRITI)
+        config MSTAR_KRITI_BD_FPGA
+            bool "BD_KRITI_FPGA"
+
+        config MSTAR_KRITI_BD_MST204A_D01A_S_DDR2
+            bool "BD_MST204A_D01A_S_DDR2"
+
+        config MSTAR_KRITI_BD_MST204A_D01A_S_DDR3
+            bool "BD_MST204A_D01A_S_DDR3"
+
+        config MSTAR_KRITI_BD_MST204A_D01A_DDR2
+            bool "BD_MST204A_D01A_DDR2"
+
+        config MSTAR_KRITI_BD_MST204A_D01A_DDR3
+            bool "BD_MST204A_D01A_DDR3"
+    endif
+
+    # Boards for Keltic (MSTAR)
+    if (MSTAR_KELTIC)
+        config MSTAR_KELTIC_FPGA
+            bool "BD_KELTIC_FPGA"
+
+                config MSTAR_KELTIC_BD_MST183A_D01A_S
+                        bool "BD_MST183A_D01A_S"
+
+                config MSTAR_KELTIC_BD_MST183A_D01A
+                        bool "BD_MST183A_D01A"
+
+                config MSTAR_KELTIC_BD_MST183B_D01A_S
+                        bool "BD_MST183B_D01A_S"
+
+                config MSTAR_KELTIC_BD_MST183B_D01A
+                        bool "BD_MST183B_D01A"
+    endif
+
+    # Boards for Keres (MSTAR)
+    if (MSTAR_KERES)
+        config MSTAR_KERES_FPGA
+            bool "BD_KERES_FPGA"
+
+                config MSTAR_KERES_BD_MST200A_D01A_S
+                        bool "BD_MST200A_D01A_S"
+
+                config MSTAR_KERES_BD_MST200A_D01A
+                        bool "BD_MST200A_D01A"
+
+                config MSTAR_KERES_BD_MST200A_D02A
+                        bool "BD_MST200A_D02A"
+
+                config MSTAR_KERES_BD_MST200B_D01A_S
+                        bool "BD_MST200B_D01A_S"
+
+                config MSTAR_KERES_BD_MST200B_D01A
+                        bool "BD_MST200B_D01A"
+
+                config MSTAR_KERES_BD_MST200C_D01A_S
+                        bool "BD_MST200C_D01A_S"
+
+                config MSTAR_KERES_BD_MST200C_D01A
+                        bool "BD_MST200C_D01A"
+
+    endif
+
+    # Boards for Kirin (MSTAR)
+    if (MSTAR_KIRIN)
+        config MSTAR_KIRIN_FPGA
+            bool "BD_KIRIN_FPGA"
+
+                config MSTAR_KIRIN_BD_MST221A_D01A_S
+                        bool "BD_MST221A_D01A_S"
+
+                config MSTAR_KIRIN_BD_MST221A_D01A
+                        bool "BD_MST221A_D01A"
+
+                config MSTAR_KIRIN_BD_MST221A_D03A
+                        bool "BD_MST221A_D03A"
+
+                config MSTAR_KIRIN_BD_MST221B_D01A_S
+                        bool "BD_MST221B_D01A_S"
+
+                config MSTAR_KIRIN_BD_MST221B_D01A
+                        bool "BD_MST221B_D01A"
+
+                config MSTAR_KIRIN_BD_MST221C_D01A_S
+                        bool "BD_MST221C_D01A_S"
+
+                config MSTAR_KIRIN_BD_MST221C_D01A
+                        bool "BD_MST221C_D01A"
+
+                config MSTAR_KIRIN_BD_MST221C_D01A_S_15
+                        bool "BD_MST221C_D01A_S_15"
+
+                config MSTAR_KIRIN_BD_MST221C_D01A_15
+                        bool "BD_MST221C_D01A_15"
+
+                config MSTAR_KIRIN_BD_MST221C_D02A_17
+                        bool "BD_MST221C_D02A_17"
+
+                config MSTAR_KIRIN_BD_MST221D_D01A_S
+                        bool "BD_MST221D_D01A_S"
+
+                config MSTAR_KIRIN_BD_MST221D_D01A
+                        bool "BD_MST221D_D01A"
+
+                                config MSTAR_KIRIN_BD_MST221B_D02A
+                                                bool "BD_MST221B_D02A"
+    endif
+
+    # Boards for Kris (MSTAR)
+    if (MSTAR_KRIS)
+        config MSTAR_KRIS_FPGA
+            bool "BD_KRIS_FPGA"
+
+        config MSTAR_KRIS_BD_MST227A_D01A
+            bool "BD_MST227A_D01A"
+
+        config MSTAR_KRIS_BD_MST227B_D01A
+            bool "BD_MST227B_D01A"
+
+        config MSTAR_KRIS_BD_MST227B_D01A_S
+            bool "BD_MST227B_D01A_S"
+
+        config MSTAR_KRIS_BD_MST227C_D01A
+            bool "BD_MST227C_D01A"
+
+        config MSTAR_KRIS_BD_MST227D_D01A
+            bool "BD_MST227D_D01A"
+    endif
+
+    if (MSTAR_KAYLA)
+        config MSTAR_KAYLA_BD_MST247A_D01A_S
+            bool "BD_MST247A_D01A_S"
+
+        config MSTAR_KAYLA_BD_MST247B_D01A_S
+            bool "BD_MST247B_D01A_S"
+
+        config MSTAR_KAYLA_BD_MST247A_D01A
+            bool "BD_MST247A_D01A"
+
+        config MSTAR_KAYLA_BD_MST247B_D01A
+            bool "BD_MST247B_D01A"
+
+        config MSTAR_KAYLA_BD_MST247C_D01A_S
+            bool "BD_MST247C_D01A_S"
+
+        config MSTAR_KAYLA_BD_MST247D_D01A_S
+            bool "BD_MST247D_D01A_S"
+
+        config MSTAR_KAYLA_BD_MST247C_D01A
+            bool "BD_MST247C_D01A"
+
+        config MSTAR_KAYLA_BD_MST247C_D02A
+            bool "BD_MST247C_D02A"
+
+        config MSTAR_KAYLA_BD_MST247D_D01A
+            bool "BD_MST247D_D01A"
+
+        config MSTAR_KAYLA_BD_MST247D_D02A
+            bool "BD_MST247D_D02A"
+    endif
+
+   # Boards for Kratos (MSTAR)
+    if (MSTAR_KRATOS)
+        config MSTAR_KRATOS_FPGA
+            bool "BD_KRATOS_FPGA"
+
+        config MSTAR_KRATOS_BD_MST230A_D01A_DDR2
+            bool "BD_MST230A_D01A_DDR2"
+
+        config MSTAR_KRATOS_BD_MST230A_D01A_DDR3
+            bool "BD_MST230A_D01A_DDR3"
+
+        config MSTAR_KRATOS_BD_MST230A_D01A_S_DDR2
+            bool "BD_MST230A_D01A_S_DDR2"
+
+        config MSTAR_KRATOS_BD_MST230A_D01A_S_DDR3
+            bool "BD_MST230A_D01A_S_DDR3"
+    endif
+
+    # Boards for Kiwi (MSTAR)
+    if (MSTAR_KIWI)
+        config MSTAR_KIWI_FPGA
+            bool "BD_KIWI_FPGA"
+
+        config MSTAR_KIWI_BD_MST239A_D01A
+            bool "BD_MST239A_D01A"
+
+        config MSTAR_KIWI_BD_MST239B_D01A
+            bool "BD_MST239B_D01A"
+
+        config MSTAR_KIWI_BD_MST239A_D01A_S_DDR2_DDR3_NOR
+            bool "BD_MST239A_D01A_S_DDR2_DDR3_NOR"
+
+        config MSTAR_KIWI_BD_MST239A_D01A_S_NAND
+            bool "BD_MST239A_D01A_S_NAND"
+
+    endif
+
+	# Boards for KANO (MSTAR)
+	if (MSTAR_KANO)
+		config MSTAR_KANO_BD_FPGA
+			bool "BD_KANO_FPGA"
+
+		config MSTAR_KANO_BD_MST231B_D01A
+			bool "BD_MST231B_D01A"
+
+		config MSTAR_KANO_BD_MST231B_D01B
+			bool "BD_MST231B_D01B"
+
+		config MSTAR_KANO_BD_MST231B_D02A
+			bool "BD_MST231B_D02A"
+
+		config MSTAR_KANO_BD_MST231B_D04A
+			bool "BD_MST231B_D04A"
+
+		config MSTAR_KANO_BD_MST231A_D01A_S
+			bool "BD_MST231A_D01A_S"
+
+		config MSTAR_KANO_BD_MST231B_D01A_S
+			bool "BD_MST231B_D01A_S"
+
+		config MSTAR_KANO_BD_MST231B_D01B_S
+			bool "BD_MST231B_D01B_S"
+
+		config MSTAR_KANO_BD_MST231C_D01A_S
+			bool "BD_MST231C_D01A_S"
+
+		config MSTAR_KANO_BD_MST231D_D02A_S
+			bool "BD_MST231D_D02A_S"
+
+		config MSTAR_KANO_BD_MST231E_D01A
+			bool "BD_MST231E_D01A"
+	endif
+
+    # Boards for CURRY (MSTAR)
+     if (MSTAR_CURRY)
+         config MSTAR_CURRY_BD_FPGA
+             bool "BD_CURRY_FPGA"
+
+         config MSTAR_CURRY_BD_MST245A_D01A_S
+             bool "BD_MST245A_D01A_S"
+
+         config MSTAR_CURRY_BD_MST245B_D01A_S
+             bool "BD_MST245B_D01A_S"
+
+         config MSTAR_CURRY_BD_MSZDEMO_2DDRV1_0
+             bool "BD_MSZDEMO_2DDRV1_0"
+
+         config MSTAR_CURRY_BD_MSZDEMO_2DDRV1_0_A
+             bool "BD_MSZDEMO_2DDRV1_0_A"
+
+         config MSTAR_CURRY_BD_MSZDEMO_LPDDRV1_0
+             bool "BD_MSZDEMO_LPDDRV1_0"
+
+         config MSTAR_CURRY_BD_MSZDEMO_2DDRV1_0_A_1to4_8BIT
+             bool "BD_MSZDEMO_2DDRV1_0_A_1to4_8BIT"
+
+         config MSTAR_CURRY_BD_MSZDEMO_2DDRV1_0_A_1to4_16BIT_1G
+             bool "BD_MSZDEMO_2DDRV1_0_A_1to4_16BIT_1G"
+
+         config MSTAR_CURRY_BD_MSZDEMO_2DDRV1_0_A_1to4_16BIT_2G
+             bool "BD_MSZDEMO_2DDRV1_0_A_1to4_16BIT_2G"
+
+         config MSTAR_CURRY_BD_MST245A_D01A_S_RESIZE
+             bool "BD_MST245A_D01A_S_RESIZE"
+
+         config MSTAR_CURRY_BD_MSZDEMO_2DDRV1_0_RESIZE
+             bool "BD_MSZDEMO_2DDRV1_0_RESIZE"
+
+         config MSTAR_CURRY_BD_MST276A_D01A_S
+             bool "BD_MST276A_D01A_S"
+
+    endif
+
+    # Boards for K6 (MSTAR)
+    if (MSTAR_K6)
+        config MSTAR_K6_BD_FPGA
+			bool "BD_K6_FPGA"
+
+		config MSTAR_K6_BD_MST257B_D01A_S
+			bool "BD_MST257B_D01A_S"
+
+		config MSTAR_K6_BD_MST257A_D01A_S
+			bool "BD_MST257A_D01A_S"
+
+		config MSTAR_K6_BD_MST257A_D01A_S_SN
+			bool "BD_MST257A_D01A_S_SN"
+
+		config MSTAR_K6_BD_MST257B_D02A_S
+			bool "BD_MST257B_D02A_S"
+
+		config MSTAR_K6_BD_MST257A_D02A_S
+			bool "BD_MST257A_D02A_S"
+
+		config MSTAR_K6_BD_MST257C_D01A_S
+                        bool "BD_MST257C_D01A_S"
+
+		config MSTAR_K6_BD_MST257C_D02A_S
+                        bool "BD_MST257C_D02A_S"
+    endif
+
+    # Boards for K6LITE (MSTAR)
+    if (MSTAR_K6LITE)
+		config MSTAR_K6LITE_BD_MST268A_D01A
+			bool "BD_MST268A_D01A"
+
+		config MSTAR_K6LITE_BD_MST268A_D01A_S
+			bool "BD_MST268A_D01A_S"
+
+		config MSTAR_K6LITE_BD_MST268B_D01A
+			bool "BD_MST268B_D01A"
+
+		config MSTAR_K6LITE_BD_MST268B_D01A_S
+			bool "BD_MST268B_D01A_S"
+
+		config MSTAR_K6LITE_BD_MST268B_D02A
+			bool "BD_MST268B_D02A"
+
+		config MSTAR_K6LITE_BD_MST268B_D02A_S
+			bool "BD_MST268B_D02A_S"
+		config MSTAR_K6LITE_BD_MST268C_D01A_S
+			bool "BD_MST268C_D01A_S"
+    endif
+
+    if (MSTAR_K7U)
+       config MSTAR_K7U_FPGA
+          bool "BD_K7U_FPGA"
+    endif
+
+    # Boards for K5TN (MSTAR)
+    if (MSTAR_K5TN)
+        config MSTAR_K5TN_FPGA
+            bool "BD_K5TN_FPGA"
+
+		config MSTAR_K5TN_BD_MST266A_D01A
+			bool "BD_MST266A_D01A"
+
+		config MSTAR_K5TN_BD_MST266A_D01A_S
+			bool "BD_MST266A_D01A_S"
+
+		config MSTAR_K5TN_BD_MST266B_D01A
+			bool "BD_MST266B_D01A"
+
+		config MSTAR_K5TN_BD_MST266B_D01A_S
+			bool "BD_MST266B_D01A_S"
+
+		config MSTAR_K5TN_BD_MST266C_D01A
+			bool "BD_MST266C_D01A"
+
+		config MSTAR_K5TN_BD_MST266C_D01A_S
+			bool "BD_MST266C_D01A_S"
+
+		config MSTAR_K5TN_BD_MST266D_D01A
+			bool "BD_MST266D_D01A"
+
+		config MSTAR_K5TN_BD_MST266D_D01A_S
+			bool "BD_MST266D_D01A_S"
+
+		config MSTAR_K5TN_BD_MST266E_D01A
+			bool "BD_MST266E_D01A"
+    endif
+endchoice
+
+if (MSTAR_KELTIC_BD_MST183A_D01A_S)||(MSTAR_KELTIC_BD_MST183A_D01A)
+    choice
+        prompt "CHIP Selection"
+        default MSD5XX5
+
+        config MSD5XX5
+            bool "MSD5XX5"
+
+        config MSD5XX3
+            bool "MSD5XX3"
+
+        config MSD5XX1
+            bool "MSD5XX1"
+    endchoice
+endif
+
+if (MSTAR_KELTIC_BD_MST183B_D01A_S)||(MSTAR_KELTIC_BD_MST183B_D01A)
+    choice
+        prompt "CHIP Selection"
+        default MSD5XX7
+
+        config MSD5XX7
+            bool "MSD5XX7"
+
+        config MSD5XX9
+            bool "MSD5XX9"
+
+    endchoice
+endif
+
+if (MSTAR_KERES) || (MSTAR_KIRIN)
+choice
+        prompt "CHIP Selection"
+        default MSDXCXX if (MSTAR_KERES_BD_MST200A_D01A_S)|| \
+                           (MSTAR_KERES_BD_MST200A_D01A)  || \
+                           (MSTAR_KERES_BD_MST200A_D02A)  || \
+                           (MSTAR_KERES_BD_MST200B_D01A_S)|| \
+                           (MSTAR_KERES_BD_MST200B_D01A)  || \
+                           (MSTAR_KIRIN_BD_MST221A_D01A_S)|| \
+                           (MSTAR_KIRIN_BD_MST221A_D01A)  || \
+                           (MSTAR_KIRIN_BD_MST221A_D03A)  || \
+                           (MSTAR_KIRIN_BD_MST221B_D01A_S)|| \
+                           (MSTAR_KIRIN_BD_MST221B_D01A)  || \
+                           (MSTAR_KIRIN_BD_MST221B_D02A)  || \
+                           (MSTAR_KIRIN_BD_MST221C_D01A_S)|| \
+                           (MSTAR_KIRIN_BD_MST221C_D01A)  || \
+                           (MSTAR_KIRIN_BD_MST221C_D01A_S_15) ||\
+                           (MSTAR_KIRIN_BD_MST221C_D01A_15) ||\
+                           (MSTAR_KIRIN_BD_MST221D_D01A_S)|| \
+                           (MSTAR_KIRIN_BD_MST221D_D01A)
+
+        default MSDXZXX if (MSTAR_KERES_BD_MST200C_D01A_S)||\
+                           (MSTAR_KERES_BD_MST200C_D01A)
+
+if (MSTAR_KERES_BD_MST200A_D01A_S)||   \
+   (MSTAR_KERES_BD_MST200A_D01A)  ||   \
+   (MSTAR_KERES_BD_MST200A_D02A)  ||   \
+   (MSTAR_KERES_BD_MST200B_D01A_S)||   \
+   (MSTAR_KERES_BD_MST200B_D01A)  ||   \
+   (MSTAR_KIRIN_BD_MST221A_D01A_S)||   \
+   (MSTAR_KIRIN_BD_MST221A_D01A)  ||   \
+   (MSTAR_KIRIN_BD_MST221A_D03A)  ||   \
+   (MSTAR_KIRIN_BD_MST221B_D01A_S)||   \
+   (MSTAR_KIRIN_BD_MST221B_D01A)  ||   \
+   (MSTAR_KIRIN_BD_MST221B_D02A)  ||   \
+   (MSTAR_KIRIN_BD_MST221C_D01A_S_15) ||\
+   (MSTAR_KIRIN_BD_MST221C_D01A_15) ||\
+   (MSTAR_KIRIN_BD_MST221C_D01A_S)||   \
+   (MSTAR_KIRIN_BD_MST221C_D01A) || \
+   (MSTAR_KIRIN_BD_MST221D_D01A_S)|| \
+   (MSTAR_KIRIN_BD_MST221D_D01A)
+        config MSDXCXX
+            bool "MSDXCXX"
+
+if (!MSTAR_KIRIN_BD_MST221D_D01A_S) && \
+   (!MSTAR_KIRIN_BD_MST221D_D01A)
+        config MSDXSXX
+            bool "MSDXSXX"
+endif
+
+if (!MSTAR_KIRIN_BD_MST221C_D01A_S) && \
+   (!MSTAR_KIRIN_BD_MST221C_D01A) && \
+   (!MSTAR_KIRIN_BD_MST221C_D01A_S_15) && \
+   (!MSTAR_KIRIN_BD_MST221C_D01A_15) && \
+   (!MSTAR_KIRIN_BD_MST221D_D01A_S) && \
+   (!MSTAR_KIRIN_BD_MST221D_D01A)
+        config MSDXTXX
+            bool "MSDXTXX"
+endif
+
+if (!MSTAR_KERES_BD_MST200A_D01A_S) && \
+   (!MSTAR_KERES_BD_MST200A_D01A)   && \
+   (!MSTAR_KERES_BD_MST200A_D02A)   && \
+   (!MSTAR_KERES_BD_MST200B_D01A_S) && \
+   (!MSTAR_KERES_BD_MST200B_D01A)   && \
+   (!MSTAR_KIRIN_BD_MST221C_D01A_S) && \
+   (!MSTAR_KIRIN_BD_MST221C_D01A) && \
+   (!MSTAR_KIRIN_BD_MST221C_D01A_S_15) && \
+   (!MSTAR_KIRIN_BD_MST221C_D01A_15) && \
+   (!MSTAR_KIRIN_BD_MST221D_D01A_S) && \
+   (!MSTAR_KIRIN_BD_MST221D_D01A)
+
+        config MSDXHXX
+            bool "MSDXHXX"
+endif
+endif
+
+if (MSTAR_KERES_BD_MST200C_D01A_S)||(MSTAR_KERES_BD_MST200C_D01A)
+
+        config MSDXZXX
+            bool "MSDXZXX"
+endif
+        config MSDXXXX
+            bool "MSDXXXX"
+endchoice
+endif
+
+if (MSTAR_KRIS)
+choice
+    prompt "CHIP Selection"
+        default MSD7SX7 if (MSTAR_KRIS_BD_MST227A_D01A)
+
+        default MSD7SX5 if (MSTAR_KRIS_BD_MST227B_D01A)||\
+                           (MSTAR_KRIS_BD_MST227B_D01A_S)
+
+        default MSD7SX3 if (MSTAR_KRIS_BD_MST227C_D01A)
+
+        default MSD7SX0 if (MSTAR_KRIS_BD_MST227D_D01A)
+
+        config MSD7SX7
+            bool "MSD7SX7"
+
+        config MSD7SX5
+            bool "MSD7SX5"
+
+        config MSD7SX3
+            bool "MSD7SX3"
+
+        config MSD7SX0
+            bool "MSD7SX0"
+
+endchoice
+endif
+
+if (MSTAR_KAYLA)
+choice
+    prompt "CHIP Selection"
+        default MSDXXXXX
+
+		config MSDXXXXX
+            bool "MSDXXXXX"
+
+        config MSD5S56
+            bool "MSD5S56"
+endchoice
+endif
+
+if (MSTAR_K5TN)
+choice
+    prompt "CHIP Selection"
+        default MSA3XXXX
+
+        config MSA3XXXX
+            bool "MSA3XXXX"
+
+        config MSD7TXXXX
+            bool "MSD7TXXXX"
+
+        config MSD7X321C
+            bool "MSD7X321C"
+
+endchoice
+endif
+
+if (MSTAR_KRATOS)
+choice
+    prompt "CHIP Selection"
+        default MSD7S01_1 if (MSTAR_KRATOS_BD_MST230A_D01A_DDR2)||\
+                             (MSTAR_KRATOS_BD_MST230A_D01A_S_DDR2)
+
+        default MSD7S02_1 if (MSTAR_KRATOS_BD_MST230A_D01A_DDR3)||\
+                             (MSTAR_KRATOS_BD_MST230A_D01A_S_DDR3)
+
+		config MSD7S01_1
+            bool "MSD7S01_1"
+
+        config MSD7S02_1
+            bool "MSD7S02_1"
+
+
+endchoice
+endif
+
+if (MSTAR_KIWI)
+choice
+    prompt "CHIP Selection"
+        default MSA3B171
+
+		config MSA3B171
+            bool "MSA3B171"
+
+        config MSA3B173
+            bool "MSA3B173"
+
+        config MSA3B175
+            bool "MSA3B175"
+
+        config MSA3B177
+            bool "MSA3B177"
+
+endchoice
+endif
+#
+#
+#Choose the MIU  for Kappa
+#
+#
+if(MSTAR_KAPPA)
+
+choice
+    prompt "MIU DDR Selection"
+    default DDR2_INTERFACE_QFP_128
+
+    config DDR2_INTERFACE_FPGA
+        bool "DDR2_INTERFACE_FPGA"
+
+    config DDR2_INTERFACE_QFP_128
+        bool "DDR2_INTERFACE_QFP_128"
+
+    config DDR3_INTERFACE_QFP_156
+        bool "DDR3_INTERFACE_QFP_156"
+
+    config DDR3_INTERFACE_QFP_128
+        bool "DDR3_INTERFACE_QFP_128"
+endchoice
+
+endif
+
+#
+# Choose the project chip's initial resolution
+#
+#
+choice
+    prompt "MStar Panel Selection"
+    default PNL_DACOUT_1080I_50
+
+    if    (MSTAR_KAPPA)||(MSTAR_KAISER)||(MSTAR_KAISERIN)||(MSTAR_KRONUS)||(MSTAR_KRITI)||(MSTAR_KERES)||(MSTAR_KRIS)||(MSTAR_KAYLA)||(MSTAR_KIRIN)||(MSTAR_KRATOS)||(MSTAR_KIWI)||(MSTAR_KANO)||(MSTAR_CURRY)||(MSTAR_K6)||(MSTAR_K6LITE)|| (MSTAR_K7U) ||(MSTAR_K5TN)
+
+    config PNL_DACOUT_720P_50
+        bool "PNL_720P_50"
+
+    config PNL_DACOUT_1080I_50
+        bool "PNL_1080I_50"
+
+    config PNL_DACOUT_1080P_50
+        bool "PNL_1080P_50"
+
+    config PNL_DACOUT_480I
+        bool "PNL_480I"
+
+    config PNL_DACOUT_480P
+        bool "PNL_480P"
+
+    config PNL_DACOUT_720P_60
+        bool "PNL_720P_60"
+
+    config PNL_DACOUT_1080I_60
+        bool "PNL_1080I_60"
+
+    config PNL_DACOUT_1080P_60
+        bool "PNL_1080P_60"
+
+    if    (MSTAR_KAISER)
+    config PNL_FULLHD_SEC_LE32A
+        bool "PNL_FULLHD_SEC_LE32A"
+    config PNL_SXGA_AU17_EN05
+        bool "PNL_SXGA_AU17_EN05"
+    config PNL_WXGA_AU20_T200XW02
+        bool "PNL_WXGA_AU20_T200XW02"
+    config PNL_WXGA_PLUS_CMO190_M190A1
+        bool "PNL_WXGA_PLUS_CMO190_M190A1"
+    config PNL_WSXGA_AU22_M201EW01
+        bool "PNL_WSXGA_AU22_M201EW01"
+    config PNL_FULLHD_CMO216_H1L01
+        bool "PNL_FULLHD_CMO216_H1L01"
+    config PNL_WUXGA_CMO260_J2
+        bool "PNL_WUXGA_CMO260_J2"
+    config MFC120_FULLHD_CMO216_H1L01
+        bool "MFC120_FULLHD_CMO216_H1L01"
+    config MFC60_FULLHD_CMO216_H1L01
+        bool "MFC60_FULLHD_CMO216_H1L01"
+    config PNL_FULLHD_TCON
+        bool "PNL_FULLHD_TCON"
+    endif
+    endif
+
+    config PANEL_RES_FULL_HD
+        bool "PANEL_RES_FULL_HD"
+
+    config PNL_DACOUT_576I
+        bool "PNL_576I"
+
+    config PNL_DACOUT_576P
+        bool "PNL_576P"
+endchoice
+
+#
+# Choose the project chip's memory map
+#
+#
+choice
+    prompt "Memory Map Type Selection"
+
+    default MSTAR_MMAP_128MB_128MB if (MSTAR_URANUS4)
+    default MSTAR_MMAP_128MB if (MSTAR_KRONUS)
+    default MSTAR_MMAP_128MB_128MB if (MSTAR_KAISERIN)
+    default MSTAR_MMAP_128MB_128MB if (MSTAR_KAISER)
+    default MSTAR_MMAP_64MB if (MSTAR_KAPPA)
+    default MSTAR_MMAP_64MB if (MSTAR_KELTIC)
+    default MSTAR_MMAP_64MB if (MSTAR_KRITI)
+    default MSTAR_MMAP_64MB if (MSTAR_KERES)
+    default MSTAR_MMAP_64MB if (MSTAR_KIRIN)
+    default MSTAR_MMAP_64MB if (MSTAR_KRIS)
+    default MSTAR_MMAP_64MB if (MSTAR_KAYLA)
+    default MSTAR_MMAP_64MB if (MSTAR_KRATOS)
+    default MSTAR_MMAP_512MB if (MSTAR_KIWI)
+    default MSTAR_MMAP_1GB_512MB if (MSTAR_KANO)
+    default MSTAR_MMAP_1GB if (MSTAR_CURRY)
+    default MSTAR_MMAP_1GB_512MB if (MSTAR_K6)
+    default MSTAR_MMAP_512MB_512MB if (MSTAR_K6LITE)
+    default MSTAR_MMAP_512MB_512MB if (MSTAR_K7U)
+    default MSTAR_MMAP_512MB if (MSTAR_K5TN)
+# only provide for 2 miu project
+
+    config MSTAR_MMAP_1GB_512MB
+		bool "1GB_512MB" if(MSTAR_KANO)||(MSTAR_K6)
+
+    config MSTAR_MMAP_512MB_512MB
+		bool "512MB_512MB" if(MSTAR_KAISERIN)||(MSTAR_KAISER)||(MSTAR_KANO)||(MSTAR_K6)||(MSTAR_K6LITE)||(MSTAR_K7U)
+
+    config MSTAR_MMAP_256MB_256MB
+        bool "256MB_256MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_MMAP_128MB_128MB
+        bool "128MB_128MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_MMAP_128MB_64MB
+        bool "128MB_64MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAISERIN)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_MMAP_64MB_64MB
+        bool "64MB_64MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAISERIN)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_MMAP_64MB_32MB
+        bool "64MB_32MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAISERIN)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_MMAP_32MB_32MB
+        bool "32MB_32MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAISERIN)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+   config MSTAR_MMAP_1GB
+        bool "1GB" if(MSTAR_CURRY)
+
+    config MSTAR_MMAP_512MB
+        bool "512MB" if(MSTAR_KAISERIN)||(MSTAR_KERES)||(MSTAR_KRIS)||(MSTAR_KIRIN)||(MSTAR_KIWI)||(MSTAR_KAYLA)||(MSTAR_K5TN)
+
+    config MSTAR_MMAP_256MB
+        bool "256MB" if(!MSTAR_KAISER)&&(!MSTAR_KELTIC)
+
+    config MSTAR_MMAP_128MB
+        bool "128MB" if (!MSTAR_KAISERIN)&&(!MSTAR_KAISER)&&(!MSD5XX1)&&(!MSD5XX3)&&(!MSD5XX5)&&(!MSD5XX7)
+
+    config MSTAR_MMAP_64MB
+        bool "64MB" if (!MSTAR_KAISERIN)&&(!MSTAR_KAISER)&&(!MSD5XX1)
+
+    config MSTAR_MMAP_32MB
+        bool "32MB" if (!MSTAR_KAISERIN)&&(!MSTAR_KAISER)
+endchoice
+
+#
+# Choose the project chip DDR memory map
+#
+#
+choice
+    prompt "Memory DDR Size Selection"
+
+    default MSTAR_DDR_128MB_128MB if (MSTAR_URANUS4)
+    default MSTAR_DDR_128MB if (MSTAR_KRONUS)
+    default MSTAR_DDR_128MB_128MB if (MSTAR_KAISERIN)
+    default MSTAR_DDR_128MB_128MB if (MSTAR_KAISER)
+    default MSTAR_DDR_64MB if (MSTAR_KAPPA)
+    default MSTAR_DDR_64MB if (MSTAR_KELTIC)
+    default MSTAR_DDR_64MB if (MSTAR_KRITI)
+    default MSTAR_DDR_64MB if (MSTAR_KERES)
+    default MSTAR_DDR_64MB if (MSTAR_KIRIN)
+    default MSTAR_DDR_64MB if (MSTAR_KRIS)
+    default MSTAR_DDR_64MB if (MSTAR_KAYLA)
+    default MSTAR_DDR_64MB if (MSTAR_K5TN)
+    default MSTAR_DDR_1GB_512MB if (MSTAR_KANO)
+    default MSTAR_DDR_1GB if (MSTAR_CURRY)
+    default MSTAR_DDR_1GB_512MB if (MSTAR_K6)
+    default MSTAR_DDR_512MB_512MB if (MSTAR_K6LITE)
+    default MSTAR_DDR_512MB_512MB if (MSTAR_K7U)
+    default MSTAR_DDR_512MB if (MSTAR_K5TN)
+# only provide for 2 miu project
+    config MSTAR_DDR_1GB_512MB
+        bool "1GB_512MB" if(MSTAR_KANO)||(MSTAR_K6)
+
+    config MSTAR_DDR_512MB_512MB
+        bool "512MB_512MB" if(MSTAR_KAISERIN)||(MSTAR_KAISER)||(MSTAR_KANO)||(MSTAR_K6)||(MSTAR_K6LITE)||(MSTAR_K7U)
+
+    config MSTAR_DDR_256MB_256MB
+        bool "256MB_256MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_DDR_128MB_128MB
+        bool "128MB_128MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_DDR_128MB_64MB
+        bool "128MB_64MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAISERIN)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_DDR_64MB_64MB
+        bool "64MB_64MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAISERIN)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_DDR_64MB_32MB
+        bool "64MB_32MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAISERIN)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_DDR_32MB_32MB
+        bool "32MB_32MB" if(!MSTAR_KRONUS)&&(!MSTAR_KAISERIN)&&(!MSTAR_KAPPA)&&(!MSTAR_KELTIC)&&(!MSTAR_KRITI)
+
+    config MSTAR_DDR_1GB
+        bool "1GB" if(MSTAR_CURRY)||(MSTAR_KERES)||(MSTAR_KRIS)||(MSTAR_KIRIN)
+
+    config MSTAR_DDR_512MB
+        bool "512MB" if(MSTAR_KAISERIN)||(MSTAR_KERES)||(MSTAR_KRIS)||(MSTAR_KIRIN)||(MSTAR_KIWI)||(MSTAR_KAYLA)||(MSTAR_K5TN)
+
+    config MSTAR_DDR_256MB
+        bool "256MB" if(!MSTAR_KAISER)&&(!MSTAR_KELTIC)
+
+    config MSTAR_DDR_128MB
+        bool "128MB" if (!MSTAR_KAISERIN)&&(!MSTAR_KAISER)&&(!MSD5XX1)&&(!MSD5XX3)&&(!MSD5XX5)&&(!MSD5XX7)
+
+    config MSTAR_DDR_64MB
+        bool "64MB" if (!MSTAR_KAISERIN)&&(!MSTAR_KAISER)&&(!MSD5XX1)
+
+    config MSTAR_DDR_32MB
+        bool "32MB" if (!MSTAR_KAISERIN)&&(!MSTAR_KAISER)
+endchoice
+
+
+if (MSTAR_KAYLA)||(MSTAR_K6)||(MSTAR_K6LITE)||(MSTAR_KANO) || (MSTAR_CURRY)|| (MSTAR_K7U)
+#
+# Choose the DDR type
+#
+#
+choice
+    prompt "Memory DDR Type"
+    if (MSTAR_K6)||(MSTAR_KANO)||(MSTAR_CURRY)||(MSTAR_K6LITE)||(MSTAR_K7U)
+    config MSTAR_DDR4_EXT
+        bool "MSTAR_DDR4_EXT"
+    config MSTAR_DDR4_MCP
+        bool "MSTAR_DDR4_MCP"
+    endif
+    config MSTAR_DDR3_EXT
+        bool "MSTAR_DDR3_EXT"
+    config MSTAR_DDR3_MCP
+        bool "MSTAR_DDR3_MCP"
+    config MSTAR_DDR2_EXT
+        bool "MSTAR_DDR2_EXT"
+    config MSTAR_DDR2_MCP
+        bool "MSTAR_DDR2_MCP"
+endchoice
+endif
+
+#
+# Choose the project chip's memory frequency
+#
+#
+choice
+    prompt "Memory Frequency Selection"
+
+    default MEM800MHz if (MSTAR_URANUS4)
+    default MEM1066MHz if (MSTAR_KRONUS)
+    default MEM1066MHz if (MSTAR_KAISERIN)
+    default MEM1866MHz if (MSTAR_KAISER)
+    default MEM1066MHz if (MSTAR_KAPPA)
+    default MEM800MHz if (MSTAR_KELTIC)
+    default MEM1200MHz if (MSTAR_KRITI)
+    default MEM1866MHz if (MSTAR_KERES)
+    default MEM1866MHz if (MSTAR_KIRIN)
+    default MEM1866MHz if (MSTAR_KRIS)
+    default MEM1866MHz if (MSTAR_KAYLA)
+    default MEM1866MHz if (MSTAR_KIWI)
+    default MEM1866MHz if (MSTAR_KANO)
+    default MEM1866MHz if (MSTAR_CURRY)
+    default MEM1866MHz if (MSTAR_K6)
+    default MEM1866MHz if (MSTAR_K6LITE)
+    default MEM1866MHz if (MSTAR_K7U)
+
+    if (MSTAR_KANO || MSTAR_CURRY || MSTAR_K6)
+    config MEM2400MHz
+        bool "2400 MHz"
+    endif
+
+    if (MSTAR_KAISER || MSTAR_KERES || MSTAR_KIRIN || MSTAR_KRIS || MSTAR_KIWI || MSTAR_KANO || MSTAR_CURRY || MSTAR_K6 || MSTAR_K6LITE) || (MSTAR_K7U)
+    config MEM2133MHz
+        bool "2133 MHz"
+    endif
+
+    if (MSTAR_KAISER || MSTAR_KERES || MSTAR_KIRIN || MSTAR_KRIS || MSTAR_KIWI || MSTAR_KANO || MSTAR_CURRY || MSTAR_K6 || MSTAR_K6LITE || MSTAR_KAYLA || MSTAR_K5TN || MSTAR_K7U)
+    config MEM1866MHz
+        bool "1866 MHz"
+    endif
+    if (MSTAR_KAISER || MSTAR_KRITI ||MSTAR_KAISERIN || MSTAR_KAPPA || MSTAR_KERES || MSTAR_KIRIN || MSTAR_KRIS || MSTAR_KRATOS || MSTAR_KIWI || MSTAR_KANO || MSTAR_CURRY || MSTAR_K6 || MSTAR_KAYLA\
+                       || MSTAR_KRONUS_BD_MST124A_D02A_S \
+                       || MSTAR_KRONUS_BD_MST124B_D02A \
+                       || MSTAR_KRONUS_BD_MST124B_D02A_S \
+                       || MSTAR_KRONUS_BD_MST124C_D02A \
+                       || MSTAR_KRONUS_BD_MST124D_D01A \
+                       || MSTAR_KRONUS_BD_MST124E_D01A_S \
+                       || MSTAR_KRONUS_BD_MST124E_D01A_SZ \
+                       || MSTAR_KRONUS_BD_MST124G_D01A_S \
+                       || MSTAR_KRONUS_BD_MST124G_D01A \
+                       || MSTAR_KRONUS_BD_MST140A_D01A \
+                       || MSTAR_KRONUS_BD_MST140A_D01A_S \
+                       || MSTAR_KRONUS_BD_MST163A_D01A_S \
+                       || MSTAR_KRONUS_BD_MST124F_D02A\
+                       || MSTAR_KRONUS_BD_MST124I_D01A_S \
+                       || MSTAR_KRONUS_BD_MST124H_D01A\
+                       || MSTAR_KRONUS_BD_MST124K_D01A_S \
+                       || MSTAR_KRONUS_BD_MST124K_D01A )
+    config MEM1600MHz
+        bool "1600 MHz (DDR3)"
+    if (!MSTAR_KRITI)
+    config MEM1300MHz
+        bool "1300 MHz"
+    endif
+
+    endif
+
+    if (MSTAR_URANUS4 || MSTAR_KELTIC \
+              || MSTAR_KAPPA\
+                      || MSTAR_KRONUS_BD_MST124A_D01A_S \
+                      || MSTAR_KRONUS_BD_MST124A_D01A \
+                      || MSTAR_KRONUS_BD_MST124B_D01A_S \
+                      || MSTAR_KRONUS_BD_MST124C_D01A_S \
+                      || MSTAR_KRONUS_BD_MST124D_D02A \
+                      || MSTAR_KRONUS_BD_MST124D_D02A_S \
+                      || MSTAR_KRONUS_BD_MST124SZ \
+                      || MSTAR_KRONUS_BD_SS2000_DT0A \
+                      || MSTAR_KRONUS_BD_MST124F_D01A_S \
+                      || MSTAR_KRONUS_BD_MST124F_SZ_Demo \
+                      || MSTAR_KRONUS_BD_MST163A_D01A_S \
+                      || MSTAR_KRONUS_BD_MST124I_D01A_S\
+                      || MSTAR_KRONUS_BD_MST124H_D01A \
+                      || MSTAR_KRONUS_BD_MST124K_D01A_S\
+                      || MSTAR_KRONUS_BD_MST124K_D01A )
+    config MEM1066MHz
+        bool "1066 MHz"
+
+    config MEM800MHz
+        bool "800 MHz(DDR2)"
+    endif
+
+  if (MSTAR_KRITI||(MSTAR_KELTIC&&MSD5XX9)||(MSTAR_KRATOS&&MSD7S01_1)||(MSTAR_KIWI)||(MSTAR_KAYLA)||(MSTAR_K5TN))
+
+    config MEM1333MHz
+        bool "1333 MHz(DDR2 or DDR3)"
+  endif
+
+  if (MSTAR_KRITI||(MSTAR_KELTIC&&MSD5XX9)||(MSTAR_KRATOS&&MSD7S01_1)||(MSTAR_KIWI))
+    config MEM1200MHz
+        bool "1200 MHz(DDR2)"
+  endif
+
+    if (MSTAR_URANUS4|| MSTAR_KELTIC || MSTAR_KAPPA_BD_FPGA || MSTAR_KRITI_BD_FPGA || MSTAR_KRONUS_BD_MST124F_D01A_S || MSTAR_KRONUS_BD_MST124F_SZ_Demo)
+    config MEM667MHz
+        bool "667 MHz"
+
+    config MEM400MHz
+        bool "400 MHz"
+
+    config MEM333MHz
+        bool "333 MHz"
+
+    endif
+
+
+    config UNSUPPORT_MEM_CLOCK
+        bool "Not Support"
+
+endchoice
+
+if (MSTAR_KANO || MSTAR_CURRY || MSTAR_K6 || MSTAR_K7U)
+choice
+    prompt "MIU Mode Type"
+    default MIU_4X_MODE
+
+    config MIU_8X_MODE
+    bool "MIU 8X Mode"
+    help
+        Selection to use 8X mode.
+
+    config MIU_4X_MODE
+    bool "MIU 4X Mode"
+    help
+        Selection to use 4X mode.
+endchoice
+endif
+
+if (MSTAR_KAISER||MSTAR_KELTIC||MSTAR_KERES||MSTAR_KIRIN||MSTAR_KRIS||MSTAR_KAYLA||MSTAR_KIWI||MSTAR_KANO||MSTAR_CURRY||MSTAR_K6||MSTAR_K6LITE||MSTAR_K5TN||MSTAR_K7U)
+config DRAM_MOBF
+        bool "DRAM MOBF Enable"
+        default y
+        help
+          Selecting this item will enable DRAM MOBF Feature.
+
+if (DRAM_MOBF)
+choice
+    prompt "DRAM MOBF Mode Selection"
+    default DRAM_MOBF_8BIT
+
+    config DRAM_MOBF_8BIT
+        depends on DRAM_MOBF
+               bool "Dram MOBF 8 bit mode"
+               help
+            Selection to enable Dram MOBF 8 bit mode base on DRAM_MOBF enable.
+
+    config DRAM_MOBF_64BIT
+        depends on DRAM_MOBF
+               bool "Dram MOBF 64 bit mode"
+               help
+            Selection to enable Dram MOBF 64 bit mode base on DRAM_MOBF enable.
+
+endchoice
+endif
+
+if (DRAM_MOBF_64BIT)
+    config BWP_IP
+        depends on DRAM_MOBF_64BIT
+               bool "Byte Write Parser with IP"
+               help
+                   Selection to USE IP Byte Write Parser.
+
+    config BWP_MIU
+        depends on DRAM_MOBF_64BIT
+               bool "Byte Write Parser with MIU"
+               help
+                   Selection to USE MIU Byte Write Parser.
+endif
+endif
+
+config MSTAR_AUTHEN_ENABLE
+    bool "Enable Authentication function"
+    default n
+    depends on (MSTAR_KIWI || MSTAR_CURRY)
+    help
+        Enable Authentication Function
+#
+# Choose the project chip's ddr3 bit mode
+#
+#
+if (MSTAR_KAISER || MSTAR_KERES || MSTAR_KIRIN || MSTAR_KRIS || MSTAR_KAYLA  || MSTAR_KAISERIN || MSTAR_KANO || MSTAR_KRATOS || MSTAR_KIWI || MSTAR_CURRY || MSTAR_K6 || MSTAR_K6LITE || MSTAR_K5TN || MSTAR_K7U)
+choice
+    prompt "Booting Mode"
+    default BOOTING_FROM_EXT_SPI_WITH_CPU
+
+    config BOOTING_FROM_EXT_SPI_WITH_CPU
+        bool "CPU Booting from External SPI Flash"
+
+    config MSTAR_ROM_BOOT_WITH_NAND_FLASH
+        bool "CPU Booting from NAND FLASH"
+
+    config MSTAR_ROM_BOOT_WITH_EMMC_FLASH
+        bool "CPU Booting from EMMC FLASH"
+endchoice
+
+
+config MIU0_BUSADDR
+    hex "MIU0 Bus Address"
+    default 0x20000000 if(MSTAR_KAISER)||(MSTAR_KANO)||(MSTAR_CURRY)||(MSTAR_K6)||(MSTAR_K6LITE)||(MSTAR_K7U)
+    default 0x00000000 if(MSTAR_KERES)
+    default 0x00000000 if(MSTAR_KIRIN)
+    default 0x00000000 if(MSTAR_KRIS)
+    default 0x00000000 if(MSTAR_KAYLA || MSTAR_K5TN)
+    default 0x00000000 if(MSTAR_KRATOS)
+    default 0x00000000 if(MSTAR_KIWI)
+    default 0x00000000 if(MSTAR_KAISERIN)
+    help
+      The start address of MIU0 bus
+config MIU1_BUSADDR
+    hex "MIU1 Bus Address"
+    default 0xA0000000 if(MSTAR_KAISER)
+    default 0x60000000 if(MSTAR_KAISERIN)
+    default 0xC0000000 if(MSTAR_KANO)||(MSTAR_K6)
+    default 0x60000000 if(MSTAR_K6LITE)
+    default 0x60000000 if(MSTAR_K7U)
+    help
+      The start address of MIU1 bus
+
+choice
+    prompt "MBoot Storage"
+
+    default MBOOT_IN_SPI_FLASH
+
+    config MBOOT_IN_SPI_FLASH
+        bool "Store in SPI Flash"
+        depends on (SPI)
+
+    config MBOOT_IN_NAND_FLASH
+        bool "Store in NAND Flash"
+        depends on (NAND_FLASH) || (SPI_NAND_FLASH)
+
+    config MBOOT_IN_MMC_FLASH
+        bool "Store in MMC Flash"
+        depends on (MMC)
+
+endchoice
+
+endif
+config BOOTRAM_LOADADDR
+    hex "BOOTRAM Memory Address"
+    default 0x81000000
+    help
+      The address to load ram stage bootloader (usually bootram.S)
+      - Please note this should not overlap with decompressor or u-boot
+
+config UBOOT_LOADADDR
+    hex "UBOOT BOOTRAM Memory Address"
+    default 0x21200000 if (MCU_ARM)
+    default 0x81200000 if (MCU_MIPS32)
+    help
+      The address to load u-boot before relocation
+
+config KERNEL_START_ADDRESS
+    hex "Kernel stext entry physical adress"
+    default 0x20400000 if (MCU_ARM)
+    default 0x80400000 if (MCU_MIPS32)
+    help
+      SMP core of secondary boot form the address
+
+config DRAM_SIZE_MB_RELOCATE
+    int "DRAM Size for UBoot relocation (MB)"
+    default 256
+    help
+      The dram size for Uboot relocation
+
+config PROGRAM_EMMC_RPMB_KEY
+    bool "Program emmc rpmb key"
+        depends on MMC
+            default n
+if (LD_BFN_ROM_BOOT)
+config LD_SEL
+    string "LD Choose Device"
+    default "NAND" if (NAND_FLASH) || (SPI_NAND_FLASH)
+    default "TOOLBIN" if (MCU_ARM)
+    default "NOR"
+
+    help
+      If you want to build SBoot from Rom boot, then you
+      will need to choose this for specified LD file.
+
+
+config  MSTAR_TOOL_ROM_PROGRAM_NAND_BIN
+    bool "Enable PROGRAM NAND BIN"
+    default n
+    help
+        Enable / Disable Program Nand Bin
+
+config  MSTAR_TOOL_PROGRAM
+    bool "Enable TOOL PROGRAM"
+    default n
+    help
+        Enable / Disable Program BIN In DRAM
+
+endif
+
+menu "Extended CPU Configuration"
+
+config MSTAR_L2_CACHE_ENABLE
+    bool "Enable MIPS L2 Cache Mechanism"
+    default n
+    depends on (MSTAR_KRONUS) || (MSTAR_KAISERIN) || (MSTAR_KAPPA)||(MSTAR_KELTIC)|| (MSTAR_KRITI) ||(MSTAR_KERES) || (MSTAR_KIRIN) ||(MSTAR_KRIS)||(MSTAR_KAYLA) || (MSTAR_KRATOS) || (MSTAR_KIWI) || (MSTAR_K5TN)
+    help
+        Enable / Disable MIPS L2 Cache Mechanism
+
+config MSTAR_FPU_ENABLE
+    bool "Enable FPU Support(Do Not Modify it!)"
+    default y
+    depends on (MSTAR_KRONUS) || (MSTAR_KAISERIN) || (MSTAR_KAPPA)||(MSTAR_KELTIC)|| (MSTAR_KRITI) ||(MSTAR_KERES) || (MSTAR_KIRIN) ||(MSTAR_KRIS)||(MSTAR_KAYLA) || (MSTAR_KRATOS) || (MSTAR_KIWI) || (MSTAR_K5TN)
+    help
+        Enable / Disable FPU Support
+
+config MSTAR_DRAM_AUTO_PHASE_ENABLE
+    bool "Enable MIU Auto Phase Function"
+    default y
+    depends on (MSTAR_KRONUS) || (MSTAR_KAISERIN) || (MSTAR_KAPPA)||(MSTAR_KELTIC)|| (MSTAR_KRITI) ||(MSTAR_KERES) || (MSTAR_KIRIN) ||(MSTAR_KRIS)||(MSTAR_KAYLA) || (MSTAR_KRATOS) || (MSTAR_KIWI) || (MSTAR_KANO) || (MSTAR_CURRY) || (MSTAR_K6) || (MSTAR_K6LITE) || (MSTAR_K5TN) ||  (MSTAR_K7U)
+    help
+        Enable / Disable MIU Auto Phase
+
+config MSTAR_SD_DETECT
+    bool "enable sd detect"
+    default n
+    help
+        Enable / Disable sd detect
+
+if (MSTAR_K6LITE) || (MSTAR_K7U)
+config MSTAR_SW_BOND_CHECK
+    bool "Check SW_BOND to do Auto Phase"
+    default n
+    depends on MSTAR_DRAM_AUTO_PHASE_ENABLE
+    help
+        Check SW_BOND to do auto phase
+endif
+
+config MSTAR_VID_ENABLE
+    bool "Enable Voltage Identification (VID)"
+    default n
+    depends on (MSTAR_KERES) || (MSTAR_KIRIN) || (MSTAR_KRIS) || (MSTAR_KAYLA)  || (MSTAR_KANO) || (MSTAR_KIWI) || (MSTAR_CURRY)|| (MSTAR_K5TN) || (MSTAR_K6) || (MSTAR_K6LITE)
+    help
+        Enable Voltage Identification (VID)
+
+config MSTAR_DVFS_ENABLE
+    bool "Enable Dynamic Voltage / Frequency Selection (DVFS)"
+    default n
+    depends on (MSTAR_KANO) || (MSTAR_CURRY) || (MSTAR_K6) || (MSTAR_K6LITE)
+    help
+        Enable Dynamic Voltage / Frequency Selection (DVFS)
+
+config MSTAR_NS_UBOOT
+    bool "Enable NS-UBoot"
+    default n
+    depends on (MSTAR_CURRY) || (MSTAR_KANO) || (MSTAR_K6) || (MSTAR_K6LITE) || (MSTAR_K7U)
+    help
+        Enable NS-UBoot
+
+choice
+    depends on (MSTAR_NS_UBOOT)
+    prompt "Chip type"
+    default CHIP_TYPE_INHOUSE_DEVELOPMENT
+
+    config CHIP_TYPE_INHOUSE_DEVELOPMENT
+        bool "In-house development"
+
+    config CHIP_TYPE_VMX
+        bool "VMX"
+
+    config CHIP_TYPE_IRDETO
+        bool "IRDETO"
+
+    config CHIP_TYPE_NAGRA
+        bool "NAGRA"
+
+    config CHIP_TYPE_VIACCESS
+        bool "VIACCESS"
+    config CHIP_GENERIC_DRM
+        bool "Generic_DRM"
+endchoice
+
+config MSTAR_M02_GENERIC_DRM
+    bool "Enable M02 for Generic DRM chip"
+    default n
+    depends on (CHIP_GENERIC_DRM)
+    help
+        Enable M02 for Generic DRM chip
+
+config MSTAR_NS_UBOOT_LDR2
+    bool "Enable NS-UBoot loader v2"
+    default n
+    depends on (MSTAR_NS_UBOOT)
+    help
+        Enable NS-UBoot loader v2
+		It will replace original loader.
+
+config MSTAR_NS_UBOOT_BRINGUP
+    bool "Enable NS-UBoot bring-up flow, no auth, do decrypt, no config data"
+    default n
+    depends on MSTAR_NS_UBOOT_LDR2
+    help
+        Enable NS-UBoot bring-up flow
+
+config MSTAR_BUILD_TEE_LOADER_DAT
+    bool "For build tee_loader.dat"
+    default n
+    depends on MSTAR_NS_UBOOT
+    help
+        For build tee_loader.dat
+
+config MSTAR_RELEASE_W_OTP
+    bool "Release with OTP"
+    default n
+    help
+        For advance CA, some files unused won't link
+
+endmenu
+
+endmenu
+
+menu "General Configuration"
+
+menu "Mmap Configuartion"
+
+    config HEAP_SIZE_CONFIG
+        bool "U-boot heap size Config"
+        default n
+        help
+            set malloc heap size for u-boot
+if (HEAP_SIZE_CONFIG)
+menu "uboot custom-config"
+    config UBOOT_HEAP_SIZE
+        hex "UBOOT_HEAP_SIZE"
+        default 0x00000000
+        help
+            The Size is Uboot Heap
+endmenu #"uboot custom-config"
+endif
+endmenu #"Mmap Configuartion"
+
+
+choice
+    prompt "Chunk header selection"
+    default NO_RESERVED_CHUNK_HEADER
+    config RESERVED_CHUNK_HEADER
+        bool "RESERVED_CHUNK_HEADER"
+    config NO_RESERVED_CHUNK_HEADER
+        bool "NO_RESERVED_CHUNK_HEADER"
+endchoice
+
+choice
+    prompt "Choose a Second Loader"
+    default UBOOT_AS_2ED_LOADER
+
+    config UBOOT_AS_2ED_LOADER
+        bool "u-boot as the second loader"
+
+    config ECOS_AS_2ED_LOADER
+        bool "eCos as the second loader"
+
+    config NO_2ED_LOADER
+        bool "No second loader. For test only"
+endchoice
+
+if (ECOS_AS_2ED_LOADER)
+config ECOS_ELF_PATH
+    string "The path of the eCos ELF file"
+    default "k1_ecos.elf"
+endif
+
+config ANDROID_BOOT
+	bool "Android System"
+	default n
+	help
+		Selecting this item will enable Android options.
+
+choice
+    prompt "Compile Purpose"
+
+    default LD_GENERIC if((MSTAR_URANUS4)||(MSTAR_KRONUS)||(MSTAR_KAISERIN)||(MSTAR_KAISER)||(MSTAR_KELTIC)||(MSTAR_KERES)||(MSTAR_KIRIN)||(MSTAR_KRIS)||(MSTAR_KAYLA)||(MSTAR_KRATOS)||(MSTAR_KIWI)||(MSTAR_K5TN))
+
+    config LD_GENERIC
+        bool "generic loader"
+    if ((MSTAR_KRONUS) || (MSTAR_KAISERIN) || (MSTAR_KAISER)||(MSTAR_KELTIC)||(MSTAR_KERES)||(MSTAR_KIRIN)||(MSTAR_KRIS)||(MSTAR_KAYLA)||(MSTAR_K5TN))
+        config LD_BOOT_FROM_OTP
+            bool "boot from otp"
+        config LD_BOOT_OTP_SIMULATE_ON_SPINOR
+            bool "boot from otp(can simulate @spinor)"
+    endif
+    if (MSTAR_CURRY)
+        config LD_BOOT_MIU_DQS_ON_SRAM
+            bool "boot MIU DQS on SRAM"
+    endif
+
+        config LD_MSTAR_STR
+                bool "loader with mstar str process (fta)"
+endchoice
+
+config SPI_NOR_FLASH
+    bool "Enable sboot use SPI"
+    default n
+
+config LD_BFN_ROM_BOOT
+    bool "NAND driver in ROM Boot Flow"
+    default y
+    depends on (MSTAR_KRATOS)||(MSTAR_KIWI)
+
+config LD_BFN_VERSION
+    int "BFN version"
+    default 0 if(MSTAR_KELTIC)
+    default 2 if(MSTAR_KAPPA||MSTAR_KRONUS||MSTAR_KAISERIN)
+    default 4 if(MSTAR_KRIS||MSTAR_KIRIN||MSTAR_KERES||MSTAR_KAYLA)
+    default 5
+    depends on (!MSTAR_KRATOS)&&(!MSTAR_KIWI)&&(MSTAR_BFN_EN)
+
+config MSTAR_BFN_EN
+    bool "Enable boot from NAND"
+    default n
+    help
+      Enable BFN
+
+config MSTAR_BFE_EN
+    bool "Enable boot from EMMC"
+    default n
+    help
+      Enable BFE
+
+choice
+    prompt "Boot sequence"
+    default BOOT_SEQUENCE_FORCE_SPINOR
+
+    config BOOT_SEQUENCE_FORCE_SPINOR
+        bool "Force BFSPINOR"
+    config BOOT_SEQUENCE_AUTO
+        bool "Auto"
+    config BOOT_SEQUENCE_FORCE_BFN
+        depends on MSTAR_BFN_EN
+        bool "Force BFN"
+    config BOOT_SEQUENCE_FORCE_BFE
+        depends on MSTAR_BFE_EN
+        bool "Force BFE"
+endchoice
+
+config BOOT_SEQUENCE_FORCE_USB_UPGRADE_LOADER
+    bool "Usb upgrade loader"
+    default n
+    help
+      Enable Usb upgrade loader
+
+choice
+    prompt "Compile Platform"
+    default MBOOT_ASIC
+
+    config MBOOT_ASIC
+        bool "Compile for ASIC"
+    config MBOOT_FPGA
+        bool "Compile for FPGA"
+endchoice
+
+choice
+    prompt "Choose Loader Compress Type"
+    default LDR_LZMA_COMPRESS
+
+    config LDR_LZMA_COMPRESS
+        bool "loader LZMA compressed"
+
+    config LDR_NOCOMPRESS
+        bool "loader without compressed"
+    config COMPRESSED_UBOOT
+        bool "Compressed uboot"
+endchoice
+
+if(COMPRESSED_UBOOT)
+	choice
+		prompt "Compression UBOOT Method"
+		default MSCOMPRESS
+		config MSCOMPRESS
+			bool "mscompress"
+		config MSCOMPRESS7
+			bool "mscompress7"
+	endchoice
+
+endif
+
+if (MSTAR_MARIA10)
+config MSTAR_MARIA10_PM
+    bool "Build PM binary"
+    default n
+    help
+      Build PM binary for sleep(saving) mode.
+endif
+
+if (MCU_MIPS32)
+config COMPRESSED_BUFFER
+        hex "Memory Address Start for Compressed App"
+        default 0x85100000 if MSTAR_MMAP_128MB
+        default 0x81100000 if MSTAR_MMAP_64MB||MSTAR_MMAP_32MB
+    default 0x85100000
+        help
+        this address defined reserved buffer for compressed file.
+        please reserved the size bigger than your compressed file.
+endif
+if (MCU_ARM)
+config COMPRESSED_BUFFER
+    hex "Memory Address Start for Compressed App"
+    default 0x25100000
+    help
+        this address defined reserved buffer for compressed file.
+        please reserved the size bigger than your compressed file.
+endif
+config COMPRESSED_LENGTH
+        hex "Memory Length for Compressed App"
+        default 0x1000000
+        help
+                The buffer length  reserved buffer for compressed file.
+if (MCU_MIPS32)
+config DECOMPRESS_POOL_ADDRESS
+    hex "Memory pool address for De-compressed process"
+    default 0x82100000 if MSTAR_MMAP_64MB
+    default 0x80100000 if MSTAR_MMAP_32MB
+    default 0x86100000
+    help
+        The buffer length  reserved buffer for compressed file.
+endif
+
+if (MCU_ARM)
+config DECOMPRESS_POOL_ADDRESS
+        hex "Memory pool address for De-compressed process"
+        default 0x26100000
+        help
+                The buffer length  reserved buffer for compressed file.
+endif
+
+
+config DECOMPRESS_POOL_LENGTH
+        hex "Memory pool length for De-compressed process"
+        default 0x1000000
+        help
+                The buffer length  reserved buffer for compressed file.
+                At least 2^(level*2 + 14) + 16KB
+                level (0-6 for compress ratio)
+
+
+config HASH2_START_ADDRESS
+        hex "Hash2 start address"
+        default 0x80800000 if (MCU_MIPS32)
+        default 0x20080000 if (MCU_ARM)
+        help
+                The hash2 start address.
+
+config TEE_LOADER_START_ADDRESS
+        hex "TEE loader dram start address"
+        default 0x8007f000 if (MCU_MIPS32)
+        default 0x2007f000 if (MCU_ARM)
+        help
+                The tee loader start address
+
+config APP_HEADER_SIZE
+        hex "APP header size"
+        default 0x100
+        help
+                The size of APP(usually uboot, ecos loader)
+
+choice
+        prompt "MStar STR Supported"
+        default UNSUPPORT_MSTAR_STR
+        config MSTAR_STR_ENABLE
+            bool "MSTAR_STR_ENABLE"
+        config UNSUPPORT_MSTAR_STR
+            bool "UNSUPPORT_MSTAR_STR"
+endchoice
+
+if (MSTAR_STR_ENABLE)
+choice
+        prompt "MStar STR Resume"
+        default MSTAR_STR_UBOOT_RESUME
+        config MSTAR_STR_UBOOT_RESUME
+            bool "MSTAR_STR_UBOOT_RESUME"
+        config MSTAR_STR_SBOOT_RESUME
+            bool "MSTAR_STR_SBOOT_RESUME"
+endchoice
+
+config NO_RELOAED_HASH2
+        bool "NO reload HASH2"
+        default false
+        help
+            After STR, no reload HASH2
+endif
+
+
+choice
+        prompt "MStar MCM Supported(Memory Clock Management)"
+        default UNSUPPORT_MSTAR_MCM
+
+        if (MSTAR_KRIS) || (MSTAR_KAYLA) || (MSTAR_K5TN) || (MSTAR_KANO) || (MSTAR_CURRY)  || (MSTAR_K6) || (MSTAR_K6LITE) || (MSTAR_K7U)
+        config MSTAR_MCM_ENABLE
+            bool "MSTAR_MCM_ENABLE"
+        endif
+
+        config UNSUPPORT_MSTAR_MCM
+            bool "UNSUPPORT_MSTAR_MCM"
+endchoice
+
+choice
+        prompt "NOCS3 Chipset Supported"
+        default UNSUPPORT_MSTAR_NOCS3
+        config MSTAR_NOCS3_ENABLE
+            bool "MSTAR_NOCS3_ENABLE"
+        config UNSUPPORT_MSTAR_NOCS3
+            bool "UNSUPPORT_MSTAR_NOCS3"
+endchoice
+
+config CAE_CPUCLK_MANUAL_CHANGE_TEST
+    bool "Enable CAE_CPUCLK_MANUAL_CHANGE_TEST"
+    default false
+    help
+        Enable for CAE CPU clk changing test
+
+config RecoverDQSSettingFromPMReg
+    bool "Enable recover dqs setting from pm regs "
+    default y if MSTAR_KANO
+    default n
+    help
+        Enable recover dqs setting from pm regs
+
+if (MSTAR_KANO)
+config MIU_AUTO_PHASE_TEST_ADDR_MIU0
+    hex "MIU0 Auto Phase Test Addrees (16KB align)"
+    default 0x00000000
+    help
+      The address that do BIST and MIU auto phase tuning
+      - This address must won't effect after DC ON
+
+config MIU_AUTO_PHASE_TEST_ADDR_MIU1
+    hex "MIU1 Auto Phase Test Addrees (16KB align)"
+    default 0x00000000
+    help
+      The address that do BIST and MIU auto phase tuning
+      - This address must won't effect after DC ON
+endif
+
+config MSTAR_DRAMBRAND_MIXED_ENABLE
+    bool "Enable DRAMBRAND MIXED Setting Function"
+    default n
+    depends on (MSTAR_K5TN)
+    help
+        Enable / Disable DRAMBRAND MIXED Setting
+
+config MIU_SCRIPT_FILE
+    string "MIU_SCRIPT_FILE"
+    default "N/A"
+    help
+      Enter xxxx.txt miu script file, which will be parsed to xxx.h
+
+config MIU_SCRIPT_FILE1
+    depends on (MSTAR_DRAMBRAND_MIXED_ENABLE)
+    string "MIU_SCRIPT_FILE1"
+    default "N/A"
+    help
+      Enter xxxx.txt miu script file, which will be parsed to xxx.h
+
+config HASH1_CMDS_MULTI_BLKS
+    bool "Enable HASH1_CMDS_MULTI_BLKS"
+    default y if (MSTAR_K6)||(MSTAR_CURRY)
+    default false
+    help
+        Enable the CMDXXX _STAR,G_END,DDR_SEL in hash 1
+
+config TEE_LOADER
+    bool "Enable TEE LOADER"
+    default false
+    help
+        Enable TEE loader
+
+config ENCRYPTED_TEE_LOADER
+    depends on (TEE_LOADER)
+    bool "Use encrypted TEE LOADER"
+    default false
+    help
+        Use encrypted TEE LOADER; U_OTP_allow_TEE must be enabled
+
+config TEE_FASTCALL
+    bool "Enable TEE FASTCALL"
+    default false
+    help
+        Enable TEE fastcall
+
+config 2ND_LOADER_ENCRYPTION
+    bool "Encrypt 2nd loader"
+    default false
+    help
+        Encrypt 2nd loader
+
+config 2ND_LOADER_DECRYPTION_BY_FASTCALL
+    depends on ((2ND_LOADER_ENCRYPTION) && (TEE_FASTCALL))
+    bool "Decrypt 2nd loader using fastcall"
+    default false
+    help
+        Decrypt 2nd loader using fastcall
+
+config 2ND_LOADER_VERIFICATION
+    bool "Verify 2nd loader"
+    default false
+    help
+        Verify 2nd loader
+
+config 2ND_LOADER_VERIFICATION_BY_FASTCALL
+    depends on ((2ND_LOADER_VERIFICATION) && (TEE_FASTCALL))
+    bool "Verify 2nd loader using fastcall"
+    default false
+    help
+        Verify 2nd loader using fastcall
+
+config TVCONFIG_PARTITION
+    bool "Enable tvconfig partition"
+    default false
+    help
+        Enable MStar tvconfig partition
+
+ menu "32/64 bit mode selection"
+    depends on ((MSTAR_KANO)||(MSTAR_CURRY)||(MSTAR_K6)||(MSTAR_K6LITE)||(MSTAR_K7U))
+        choice
+        prompt "32bit or 64bit in sboot"
+        default ARMv8_64BIT_SBOOT
+            config ARMv8_32BIT_SBOOT
+                bool "32bit"
+            config ARMv8_64BIT_SBOOT
+                bool "64bit"
+        endchoice
+
+        choice
+        prompt "32bit or 64bit in uboot"
+        default ARMv8_64BIT_UBOOT
+            config ARMv8_32BIT_UBOOT
+                bool "32bit"
+            config ARMv8_64BIT_UBOOT
+                bool "64bit"
+        endchoice
+
+        choice
+        prompt "32bit or 64bit in kernel"
+        default ARMv8_64BIT_KERNEL
+            config ARMv8_32BIT_KERNEL
+                bool "32bit"
+            config ARMv8_64BIT_KERNEL
+                bool "64bit"
+        endchoice
+    endmenu #"uboot custom-config"
+
+if(MSTAR_KAYLA || MSTAR_K6 || MSTAR_K6LITE || MSTAR_K5TN || MSTAR_K7U)
+menu "UART Pad Selection Setting"
+
+choice
+     prompt "First UART Mode"
+     default First_UART_Mode_1
+     config First_UART_Mode_0
+         bool "0"
+     config First_UART_Mode_1
+         bool "1"
+endchoice
+
+choice
+     prompt "Second UART Mode"
+     default Second_UART_Mode_0
+     config Second_UART_Mode_0
+         bool "0"
+     config Second_UART_Mode_1
+         bool "1"
+     config Second_UART_Mode_2
+         bool "2"
+     config Second_UART_Mode_3
+         bool "3"
+endchoice
+
+choice
+     prompt "Third UART Mode"
+     default Third_UART_Mode_0
+     config Third_UART_Mode_0
+         bool "0"
+     config Third_UART_Mode_1
+         bool "1"
+     config Third_UART_Mode_2
+         bool "2"
+     config Third_UART_Mode_3
+         bool "3"
+endchoice
+
+choice
+     prompt "Fourth UART Mode"
+     default Fourth_UART_Mode_0
+     config Fourth_UART_Mode_0
+         bool "0"
+     config Fourth_UART_Mode_1
+         bool "1"
+     config Fourth_UART_Mode_2
+         bool "2"
+     config Fourth_UART_Mode_3
+         bool "3"
+ endchoice
+
+endmenu #"Choose Log Output UART Port"
+endif #(MSTAR_KAYLA || MSTAR_K6) || (MSTAR_K6LITE) || (MSTAR_K5TN)
+
+config ENABLE_SBOOT_BOOT_LOGO
+    bool "Enable Sboot Bootlogo"
+    default n
+    help
+        Enable sboot bootlogo
+
+if(ENABLE_SBOOT_BOOT_LOGO)
+choice
+    prompt "Sboot Logo Stored in"
+    default SBOOT_BOOT_LOGO_STORED_IN_SPI
+
+    config SBOOT_BOOT_LOGO_STORED_IN_SPI
+        bool "SPI"
+    config SBOOT_BOOT_LOGO_STORED_IN_NAND
+        bool "NAND"
+    config SBOOT_BOOT_LOGO_STORED_IN_HASH2
+        bool "HASH2"
+endchoice
+
+choice
+    prompt "HDMI Output Timing"
+    default HDMI_OUTPUT_TIMING_1920X1080_50I
+
+    config HDMI_OUTPUT_TIMING_720X480_60I
+        bool "720x480 60i"
+    config HDMI_OUTPUT_TIMING_720X480_60P
+        bool "720x480 60p"
+    config HDMI_OUTPUT_TIMING_720X576_50I
+        bool "720x576 50i"
+    config HDMI_OUTPUT_TIMING_720X576_50P
+        bool "720x576 50p"
+    config HDMI_OUTPUT_TIMING_1280X720_50P
+        bool "1280x720 50p"
+    config HDMI_OUTPUT_TIMING_1280X720_60P
+        bool "1280x720 60p"
+    config HDMI_OUTPUT_TIMING_1920X1080_50I
+        bool "1920x1080 50i"
+    config HDMI_OUTPUT_TIMING_1920X1080_60I
+        bool "1920x1080 60i"
+    config HDMI_OUTPUT_TIMING_1920X1080_50P
+        bool "1920x1080 50p"
+    config HDMI_OUTPUT_TIMING_1920X1080_60P
+        bool "1920x1080 60p"
+endchoice
+
+choice
+    prompt "HDMI Color Format"
+    default HDMI_COLOR_FORMAT_RGB
+
+    config HDMI_COLOR_FORMAT_YUV
+        bool "YUV"
+    config HDMI_COLOR_FORMAT_RGB
+        bool "RGB"
+endchoice
+
+if(SBOOT_BOOT_LOGO_STORED_IN_SPI)
+    config BOOT_START_ADDRESS_IN_SPI
+        hex "Boot Start Address in SPI"
+        default 0x94000000
+
+    config LOGO_START_ADDRESS_IN_SPI
+        hex "Logo Start Address in SPI"
+        default 0x94800000
+endif
+
+if(SBOOT_BOOT_LOGO_STORED_IN_NAND)
+    config LOGO_START_ADDRESS_IN_NAND
+        hex "Logo Start Address in NAND"
+        default 0x8600000
+endif
+
+    config HASH2_SIZE
+        hex "Hash2 Size"
+        default 0x40000
+
+    config LOGO_START_ADDRESS_IN_DRAM
+        hex "Logo Start Address (DRAM)"
+        default 0x89000000
+
+    config LOGO_HEADER_SIZE
+        hex "Logo Header Size"
+        default 0x100
+
+    config LOGO_SIZE
+        hex "Logo Size"
+        default 0x100000
+
+    config JPD_INTER_ADDR
+        hex "JPD Inter Address"
+        default 0xB052000
+    config JPD_INTER_SIZE
+        hex "JPD Inter Size"
+        default 0x630000
+    config JPD_READ_ADDR
+        hex "JPD Read Address"
+        default 0xB682000
+    config JPD_READ_SIZE
+        hex "JPD Read Size"
+        default 0x50000
+    config JPD_OUT_ADDR
+        hex "JPD Out Address"
+        default 0xB6D2000
+    config JPD_OUT_SIZE
+        hex "JPD Out Size"
+        default 0x3F4800
+    config GOP_OUTPUT_ADDR
+        hex "GOP Output Address"
+        default 0xA425000
+    config GOP_OUTPUT_SIZE
+        hex "GOP Output Size"
+        default 0x830000
+    config VE_FRAME_ADDR
+        hex "VE Frame Address"
+        default 0xA02EF40
+    config VE_FRAME_SIZE
+        hex "VE Frame Size"
+        default 0x3F4C00
+endif
+
+endmenu
+
+menu 'Build Options'
+
+config CROSS_COMPILER_PREFIX
+    string "Cross Compiler prefix"
+    default "mips-linux-gnu-" if (MCU_MIPS32)
+    default "aeon-" if (MCU_AEONR2||MCU_AEON)
+    default "arm-none-eabi-" if (MCU_ARM)
+
+    help
+      If you want to build SBoot with a cross compiler, then you
+      will need to set this to the cross-compiler prefix, for example,
+      "mips-linux-gnu-" or "aeon-"
+
+      Note that CROSS_COMPILE environment variable or
+      "make CROSS_COMPILE=xxx ..." will override this selection.
+
+      Native builds leave this empty.
+
+config EXTRA_CFLAGS
+    string "Additional CFLAGS"
+    default "-EL" if MCU_MIPS32
+    default "-march=aeon1 -EL" if MCU_AEON
+    default "-march=aeonR2 -EL" if (MCU_AEONR2)
+    help
+      Additional CFLAGS to pass to the compiler verbatim.
+
+config EXTRA_AFLAGS
+    string "Additional AFLAGS"
+    help
+      Additional AFLAGS (for assembly files) to pass to
+      the compiler verbatim.
+
+config SBOOT_CROSS_COMPILER_PREFIX
+    string "Sboot Cross Compiler prefix"
+    default "mips-linux-gnu-" if (MCU_MIPS32)
+    default "aeon-" if (MCU_AEONR2 || MCU_AEON)
+    default "aarch64-none-elf-" if (ARMv8_64BIT_SBOOT)
+    default "arm-none-eabi-" if (MCU_ARM)
+
+    help
+        If you want to build SBoot with a cross compiler, then you
+        will need to set this to the cross-compiler prefix, for example,
+        "aarch64-none-elf-"
+
+        Native builds leave this empty.
+
+config SBOOT_EXTRA_CFLAGS
+    string "SBoot additional CFLAGS"
+    default "-EL" if MCU_MIPS32
+    default "-march=aeon1 -EL" if MCU_AEON
+    default "-march=aeonR2 -EL" if (MCU_AEONR2)
+    default "-march=armv7-a -mno-unaligned-access -mthumb" if (MCU_ARM)
+    help
+        Additional SBoot CFLAGS to pass to the compiler verbatim.
+
+config SBOOT_EXTRA_AFLAGS
+    string "SBoot Additional AFLAGS"
+    help
+      Additional SBoot AFLAGS (for assembly files) to pass to
+      the compiler verbatim.
+
+endmenu
+
+menu 'Debugging Options'
+
+config DEBUG
+    bool "Build SBoot with extra Debugging symbols"
+    default n
+    help
+      Say Y here if you wish to examine SBoot internals while applets are
+      running. This increases the size of the binary considerably, and
+      should only be used when doing development. If you are doing
+      development and want to debug SBoot, answer Y.
+
+      Most people should answer N.
+
+config DEBUG_PESSIMIZE
+    bool "Disable compiler optimizations"
+    default n
+    depends on DEBUG
+    help
+      The compiler's optimization of source code can eliminate and reorder
+      code, resulting in an executable that's hard to understand when
+      stepping through it with a debugger. This switches it off, resulting
+      in a much bigger executable that more closely matches the source
+      code.
+
+config WERROR
+    bool "Abort compilation on any warning"
+    default n
+    help
+      Selecting this will add -Werror to gcc command line.
+
+      Most people should answer Y.
+
+endmenu
+
+menu 'Installation Options'
+
+config PREFIX
+    string "SBoot installation prefix"
+    default "./_install"
+    help
+      Define your directory to install SBoot files/subdirs in.
+
+endmenu
+
+
+source "UConfig.in"

@@ -1,0 +1,148 @@
+////////////////////// Prepare script ///////////////////////////
+
+swch 4
+wriu -w 0x100B22 0x8100 //stop mips clk
+
+swch 3
+
+wriu -w 0x2b80 0x0000   //dram address offset :64kB unit
+
+wriu -w 0x1008 0x0000   //pm51 dram start addr high
+wriu -w 0x100c 0x0000   //pm51 dram start addr low
+
+wriu    0x1018 0x0004   //dram enable, spi dram diasble
+
+//wriu    0x0e53 0x10     //[4]mcu0 rstz
+
+////////////////////// End of Prepare script ////////////////////
+
+////////////////////////// PLL //////////////////////////////////
+
+//================================================
+// Start PLL !!!
+//================================================
+swch 4
+// init demod_atop (xtal / dmpll)
+wriu 0x00101e38 0x00
+wriu 0x00101e39 0x00
+wriu 0x00102103 0x00
+wriu 0x0011286a 0x03
+wriu 0x0011286b 0x1e
+wriu 0x0011286a 0x03
+wriu 0x0011286b 0x06
+wriu 0x00112866 0x01
+wriu 0x00112867 0x12
+wriu 0x00112860 0x00
+wriu 0x00112861 0x1c
+wriu 0x00112840 0x00
+wriu 0x00112841 0x00
+wriu 0x00112879 0x00
+wriu 0x00101e38 0x00
+wriu 0x00101e39 0x03
+
+// turn on xtal sources for PLLs
+swch 3
+wriu 0x00000e7a 0x00
+wriu 0x00000e7b 0x00
+
+// init armpll
+swch 4
+wriu 0x00110ac4 0x01
+wriu 0x00110ac5 0x00
+wriu 0x00110a23 0x00
+
+// init miupll
+wriu 0x00110963 0x00
+
+//DACPLL (216MHz)
+wriu -w 0x0012112c 0x00005101
+wriu    0x0012112f 0x00
+//dac synth
+wriu -w 0x00121162 0x00000000
+wriu -w 0x00121164 0x00000040
+wriu -w 0x0012116a 0x00000000
+wriu -w 0x00121166 0x00000000
+wriu -w 0x00121168 0x00000000
+
+// gmacpll
+wriu 0x100bc6 0x00
+wriu 0x110cd2 0x1b
+wriu 0x110cc6 0x00
+
+//UPLL0
+wriu    0x00100800 0xc0            //enable 320Mhz
+wriu    0x0010080e 0x01            //enable 384Mhz
+wriu    0x00100804 0x10            //
+wriu    0x00100805 0x01            //
+//UPLL1
+wriu    0x00100820 0xc0            //enable 320Mhz
+wriu    0x0010082e 0x01            //enable 384Mhz
+wriu    0x00100824 0x10            //
+wriu    0x00100825 0x01            //
+
+////////////////////////// End of PLL ////////////////////////////////
+
+////////////////////////// CLKGEN script ////////////////////////////
+
+//================================================
+// Start CLK GEN !!!
+//================================================
+
+swch 4
+// init clkgen
+// fuart
+wriu 0x00100b2e 0x00
+wriu 0x00100b2f 0x03
+
+// uart0 @ 120MHz
+wriu 0x00100b27 0x0c
+
+// uart1 @ 120MHz
+wriu 0x00100b28 0x0c
+
+// select clk_miu_p from miupll
+wriu 0x00100b3e 0x08
+wriu 0x00100b3f 0x00
+
+// select clk_mcu_p1 = 216MHz
+wriu 0x00100b20 0x00
+wriu 0x00100b21 0x00
+
+// select clk_mcu from xtal to clk_mcu_p1
+wriu 0x00100b20 0x01
+wriu 0x00100b21 0x00
+
+// set clk_ddr_syn @ 432MHz
+wriu 0x00100bfa 0x04
+
+// set PM 8051 clock @ 170MHz
+swch 3
+wriu 0x00000e40 0x80
+wriu 0x00000e41 0x00
+
+// set clk_tsp_p @ 192MHz; [0]=0 => ON; [4:2]=0 => 192MHz
+swch 4
+wriu 0x00100b54 0x00
+// please turn clk_tsp_p off after mboot; [0]=1 => OFF
+// wriu 0x00100b54 0x01
+
+// turn on clk_dac1 & clk_dac2; [0]=0 => ON; [3:2]=2 => xtal clock (12MHz)
+wriu 0x00100bb2 0x08
+wriu 0x00100bb3 0x08
+
+// set clk_spi @ 86MHz; [0]=0 => ON; [5:2]=6 => 86MHz; [6]=1 => switch from xtal to 86MHz
+wriu 0x00100b2c 0x18
+wriu 0x00100b2c 0x38
+
+// set clk_r2_secure_p @ 288MHz; [0]=0 => ON; [4:2]=3 => 288MHz; [5]=1 => switch from xtal to 288MHz
+wriu 0x00100b62 0x0c
+wriu 0x00100b62 0x2c
+
+// turn off un-necessary clocks while init; [0]=1 => stc0/2 OFF; [4]=1 => stc1/3 OFF
+swch 4
+// turn off clk_stc0_p & clk_stc1_p
+wriu 0x00100b55 0x11
+// turn off clk_stc2_p & clk_stc3_p
+wriu 0x00100a9e 0x11
+
+///////////////////////// End of CLKGEN script ///////////////////////

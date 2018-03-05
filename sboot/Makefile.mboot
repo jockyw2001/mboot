@@ -1,0 +1,786 @@
+################################################################################
+#
+# Copyright (c) 2008-2010 MStar Semiconductor, Inc.
+# All rights reserved.
+#
+# Unless otherwise stipulated in writing, any and all information contained
+# herein regardless in any format shall remain the sole proprietary of
+# MStar Semiconductor Inc. and be kept in strict confidence
+# ("MStar Confidential Information") by the recipient.
+# Any unauthorized act including without limitation unauthorized disclosure,
+# copying, use, reproduction, sale, distribution, modification, disassembling,
+# reverse engineering and compiling of the contents of MStar Confidential
+# Information is unlawful and strictly prohibited. MStar hereby reserves the
+# rights to any and all damages, losses, costs and expenses resulting therefrom.
+#
+################################################################################
+# config first
+-include .config
+
+BINOUT := bin
+TOOLDIR := util
+ifeq ($(CONFIG_MSTAR_KAISER), y)
+CHIP       ?=kaiser
+endif
+ifeq ($(CONFIG_MSTAR_KERES), y)
+CHIP       ?=keres
+endif
+ifeq ($(CONFIG_MSTAR_KIRIN), y)
+CHIP       ?=kirin
+endif
+ifeq ($(CONFIG_MSTAR_KRIS), y)
+CHIP       ?=kris
+endif
+ifeq ($(CONFIG_MSTAR_KAYLA), y)
+CHIP       ?=kayla
+endif
+ifeq ($(CONFIG_MSTAR_KRATOS), y)
+CHIP       ?=kratos
+endif
+ifeq ($(CONFIG_MSTAR_KIWI), y)
+CHIP       ?=kiwi
+endif
+ifeq ($(CONFIG_MSTAR_KAISERIN), y)
+CHIP       ?=kaiserin
+endif
+ifeq ($(CONFIG_MSTAR_KANO), y)
+CHIP       ?=kano
+endif
+ifeq ($(CONFIG_MSTAR_CURRY), y)
+CHIP       ?=curry
+endif
+ifeq ($(CONFIG_MSTAR_K6), y)
+CHIP       ?=k6
+endif
+ifeq ($(CONFIG_MSTAR_K6LITE), y)
+CHIP       ?=k6lite
+endif
+ifeq ($(CONFIG_MSTAR_K5TN), y)
+CHIP       ?=k5tn
+endif
+ifeq ($(CONFIG_MSTAR_K7U), y)
+CHIP       ?=k7u
+endif
+
+PM_BINA	    = $(BINOUT)/pm/pm_$(CHIP).bin
+UBOOT_BINA	    = $(BINOUT)/flash_with_uboot.bin
+UBOOT_MAP	    = ../u-boot-2011.06/u-boot.map
+CHUNK_HEADER    = $(BINOUT)/chunk_header.bin
+UBOOT_ALIGN_BIN = $(BINOUT)/uboot_dummy.bin
+SBOOT_BIN       = $(BINOUT)/flash.bin
+UBOOT_BIN       = ../u-boot-2011.06/u-boot.bin
+UBOOT_COMPRESS_BIN = $(BINOUT)/u-boot.compressed.bin
+BFE_APP_OUT = $(BINOUT)/bfe_app.bin
+BFN_APP_OUT = $(BINOUT)/bfn_app.bin
+
+
+# SECURITY_BOOT
+SECURITY_BIN    = $(BINOUT)/secure_info.bin
+SECURITY_INC    = $(BINOUT)/security.inc
+TOOL_PATH="/tools/script/ck"
+BLOCK_SIZE=2097152
+SECUREDIR = ./secure
+TEE_SECUREDIR = ../tee_loader/secure
+SIGNATURE_PM=./secure_info_pm.bin
+SIGNATURE_SBOOT=./secure_info_sboot.bin
+SIGNATURE_UBOOT=$(UBOOT_COMPRESS_BIN).sig
+SIGNATURE_CUSTOMER_KEY_BANK=$(SECUREDIR)/secure_info_customer_key_bank.bin
+
+# VENDOR
+ifeq ($(CONFIG_CHIP_TYPE_VMX),y)
+VENDOR=vmx
+else ifeq ($(CONFIG_CHIP_TYPE_IRDETO),y)
+VENDOR=irdeto
+else ifeq ($(CONFIG_CHIP_TYPE_NAGRA),y)
+VENDOR=nagra
+else ifeq ($(CONFIG_CHIP_TYPE_VIACCESS),y)
+VENDOR=viaccess
+else ifeq ($(CONFIG_CHIP_GENERIC_DRM),y)
+VENDOR=generic_drm
+else
+VENDOR=mstar
+endif
+
+# KEY related
+RSA_BOOT_PRIVATE_KEY=$(SECUREDIR)/RSAboot_priv.txt
+RSA_BOOT_PUBLIC_KEY=$(SECUREDIR)/RSAboot_pub.txt
+RSA_BOOT_PUBLIC_KEY_BIN=$(SECUREDIR)/RSAboot_pub.bin
+ifneq ($(CONFIG_VERIFY_SYSTEM),y)
+RSA_UPGRADE_PUBLIC_KEY=$(SECUREDIR)/RSAupgrade_pub.txt
+RSA_UPGRADE_PUBLIC_KEY_BIN=$(SECUREDIR)/RSAupgrade_pub.bin
+else
+RSA_UPGRADE_PUBLIC_KEY=$(SECUREDIR)/RSAimage_pub.txt
+RSA_UPGRADE_PUBLIC_KEY_BIN=$(SECUREDIR)/RSAimage_pub.bin
+endif
+RSA_IMAGE_PUBLIC_KEY=$(SECUREDIR)/RSAimage_pub.txt
+RSA_IMAGE_PUBLIC_KEY_BIN=$(SECUREDIR)/RSAimage_pub.bin
+AES_BOOT_KEY=$(SECUREDIR)/AESboot.bin
+AES_UPGRADE_KEY=$(SECUREDIR)/AESupgrade.bin
+
+#TEE key bank
+ifeq ($(CONFIG_CHIP_GENERIC_DRM),y)
+TEE_KEYBANK_BIN=$(SECUREDIR)/keybank/$(CHIP)/TEEKeyBank_DRM.bin
+else ifeq ($(CONFIG_CHIP_TYPE_VIACCESS),y)
+TEE_KEYBANK_BIN=$(SECUREDIR)/keybank/$(CHIP)/TEEKeyBank_Viaccess.bin
+else
+TEE_KEYBANK_BIN=$(SECUREDIR)/keybank/$(CHIP)/TEEKeyBank.bin
+endif
+
+#REE key bank
+REE_AES_KEY=$(SECUREDIR)/AESree.bin
+REE_RSA_PUBLIC_KEY_BIN=$(SECUREDIR)/RSAreeext_pub.bin
+REE_RSA_PRIVATE_KEY=$(SECUREDIR)/RSAreeext_priv.txt
+REE_RSA_PUBLIC_KEY=$(SECUREDIR)/RSAreeext_pub.txt
+
+REE_KEYBANK_BIN=$(SECUREDIR)/keybank/DummyREEKeyBank.bin
+
+#Embedded TEE RSAKey
+EMBEDDED_TEE_RSA_PUBLIC_KEY_BIN=$(TEE_SECUREDIR)/RSAcus_pub.bin
+EMBEDDED_TEE_RSA_PRIVATE_KEY=$(TEE_SECUREDIR)/RSAcus_priv.txt
+EMBEDDED_TEE_RSA_PUBLIC_KEY=$(TEE_SECUREDIR)/RSAcus_pub.txt
+
+#Embedded REE RSAKey
+EMBEDDED_REE_RSA_PUBLIC_KEY_BIN=$(SECUREDIR)/RSAree_pub.bin
+EMBEDDED_REE_RSA_PRIVATE_KEY=$(SECUREDIR)/RSAree_priv.txt
+EMBEDDED_REE_RSA_PUBLIC_KEY=$(SECUREDIR)/RSAree_pub.txt
+
+#Keyladder data
+KEYLADDER_DATA_DIR=$(SECUREDIR)/KeyLadderData
+
+#REE_LOADER header signature
+REE_LOADER_SIGNATURE = $(BINOUT)/ree_loader.bin.header.sig
+
+MAGIC_ID=$(SECUREDIR)/MagicID.bin
+TEE_MSID=$(TEE_SECUREDIR)/TEE_MSID.bin
+DDR_BACKUP_BIN=ddrBackup.bin
+
+
+ifeq ($(CONFIG_MSTAR_KIWI),y)
+ifeq ($(CONFIG_MSTAR_AUTHEN_ENABLE), y)
+HASH0_BIN       = secure/hash/$(CHIP_FOLDER)/hash0.bin
+AUT_BIN         = secure/AUT_info.bin
+HASH1_BIN       = $(BINOUT)/hash1.bin
+HASH2_BIN       = $(BINOUT)/hash2.bin
+
+HASH1_MIU_BIN   = $(BINOUT)/hash1_miu.bin
+HASH1_STR_BIN   = $(BINOUT)/hash1_str.bin
+HASH1_DESKEW_BIN= $(BINOUT)/hash1_deskew.bin
+EMMC_BOOT_BIN   = $(BINOUT)/rom_emmc_boot.bin
+
+HASH1_SIG       = $(BINOUT)/hash1.bin.sig.bin
+HASH2_SIG       = $(BINOUT)/hash2.bin.sig.bin
+
+HASH1_STR_SIG   = $(BINOUT)/hash1_str.bin.sig.bin
+HASH1_MIU_SIG   = $(BINOUT)/hash1_miu.bin.sig.bin
+HASH1_DESKEW_SIG= $(BINOUT)/hash1_deskew.bin.sig.bin
+endif
+endif  #($(CONFIG_MSTAR_KIWI),y)
+
+
+ifeq ($(CONFIG_MSTAR_KIWI),y)
+CONFIG_BOOT_HASH0_IMAGE_SIZE        = 0x3800
+
+CONFIG_BOOT_HASH1_OFFSET_ADDRESS    = 0x0000
+CONFIG_BOOT_HASH1_IMAGE_SIZE        = 0x3000
+CONFIG_BOOT_HASH1_AREA_SIZE         = 0x3800
+CONFIG_BOOT_HASH1_SIG_ADDRESS       = 0x3700
+
+CONFIG_BOOT_HASH1_MIU_OFFSET_ADDRESS= 0x3800
+CONFIG_BOOT_HASH1_MIU_IMAGE_SIZE    = 0x1000
+CONFIG_BOOT_HASH1_MIU_AREA_SIZE     = 0x1400
+CONFIG_BOOT_HASH1_MIU_SIG_ADDRESS   = 0x4B00
+
+CONFIG_BOOT_HASH1_STR_OFFSET_ADDRESS= 0x5400
+CONFIG_BOOT_HASH1_STR_IMAGE_SIZE    = 0x1000
+CONFIG_BOOT_HASH1_STR_AREA_SIZE     = 0x1400
+CONFIG_BOOT_HASH1_STR_SIG_ADDRESS   = 0x6700
+
+CONFIG_BOOT_HASH2_OFFSET_ADDRESS    = 0x8000
+CONFIG_BOOT_HASH2_IMAGE_SIZE        = 0x2000
+CONFIG_BOOT_HASH2_AREA_SIZE         = 0x2400
+CONFIG_BOOT_HASH2_SIG_ADDRESS       = 0xA300
+
+CONFIG_BOOT_SIG_IMAGE_SIZE          = 0x0100
+endif
+
+
+ifeq ($(CONFIG_RESERVED_CHUNK_HEADER),y)
+ifeq ($(CONFIG_LD_BOOT_OTP_SIMULATE_ON_SPINOR),y)
+LD_FILE ?=ld/$(CHIP)/sboot_$(CHIP)_bf_otp_simluate_spinor.ld
+LD_UBOOTSIZE=$$((($(shell printf '%u' `grep 'LOADADDR(.boot)+' $(LD_FILE) | grep -o '[0-9]*'`)*1024)))
+else
+LD_FILE ?=ld/$(CHIP)/sboot_$(CHIP)_generic_chunk.ld
+ifeq ($(findstring y, $(CONFIG_MSTAR_KANO) $(CONFIG_MSTAR_K6)),y)
+ifeq ($(CONFIG_ARMv8_32BIT_SBOOT),y)
+LD_FILE ?=ld/$(CHIP)/sboot_32bit_$(CHIP)_generic_chunk.ld
+endif
+endif
+LD_UBOOTSIZE=$$((($(shell printf '%u' `grep 'LOADADDR(.boot)+' $(LD_FILE) | grep -o '[0-9]*'`)*1024)))
+endif
+endif
+
+ifeq ($(CONFIG_LOGO_STORE_IN_SPI_FLASH),y)
+LOGO_SRC = ../MstarCustomer/MSTAR/sboot/bin/logo/boot0.jpg
+endif
+
+ifeq ($(CONFIG_LOGO_STORE_IN_MBOOT),y)
+LOGO_SRC = ../MstarCustomer/MSTAR/sboot/bin/logo/HB_logo.JPG
+endif
+
+ifeq ($(CONFIG_LOGO_STORE_IN_MBOOT_HYBRID),y)
+LOGO_SRC = $(CONFIG_LOGO_FILE_PATH_IN_UBOOT)
+endif
+
+# That's our default target when none is given on the command line
+PHONY := all
+all: $(BINOUT)/mboot.bin
+
+define ALIGN
+$$((($(1)+$(2)-1)&(~($(2)-1))))
+endef
+
+#####################################################################
+#######         CREATE CHUNK HEADER INFORMATION START          ######
+#####################################################################
+##   Chunk Header parameter initialize START ##
+UBOOT_ROM_START = 0
+UBOOT_RAM_START = 0
+UBOOT_RAM_END = 0
+UBOOT_ROM_END = 0
+UBOOT_RAM_ENTRY = 0
+Reserved1 = 0
+Reserved2 = 0x00000301
+BINARY_ID = 0x0000B007
+LOGO_ROM_OFFSET = 0
+LOGO_SIZE = 0
+SBOOT_ROM_OFFSET = 0
+SBOOT_SIZE = 0x10000
+ifeq ($(CONFIG_MSTAR_NS_UBOOT),y)
+SBOOT_SIZE_EXTRA = 0x20000
+else ifeq ($(CONFIG_STB_ECOS_BOOT),y)
+SBOOT_SIZE_EXTRA = 0
+else
+SBOOT_SIZE_EXTRA = 0
+endif
+SBOOT_RAM_OFFSET = 0
+PM_ROM_OFFSET = 0
+PM_SIZE = 0
+PM_RAM_OFFSET = 0
+SECURITY_INFO_LOADER_ROM_OFFSET = 4
+SECURITY_INFO_LOADER_SIZE = 0
+SECURITY_INFO_LOADER_RAM_OFFSET = 0
+CUSTOMER_KEY_BANK_ROM_OFFSET = 0
+CUSTOMER_KEY_BANK_SIZE = 0x10000
+CUSTOMER_KEY_BANK_RAM_OFFSET =0
+## In PM code, "0xFFFFFFFF" is the default value of DDR_BACKUP_TABLE_ROM_OFFSET.
+## If this flag is not 0xFFFFFFFF, it will triger the PM code to do something.
+DDR_BACKUP_TABLE_ROM_OFFSET = 0xFFFFFFFF
+POWER_SEQUENCE_TABLE_ROM_OFFSET = 0
+SECURITY_INFO_AP_ROM_OFFSET = 0
+SECURITY_INFO_AP_SIZE = 0
+UBOOT_ENVIRONMENT_ROM_OFFSET = 2
+UBOOT_ENVIRONMENT_SIZE = $(CONFIG_ENV_VAR_SIZE)
+UBOOT_POOL_ROM_OFFSET = 0
+UBOOT_POOL_SIZE = 0
+COPROBOOT_ROM_OFFSET = 0
+COPROBOOT_SIZE = 0
+RT_AEON_ROM_OFFSET = 0
+RT_AEON_SIZE = 0
+NUTTX_CONFIG_OFFSET = 0
+NUTTX_CONFIG_SIZE = 0
+RESCURE_ENVIRONMENT_ROM_OFFSET = 0
+RESCURE_ENVIRONMENT_SIZE = 0x10000
+RESCURE_STATUS_ROM_OFFSET = 0
+RESCURE_STATUS_SIZE = 0
+MAX_CONFIG_BINARY_SIZE = 0x1000
+SECURITY_SIZE = 0
+MBOOT_CL = $(shell (grep 'MBOOT_CL' -R ../u-boot-2011.06/include/version.h | sed 's/\#define MBOOT_CL  \"//g' | sed 's/\\n\"//g'))
+##   Chunk Header parameter initialize END  ##
+
+UBOOT_SIZE = $(shell ls -Gl $(UBOOT_COMPRESS_BIN) | $(AWK) '{ print $$4 }')
+
+ifeq ($(findstring y, $(CONFIG_SECURITY_BOOT) $(CONFIG_MSTAR_NS_UBOOT)),y)
+SECURITY_SIZE  = $(shell ls -Gl $(SECURITY_BIN) | $(AWK) '{ print $$4 }')
+endif
+
+ifeq ($(CONFIG_MSTAR_CLEANBOOT),y)
+COPROBOOT_SIZE = $(shell ls -Gl $(CLEANBOOT_BIN) | $(AWK) '{ print $$4 }')
+else ifeq ($(CONFIG_MSTAR_PUMABOOT),y)
+ifeq ($(CONFIG_BOOTING_FROM_EXT_SPI_WITH_CPU), y)
+COPROBOOT_SIZE = $(CONFIG_PUMABOOT_SIZE)
+CHUNK_HEADER_START = $$((0x20000 + $(CONFIG_PUMABOOT_SIZE)))
+endif
+endif
+
+ifeq ($(CONFIG_MSTAR_RUNTIMEAEON),y)
+RT_AEON_SIZE = $(shell ls -Gl $(RT_AEON_BIN) | $(AWK) '{ print $$4 }')
+endif
+
+ifeq ($(CONFIG_COMPRESSED_UBOOT), y)
+$(shell mv $(UBOOT_BIN) $(UBOOT_BIN).nocompress)
+ORI_UBOOT_SIZE = $(shell ls -Gl $(UBOOT_BIN).nocompress | $(AWK) '{ print $$4 }')
+else
+ORI_UBOOT_SIZE = $(UBOOT_SIZE)
+endif
+
+CHUNK_HEADER_SIZE = 1024
+CUS_KEYBANK_LEN = 0x1000
+KEYLADDER_DATA_LEN = 0xF0 # 0x200 - 0x110
+KEYLADDER_CHUNK_LEN = 0x800
+
+ifeq ($(ARCH),aeon)
+SPI_BASE=0x00000000
+RAM_BASE=0x00000000
+else ifeq ($(ARCH),mips)
+ifeq ($(CONFIG_MSTAR_KAISERIN),y)
+SPI_BASE=0x94000000
+else
+SPI_BASE=0xBFC00000
+endif
+RAM_BASE=0x20000000
+else ifeq ($(ARCH),arm)
+SPI_BASE=0x14000000
+RAM_BASE=$(CONFIG_MIU0_BUSADDR)
+else ifeq ($(ARCH),aarch64)
+SPI_BASE=0x14000000
+RAM_BASE=$(CONFIG_MIU0_BUSADDR)
+endif
+
+ifeq ($(CONFIG_MSTAR_RT_PM_IN_SPI),y)
+PM_SIZE           		= 0x20000
+endif
+
+ifeq ($(CONFIG_ENV_IN_MMC),y)
+UBOOT_ENVIRONMENT_ROM_OFFSET = 256
+endif
+
+ifeq ($(CONFIG_BOOTING_FROM_EXT_SPI_WITH_PM51),y)
+CUSTOMER_KEY_BANK_SIZE              = 0x10000
+endif
+
+MBOOT_ALIGNMENT_SIZE = 0x10000
+ifeq ($(CONFIG_MBOOT_IN_SPI_FLASH),y)
+MBOOT_ALIGNMENT_SIZE = $(CONFIG_ENV_VAR_SIZE)
+else ifeq ($(CONFIG_MBOOT_IN_NAND_FLASH),y)
+MBOOT_ALIGNMENT_SIZE = 0x10000
+else ifeq ($(CONFIG_MBOOT_IN_MMC_FLASH),y)
+MBOOT_ALIGNMENT_SIZE = 0x200
+endif
+
+ifeq ($(CONFIG_SECURITY_BOOT), y)
+ifeq ($(CONFIG_SECURITY_STORE_IN_SPI_FLASH),y)
+	SECURITY_INFO_AP_ROM_OFFSET = 4
+else ifeq ($(CONFIG_SECURITY_STORE_IN_NAND_FLASH),y)
+	SECURITY_INFO_AP_ROM_OFFSET = 4
+else ifeq ($(CONFIG_SECURITY_STORE_IN_EMMC_FLASH),y)
+	SECURITY_INFO_AP_ROM_OFFSET = 352
+endif
+endif
+
+ifeq ($(CONFIG_R2_BRINGUP),y)
+ifeq ($(CONFIG_TEE),y)
+ifeq ($(CONFIG_NCONFIG_STORE_IN_EMMC_FLASH),y)
+	NUTTX_CONFIG_OFFSET = 608
+	NUTTX_CONFIG_SIZE = 128
+else ifeq ($(CONFIG_NCONFIG_STORE_IN_NAND_FLASH),y)
+ 	NUTTX_CONFIG_OFFSET = 6
+	NUTTX_CONFIG_SIZE = 1
+else ifeq ($(CONFIG_NCONFIG_STORE_IN_SPI_FLASH),y)
+	NUTTX_CONFIG_OFFSET = 6
+	NUTTX_CONFIG_SIZE = 1
+endif
+endif
+endif
+
+ifeq ($(CONFIG_RESCUE_ENV),y)
+ifeq ($(CONFIG_TEE),y)
+	ifeq ($(CONFIG_ENV_IN_SERIAL),y)
+		RESCURE_ENVIRONMENT_ROM_OFFSET = 8
+		RESCURE_STATUS_ROM_OFFSET = 9
+	else ifeq ($(CONFIG_ENV_IN_NAND),y)
+		RESCURE_ENVIRONMENT_ROM_OFFSET = 8
+		RESCURE_STATUS_ROM_OFFSET = 9
+	else ifeq ($(CONFIG_ENV_IN_MMC),y)
+		RESCURE_ENVIRONMENT_ROM_OFFSET = 1120
+		RESCURE_STATUS_ROM_OFFSET = 1121
+	endif
+else ifeq ($(CONFIG_SECURITY_BOOT),y)
+	ifeq ($(CONFIG_ENV_IN_SERIAL),y)
+		RESCURE_ENVIRONMENT_ROM_OFFSET = 6
+		RESCURE_STATUS_ROM_OFFSET = 7
+	else ifeq ($(CONFIG_ENV_IN_NAND),y)
+		RESCURE_ENVIRONMENT_ROM_OFFSET = 6
+		RESCURE_STATUS_ROM_OFFSET = 7
+	else ifeq ($(CONFIG_ENV_IN_MMC),y)
+		RESCURE_ENVIRONMENT_ROM_OFFSET = 864
+		RESCURE_STATUS_ROM_OFFSET = 865
+	endif
+else
+	ifeq ($(CONFIG_ENV_IN_SERIAL),y)
+		RESCURE_ENVIRONMENT_ROM_OFFSET = 4
+		RESCURE_STATUS_ROM_OFFSET = 5
+	else ifeq ($(CONFIG_ENV_IN_NAND),y)
+		RESCURE_ENVIRONMENT_ROM_OFFSET = 4
+		RESCURE_STATUS_ROM_OFFSET = 5
+	else ifeq ($(CONFIG_ENV_IN_MMC),y)
+		RESCURE_ENVIRONMENT_ROM_OFFSET = 608
+		RESCURE_STATUS_ROM_OFFSET = 609
+	endif
+endif
+endif
+
+
+ifeq ($(CONFIG_MCU_ARM),y)
+_UBOOT_RAM_START            = $$(($(UBOOT_RAM_ENTRY)-$(RAM_BASE)))
+UBOOT_RAM_ENTRY            = $(shell $(AWK) '$$2 == "_start" { print $$1 }' $(UBOOT_MAP))
+else
+_UBOOT_RAM_START            = $(shell $(AWK) '$$2 == "other_vector" { print $$1 }' $(UBOOT_MAP))
+UBOOT_RAM_ENTRY            = $(shell $(AWK) '$$2 == "_start" { print $$1 }' $(UBOOT_MAP))
+endif
+
+	UBOOT_RAM_START=$$(($(_UBOOT_RAM_START)+$(RAM_BASE)))
+	UBOOT_RAM_END= $$(($(_UBOOT_RAM_START)+$(ORI_UBOOT_SIZE)+$(RAM_BASE)))
+
+ifeq ($(CONFIG_BOOTING_FROM_OTP_WITH_PM51),y)
+	SECURITY_INFO_LOADER_SIZE = 816
+	PM_ROM_OFFSET=$(SPI_BASE)
+	PM_RAM_OFFSET=$(CONFIG_PM_DRAM_ADDRESS)
+	SBOOT_ROM_OFFSET=$$(($(PM_ROM_OFFSET)+$(PM_SIZE)))
+	SBOOT_RAM_OFFSET=$(shell $(AWK) '$$2 == "_ld_boot_start" { print $$1 }' $(SBOOT_MAP))
+	CUSTOMER_KEY_BANK_ROM_OFFSET=$$(($(SBOOT_ROM_OFFSET)+$(SBOOT_SIZE)))
+	CUSTOMER_KEY_BANK_RAM_OFFSET=$(CONFIG_CUSTOMER_KEY_BANK_DRAM_ADDRESS)
+        ## Remember Chunk Header
+	UBOOT_ROM_START=$$(($(CUSTOMER_KEY_BANK_ROM_OFFSET)+$(CUSTOMER_KEY_BANK_SIZE)+$(CHUNK_HEADER_SIZE)))
+	UBOOT_ROM_END=$$(($(UBOOT_ROM_START)+$(UBOOT_SIZE)+$(CONFIG_APP_HEADER_SIZE)))
+	SECURITY_INFO_LOADER_ROM_OFFSET=$(UBOOT_ROM_END)
+	SECURITY_INFO_LOADER_RAM_OFFSET=$(CONFIG_SECURITY_INFO_DRAM_ADDRESS)
+else ifeq (y, $(findstring y, $(CONFIG_MSTAR_BFN_EN)\
+							  $(CONFIG_MSTAR_BFE_EN)))
+    ifeq ($(CONFIG_DOUBLE_MBOOT), y)
+	UBOOT_ROM_START=$$(($(CHUNK_HEADER_SIZE)+$(HASH3_SIZE)))
+    else
+	UBOOT_ROM_START=$(CHUNK_HEADER_SIZE)
+    endif
+	UBOOT_ROM_END=$$(($(UBOOT_ROM_START)+$(UBOOT_SIZE)+$(CONFIG_APP_HEADER_SIZE)))
+	ifeq ($(findstring y, $(CONFIG_SECURITY_BOOT) $(CONFIG_MSTAR_NS_UBOOT) $(CONFIG_2ND_LOADER_VERIFICATION)),y)
+	SECURITY_INFO_LOADER_SIZE = 0
+	SECURITY_INFO_LOADER_ROM_OFFSET=$(UBOOT_ROM_END)
+	_CUSTOMER_KEY_BANK_ROM_OFFSET=$$(($(SECURITY_INFO_LOADER_ROM_OFFSET)+$(SECURITY_INFO_LOADER_SIZE)))
+	CUSTOMER_KEY_BANK_ROM_OFFSET=$(call ALIGN,$(_CUSTOMER_KEY_BANK_ROM_OFFSET),$(MBOOT_ALIGNMENT_SIZE))
+	endif
+	ifeq ($(CONFIG_MSTAR_CLEANBOOT),y)
+	ifeq ($(CONFIG_SECURITY_BOOT), y)
+	COPROBOOT_ROM_OFFSET=$$(($(CUSTOMER_KEY_BANK_ROM_OFFSET)+$(SECURITY_SIZE)))
+	else
+	COPROBOOT_ROM_OFFSET=$(UBOOT_ROM_END)
+	endif
+	endif
+	ifeq ($(CONFIG_MSTAR_RUNTIMEAEON),y)
+	RT_AEON_ROM_OFFSET=$(UBOOT_ROM_END)
+	ifeq ($(CONFIG_MSTAR_CLEANBOOT),y)
+	RT_AEON_ROM_OFFSET=$$(($(COPROBOOT_ROM_OFFSET)+$(COPROBOOT_SIZE)))
+	endif
+	ifeq ($(CONFIG_SECURITY_BOOT), y)
+	RT_AEON_ROM_OFFSET=$$(($(CUSTOMER_KEY_BANK_ROM_OFFSET)+$(SECURITY_SIZE)))
+	endif
+	endif
+else
+	ifeq ($(CONFIG_MBOOT_IN_SPI_FLASH),y)
+	    ifneq ($(CONFIG_DISABLE_PM_PARTITION),y)
+	    PM_SIZE = 0x10000
+	    endif
+	SBOOT_ROM_OFFSET=$$(($(PM_ROM_OFFSET)+$(PM_SIZE)))
+        ifeq ($(CONFIG_MSTAR_CLEANBOOT),y)
+	UBOOT_ROM_START=$$(($(PM_SIZE)+$(SBOOT_SIZE)+$(SBOOT_SIZE_EXTRA)+$(COPROBOOT_SIZE)+$(CHUNK_HEADER_SIZE)+$(SPI_BASE)))
+	    else ifeq ($(CONFIG_MSTAR_PUMABOOT),y)
+            ifeq ($(CONFIG_BOOTING_FROM_EXT_SPI_WITH_CPU), y)
+	UBOOT_ROM_START=$$(($(PM_SIZE)+$(SBOOT_SIZE)+$(SBOOT_SIZE_EXTRA)+$(COPROBOOT_SIZE)+$(CHUNK_HEADER_SIZE)+$(SPI_BASE)))
+            endif
+        else
+	UBOOT_ROM_START=$$(($(PM_SIZE)+$(SBOOT_SIZE)+$(SBOOT_SIZE_EXTRA)+$(CHUNK_HEADER_SIZE)+$(SPI_BASE)))
+        endif
+	UBOOT_ROM_END=$$(($(UBOOT_ROM_START)+$(UBOOT_SIZE)+$(CONFIG_APP_HEADER_SIZE)))
+	CUSTOMER_KEY_BANK_ROM_OFFSET=$$(((($(UBOOT_ROM_END)+0x10000)&(~0xFFFF))-$(SPI_BASE)))
+        ifeq ($(CONFIG_LOGO_STORE_IN_SPI_FLASH),y)
+            ifeq ($(findstring y, $(CONFIG_SECURITY_BOOT) $(CONFIG_MSTAR_NS_UBOOT)),y)
+	UBOOT_POOL_ROM_OFFSET = $$((($(CUSTOMER_KEY_BANK_ROM_OFFSET)+$(RT_AEON_SIZE)+$(COPROBOOT_SIZE)+0x10000)&(~0xFFFF)))
+            else
+    UBOOT_POOL_ROM_OFFSET = $$(((($(UBOOT_ROM_END)+$(RT_AEON_SIZE)+$(COPROBOOT_SIZE)+$(SECURITY_INFO_LOADER_SIZE)+0x10000)&(~0xFFFF))-$(SPI_BASE)))
+            endif
+        endif
+	else ifeq ($(CONFIG_MBOOT_IN_NAND_FLASH),y)
+	    ifeq ($(CONFIG_DOUBLE_MBOOT), y)
+	UBOOT_ROM_START=$$(($(CHUNK_HEADER_SIZE)+$(HASH3_SIZE)))
+        else
+	UBOOT_ROM_START=$(CHUNK_HEADER_SIZE)
+        endif
+	UBOOT_ROM_END=$$(($(UBOOT_ROM_START)+$(UBOOT_SIZE)+$(CONFIG_APP_HEADER_SIZE)))
+        ifeq ($(findstring y, $(CONFIG_SECURITY_BOOT) $(CONFIG_MSTAR_NS_UBOOT) $(CONFIG_2ND_LOADER_VERIFICATION)),y)
+        SECURITY_INFO_LOADER_SIZE = 0
+        SECURITY_INFO_LOADER_ROM_OFFSET=$(UBOOT_ROM_END)
+        _CUSTOMER_KEY_BANK_ROM_OFFSET=$$(($(SECURITY_INFO_LOADER_ROM_OFFSET)+$(SECURITY_INFO_LOADER_SIZE)))
+        CUSTOMER_KEY_BANK_ROM_OFFSET=$(call ALIGN,$(_CUSTOMER_KEY_BANK_ROM_OFFSET),$(MBOOT_ALIGNMENT_SIZE))
+        endif
+	    ifeq ($(CONFIG_MSTAR_CLEANBOOT),y)
+	        ifeq ($(CONFIG_SECURITY_BOOT), y)
+	COPROBOOT_ROM_OFFSET=$$(($(CUSTOMER_KEY_BANK_ROM_OFFSET)+$(SECURITY_SIZE)))
+	        else
+	COPROBOOT_ROM_OFFSET=$(UBOOT_ROM_END)
+	        endif
+	    endif
+	    ifeq ($(CONFIG_MSTAR_RUNTIMEAEON),y)
+	RT_AEON_ROM_OFFSET=$(UBOOT_ROM_END)
+	        ifeq ($(CONFIG_MSTAR_CLEANBOOT),y)
+	RT_AEON_ROM_OFFSET=$$(($(COPROBOOT_ROM_OFFSET)+$(COPROBOOT_SIZE)))
+	        endif
+	        ifeq ($(CONFIG_SECURITY_BOOT), y)
+	RT_AEON_ROM_OFFSET=$$(($(CUSTOMER_KEY_BANK_ROM_OFFSET)+$(SECURITY_SIZE)))
+	        endif
+	    endif
+	endif
+endif
+
+ifneq (, $(filter y, $(CONFIG_LOGO_STORE_IN_MBOOT) $(CONFIG_LOGO_STORE_IN_MBOOT_HYBRID)))
+	LOGO_SIZE=$(shell ls -Gl $(LOGO_SRC) | $(AWK) '{ print $$4 }')
+    _LOGO_ROM_OFFSET=$$(($(UBOOT_ROM_END)+$(SECURITY_INFO_LOADER_SIZE)+$(SECURITY_SIZE)+$(COPROBOOT_SIZE)))
+    ifeq ($(CONFIG_MBOOT_IN_SPI_FLASH),y)
+	LOGO_ROM_OFFSET=$$(($(call ALIGN,$(_LOGO_ROM_OFFSET),$(MBOOT_ALIGNMENT_SIZE)) - $(SPI_BASE)))
+    else
+	LOGO_ROM_OFFSET=$$(($(call ALIGN,$(_LOGO_ROM_OFFSET),$(MBOOT_ALIGNMENT_SIZE))))
+    endif
+endif
+
+ifeq ($(CONFIG_BACKUP_SENSITIVE_TABLE), y)
+DDR_BACKUP_TABLE_ROM_OFFSET=$(CONFIG_SPI_OFFSET_OF_BACKUP_TABLE)
+endif
+#	Customer Key Bank  struct{
+#		SUB_SECURE_INFO customerKeyBank;
+#  		U8 u8RSABootPublicKey[260];
+#  		U8 u8RSAUpgradePublicKey[260];
+#  		U8 u8RSAImagePublicKey[260];
+#  		U8 u8AESBootKey[16];
+#  		U8 u8AESUpgradeKey[16];
+#  		U8 u8MagicID[16];
+#  		U8 checkSum[4];
+#   }
+$(SECURITY_BIN):
+	$(Q)printf "SECURITY_BIN START\n"
+	$(Q)cat $(RSA_BOOT_PUBLIC_KEY_BIN) > tempKeyBank;
+ifeq ($(CONFIG_REAL_KEY),y)
+	$(Q)echo "make keybank with real key"
+	$(Q)$(TOOL_PATH)/grid.sh $(TOOL_PATH)/keybank.sh $(PROJDIR)/tempKeyBank $(PROJECT)
+	$(Q)cat $(MAGIC_ID) >> tempKeyBank;
+	$(Q)$(SECUREDIR)/crc -a tempKeyBank;
+	$(Q)$(TOOL_PATH)/grid.sh $(TOOL_PATH)/SubSecureInfoGen_boot.sh $(PROJDIR)/tempKeyBank.signature.bin $(PROJDIR)/tempKeyBank 1 $(PROJECT) $(PROJDIR)/secure 0 8 0 $(BLOCK_SIZE) 0;
+else
+	$(Q)cat $(RSA_UPGRADE_PUBLIC_KEY_BIN) >> tempKeyBank;
+	$(Q)cat $(RSA_IMAGE_PUBLIC_KEY_BIN) >> tempKeyBank;
+	$(Q)cat $(AES_BOOT_KEY) >> tempKeyBank;
+	$(Q)cat $(AES_UPGRADE_KEY) >> tempKeyBank;
+	$(Q)cat $(MAGIC_ID) >> tempKeyBank;
+	$(Q)$(SECUREDIR)/crc -a tempKeyBank;
+	$(Q)printf "SubSecureInfoGen START\n"
+	$(Q)$(SECUREDIR)/SubSecureInfoGen.exe tempKeyBank.signature.bin tempKeyBank $(RSA_BOOT_PRIVATE_KEY) $(RSA_BOOT_PUBLIC_KEY) 0  8 0 $(BLOCK_SIZE) 0 $(SECUREDIR);
+endif
+	$(Q)cat tempKeyBank >> tempKeyBank.signature.bin;
+# generate bakcup for CustomerKeyBank
+	$(TOOLDIR)/align tempKeyBank.signature.bin $(CUS_KEYBANK_LEN);
+	$(Q)cp tempKeyBank.signature.bin _tempKeyBank.signature.bin;
+	$(Q)cat tempKeyBank.signature.bin >>_tempKeyBank.signature.bin;
+ifeq ($(CONFIG_MSTAR_NS_UBOOT_LDR2),y)
+# TEE key bank
+	$(Q)cp $(TEE_KEYBANK_BIN) $(BINOUT)/TEEKeyBank.bin
+# REE key bank
+	$(Q)cp $(REE_KEYBANK_BIN) $(BINOUT)/REEKeyBank.bin
+# Merge key bank
+	$(Q)cat $(TEE_KEYBANK_BIN) >> _tempKeyBank.signature.bin;
+#	$(Q)cat tempREEKeyBank.signature.bin >> _tempKeyBank.signature.bin;
+	$(Q)cat $(REE_KEYBANK_BIN) >> _tempKeyBank.signature.bin;
+	$(Q)dd if=/dev/zero of=$(BINOUT)/dummy.bin bs=1 count=4096;
+	$(Q)cat $(BINOUT)/dummy.bin >> _tempKeyBank.signature.bin; # for backward compatibility
+ifeq ($(CONFIG_TEE_LOADER),y)
+	$(Q)test -f $(REE_LOADER_SIGNATURE) || dd if=/dev/zero of=$(REE_LOADER_SIGNATURE) bs=1 count=272;
+	$(Q)cat $(REE_LOADER_SIGNATURE) >> _tempKeyBank.signature.bin;
+	$(TOOLDIR)/align _tempKeyBank.signature.bin $(CUS_KEYBANK_LEN);
+else
+	$(Q)dd if=/dev/zero of=_padding.bin bs=1 count=4096;
+	$(Q)cat _padding.bin >> _tempKeyBank.signature.bin;
+	$(Q)rm _padding.bin
+endif
+endif
+	$(TOOLDIR)/align _tempKeyBank.signature.bin $(MBOOT_ALIGNMENT_SIZE);
+	$(Q)cat _tempKeyBank.signature.bin >> $@;
+	$(Q)rm _tempKeyBank.signature.bin;
+
+$(CHUNK_HEADER):
+	$(Q)echo "  GEN     $@"
+	$(Q)printf "== CHUNK HEADER INFO ==\n"
+	$(Q)printf "UBOOT_ROM_START=0x%x\n" $(UBOOT_ROM_START)
+	$(Q)printf "UBOOT_RAM_START=0x%x\n" $(UBOOT_RAM_START)
+	$(Q)printf "UBOOT_RAM_END=0x%x\n" $(UBOOT_RAM_END)
+	$(Q)printf "UBOOT_ROM_END=0x%x\n" $(UBOOT_ROM_END)
+	$(Q)printf "UBOOT_RAM_ENTRY=0x%x\n" $(UBOOT_RAM_ENTRY)
+	$(Q)printf "Reserved1=0x%x\n" $(Reserved1)
+	$(Q)printf "Reserved2=0x%x\n" $(Reserved2)
+	$(Q)printf "BINARY_ID=0x%x\n" $(BINARY_ID)
+	$(Q)printf "LOGO_ROM_OFFSET=0x%x\n" $(LOGO_ROM_OFFSET)
+	$(Q)printf "LOGO_SIZE=0x%x\n" $(LOGO_SIZE)
+	$(Q)printf "SBOOT_ROM_OFFSET=0x%x\n" $(SBOOT_ROM_OFFSET)
+	$(Q)printf "SBOOT_SIZE=0x%x\n" $(SBOOT_SIZE)
+	$(Q)printf "SBOOT_SIZE_EXTRA=0x%x\n" $(SBOOT_SIZE_EXTRA)
+	$(Q)printf "SBOOT_RAM_OFFSET=0x%x\n" $(SBOOT_RAM_OFFSET)
+	$(Q)printf "PM_ROM_OFFSET=0x%x\n" $(PM_ROM_OFFSET)
+	$(Q)printf "PM_SIZE=0x%x\n" $(PM_SIZE)
+	$(Q)printf "PM_RAM_OFFSET=0x%x\n" $(PM_RAM_OFFSET)
+	$(Q)printf "SECURITY_INFO_LOADER_ROM_OFFSET=0x%x\n" $(SECURITY_INFO_LOADER_ROM_OFFSET)
+	$(Q)printf "SECURITY_INFO_LOADER_SIZE=0x%x\n" $(SECURITY_INFO_LOADER_SIZE)
+	$(Q)printf "SECURITY_INFO_LOADER_RAM_OFFSET=0x%x\n" $(SECURITY_INFO_LOADER_RAM_OFFSET)
+	$(Q)printf "CUSTOMER_KEY_BANK_ROM_OFFSET=0x%x\n" $(CUSTOMER_KEY_BANK_ROM_OFFSET)
+	$(Q)printf "CUSTOMER_KEY_BANK_SIZE=0x%x\n" $(CUSTOMER_KEY_BANK_SIZE)
+	$(Q)printf "CUSTOMER_KEY_BANK_RAM_OFFSET=0x%x\n" $(CUSTOMER_KEY_BANK_RAM_OFFSET)
+	$(Q)printf "DDR_BACKUP_TABLE_ROM_OFFSET=0x%x\n" $(DDR_BACKUP_TABLE_ROM_OFFSET)
+	$(Q)printf "POWER_SEQUENCE_TABLE_ROM_OFFSET=0x%x\n" $(POWER_SEQUENCE_TABLE_ROM_OFFSET)
+	$(Q)printf "SECURITY_INFO_AP_ROM_OFFSET=0x%x\n" $(SECURITY_INFO_AP_ROM_OFFSET)
+	$(Q)printf "SECURITY_INFO_AP_SIZE=0x%x\n" $(SECURITY_INFO_AP_SIZE)
+	$(Q)printf "UBOOT_ENVIRONMENT_ROM_OFFSET=0x%x\n" $(UBOOT_ENVIRONMENT_ROM_OFFSET)
+	$(Q)printf "UBOOT_ENVIRONMENT_SIZE=0x%x\n" $(UBOOT_ENVIRONMENT_SIZE)
+	$(Q)printf "UBOOT_POOL_ROM_OFFSET=0x%x\n" $(UBOOT_POOL_ROM_OFFSET)
+	$(Q)printf "UBOOT_POOL_SIZE=0x%x\n" $(UBOOT_POOL_SIZE)
+	$(Q)printf "COPROBOOT_ROM_OFFSET=0x%x\n" $(COPROBOOT_ROM_OFFSET)
+	$(Q)printf "COPROBOOT_SIZE=0x%x\n" $(COPROBOOT_SIZE)
+	$(Q)printf "RUNTIMEAEON_ROM_OFFSET=0x%x\n" $(RT_AEON_ROM_OFFSET)
+	$(Q)printf "RUNTIMEAEON_SIZE=0x%x\n" $(RT_AEON_SIZE)
+	$(Q)printf "NUTTX_CONFIG_OFFSET=0x%x\n" $(NUTTX_CONFIG_OFFSET)
+	$(Q)printf "NUTTX_CONFIG_SIZE=0x%x\n" $(NUTTX_CONFIG_SIZE)
+	$(Q)printf "RESCURE_ENVIRONMENT_ROM_OFFSET=0x%x\n" $(RESCURE_ENVIRONMENT_ROM_OFFSET)
+	$(Q)printf "RESCURE_ENVIRONMENT_SIZE=0x%x\n" $(RESCURE_ENVIRONMENT_SIZE)
+	$(Q)printf "RESCURE_STATUS_ROM_OFFSET=0x%x\n" $(RESCURE_STATUS_ROM_OFFSET)
+	$(Q)printf "RESCURE_STATUS_SIZE=0x%x\n" $(RESCURE_STATUS_SIZE)
+	$(Q)printf "MBOOT_CL=%s\n" $(MBOOT_CL)
+
+	$(Q)$(TOOLDIR)/create_chunk_header.exe $@ $(CHUNK_HEADER_SIZE)\
+               $(UBOOT_ROM_START) $(UBOOT_RAM_START) $(UBOOT_RAM_END) $(UBOOT_ROM_END) \
+               $(UBOOT_RAM_ENTRY) $(Reserved1) $(Reserved2) $(BINARY_ID) \
+			   $(LOGO_ROM_OFFSET) $(LOGO_SIZE) $(SBOOT_ROM_OFFSET) $(SBOOT_SIZE) \
+			   $(SBOOT_RAM_OFFSET) $(PM_ROM_OFFSET) $(PM_SIZE)	$(PM_RAM_OFFSET) \
+			   $(SECURITY_INFO_LOADER_ROM_OFFSET) $(SECURITY_INFO_LOADER_SIZE) $(SECURITY_INFO_LOADER_RAM_OFFSET) $(CUSTOMER_KEY_BANK_ROM_OFFSET)\
+			   $(CUSTOMER_KEY_BANK_SIZE) $(CUSTOMER_KEY_BANK_RAM_OFFSET) $(SECURITY_INFO_AP_ROM_OFFSET) $(SECURITY_INFO_AP_SIZE)  \
+			   $(UBOOT_ENVIRONMENT_ROM_OFFSET) $(UBOOT_ENVIRONMENT_SIZE) $(DDR_BACKUP_TABLE_ROM_OFFSET) $(POWER_SEQUENCE_TABLE_ROM_OFFSET) \
+			   $(UBOOT_POOL_ROM_OFFSET) $(UBOOT_POOL_SIZE) $(NUTTX_CONFIG_OFFSET) $(NUTTX_CONFIG_SIZE) \
+			   $(RESCURE_ENVIRONMENT_ROM_OFFSET) $(RESCURE_ENVIRONMENT_SIZE) $(RESCURE_STATUS_ROM_OFFSET) $(RESCURE_STATUS_SIZE) \
+			   $(MBOOT_CL)
+
+#######           CREATE  CHUNK HEADER INFORMATION END              ######
+
+
+##   Create Authentication Related Files  ##
+ifeq ($(CONFIG_MSTAR_KIWI),y)
+ifeq ($(CONFIG_MSTAR_AUTHEN_ENABLE), y)
+	$(Q)$(TOOLDIR)/SeparateBin.exe $(SBOOT_BIN) $(HASH1_BIN) $(CONFIG_BOOT_HASH1_OFFSET_ADDRESS) $(CONFIG_BOOT_HASH1_IMAGE_SIZE)
+	$(Q)$(TOOLDIR)/SeparateBin.exe $(SBOOT_BIN) $(HASH1_MIU_BIN) $(CONFIG_BOOT_HASH1_MIU_OFFSET_ADDRESS) $(CONFIG_BOOT_HASH1_MIU_IMAGE_SIZE)
+	$(Q)$(TOOLDIR)/SeparateBin.exe $(SBOOT_BIN) $(HASH1_STR_BIN) $(CONFIG_BOOT_HASH1_STR_OFFSET_ADDRESS) $(CONFIG_BOOT_HASH1_STR_IMAGE_SIZE)
+	$(Q)$(TOOLDIR)/SeparateBin.exe $(SBOOT_BIN) $(HASH2_BIN) $(CONFIG_BOOT_HASH2_OFFSET_ADDRESS) $(CONFIG_BOOT_HASH2_IMAGE_SIZE)
+	$(Q)$(SECUREDIR)/rsa_sign $(HASH1_BIN) $(RSA_BOOT_PRIVATE_KEY)
+	$(Q)$(SECUREDIR)/rsa_sign $(HASH1_STR_BIN) $(RSA_BOOT_PRIVATE_KEY)
+	$(Q)$(SECUREDIR)/rsa_sign $(HASH1_MIU_BIN) $(RSA_BOOT_PRIVATE_KEY)
+	$(Q)$(SECUREDIR)/rsa_sign $(HASH2_BIN) $(RSA_BOOT_PRIVATE_KEY)
+	$(Q)scripts/append_signature.pl $(HASH1_SIG) $(CONFIG_BOOT_SIG_IMAGE_SIZE) $(SBOOT_BIN) $(CONFIG_BOOT_HASH1_SIG_ADDRESS)
+	$(Q)scripts/append_signature.pl $(HASH1_MIU_SIG) $(CONFIG_BOOT_SIG_IMAGE_SIZE) $(SBOOT_BIN) $(CONFIG_BOOT_HASH1_MIU_SIG_ADDRESS)
+	$(Q)scripts/append_signature.pl $(HASH1_STR_SIG) $(CONFIG_BOOT_SIG_IMAGE_SIZE) $(SBOOT_BIN) $(CONFIG_BOOT_HASH1_STR_SIG_ADDRESS)
+	$(Q)scripts/append_signature.pl $(HASH2_SIG) $(CONFIG_BOOT_SIG_IMAGE_SIZE) $(SBOOT_BIN) $(CONFIG_BOOT_HASH2_SIG_ADDRESS)
+ifeq ($(CONFIG_MSTAR_BFE_EN), y)
+	$(Q)cp $(HASH0_BIN) $(EMMC_BOOT_BIN);
+	$(Q)$(TOOLDIR)/MergeBin.exe $(SBOOT_BIN) $(EMMC_BOOT_BIN) $(CONFIG_BOOT_HASH0_IMAGE_SIZE)
+endif
+endif
+endif  #($(CONFIG_MSTAR_KIWI),y)
+
+ifeq ($(CONFIG_MSTAR_STR_ENABLE),y)
+ifneq ($(CONFIG_DISABLE_PM_PARTITION),y)
+$(BINOUT)/mboot.bin: $(PM_BINA)
+endif
+endif
+
+ifeq ($(findstring y, $(CONFIG_MSTAR_AUTHEN_ENABLE) $(CONFIG_SECURITY_BOOT) $(CONFIG_MSTAR_NS_UBOOT)),y)
+$(BINOUT)/mboot.bin: $(SECURITY_BIN) $(CHUNK_HEADER)
+else
+$(BINOUT)/mboot.bin: $(CHUNK_HEADER)
+endif
+	$(Q)echo "  MERGE from $(LD_FILE) "
+ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+	$(Q)dd if=bin/flash.bin of=suffix.bin bs=1;
+	$(Q)dd if=bin/flash.bin of=$@ bs=1 skip=0 count=65536;
+	
+ifeq ($(CONFIG_MSTAR_KIWI),y)    # Old Chip
+ifeq ($(CONFIG_MSTAR_AUTHEN_ENABLE), y)
+	$(Q)head -c 752 $(CHUNK_HEADER) > $(CHUNK_HEADER).tmp
+	$(Q)mv $(CHUNK_HEADER).tmp $(CHUNK_HEADER)
+ifeq ($(CONFIG_REAL_KEY),y)
+	$(Q)$(TOOL_PATH)/grid.sh $(TOOL_PATH)/SubSecureInfoGen_boot.sh $(PROJDIR)/$(CHUNK_HEADER).signature.bin $(PROJDIR)/$(CHUNK_HEADER) 1 $(PROJECT) $(PROJDIR)/secure 0 8 0 $(BLOCK_SIZE) 0
+else
+	$(Q)$(SECUREDIR)/SubSecureInfoGen.exe $(CHUNK_HEADER).signature.bin $(CHUNK_HEADER) $(RSA_BOOT_PRIVATE_KEY) $(RSA_BOOT_PUBLIC_KEY) 0 8 0 $(BLOCK_SIZE) 0 $(SECUREDIR)
+endif
+	$(Q)cat $(CHUNK_HEADER).signature.bin >> $(CHUNK_HEADER)
+endif
+endif    #($(CONFIG_MSTAR_KIWI),y)
+
+else
+	$(Q)dd if=bin/flash_with_uboot.bin of=suffix.bin bs=1 skip=$(LD_UBOOTSIZE);
+# Remove PM code for NS_UBOOT flow
+ifeq ($(CONFIG_BOOT_SEQUENCE_FORCE_SPINOR),y)
+ifeq ($(CONFIG_MSTAR_NS_UBOOT),y)
+	$(Q)dd if=bin/flash_with_uboot.bin of=$@ bs=1 skip=0 count=196608;
+else
+	$(Q)dd if=bin/flash_with_uboot.bin of=$@ bs=1 skip=0 count=65536;
+endif
+else  #CONFIG_BOOT_SEQUENCE_FORCE_SPINOR != Y
+ifeq ($(CONFIG_MSTAR_NS_UBOOT),y)
+	$(Q)dd if=bin/flash_with_uboot.bin of=$@ bs=1 skip=0 count=262144;
+else
+	$(Q)dd if=bin/flash_with_uboot.bin of=$@ bs=1 skip=0 count=131072;
+endif
+endif #ifeq ($(CONFIG_BOOT_SEQUENCE_FORCE_SPINOR),y)
+
+endif
+ifneq ($(CONFIG_DISABLE_PM_PARTITION),y)
+ifeq ($(CONFIG_BOOT_SEQUENCE_FORCE_SPINOR),y)
+	$(Q)cat $(PM_BINA) >> $@;
+endif
+endif
+	$(Q)cat $(CHUNK_HEADER)>> $@;
+	
+ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+ifeq ($(CONFIG_COMPRESSED_UBOOT),y)
+	$(Q)cat $(UBOOT_COMPRESS_BIN) >> $@;
+else
+	$(Q)cat $(UBOOT_BIN) >> $@;
+endif
+ifeq ($(CONFIG_SECURITY_BOOT),y)
+ifeq ($(CONFIG_REAL_KEY),y)
+	$(Q)$(TOOL_PATH)/grid.sh $(TOOL_PATH)/SubSecureInfoGen_boot.sh $(PROJDIR)/$(UBOOT_BIN).signature.bin $(PROJDIR)/$(UBOOT_BIN) 1 $(PROJECT) $(PROJDIR)/secure 0 8 0 $(BLOCK_SIZE) 0
+else
+	$(Q)$(SECUREDIR)/SubSecureInfoGen.exe $(UBOOT_BIN).signature.bin $(UBOOT_BIN) $(RSA_BOOT_PRIVATE_KEY) $(RSA_BOOT_PUBLIC_KEY) 0 8 0 $(BLOCK_SIZE) 0 $(SECUREDIR)
+endif
+	$(Q)cat $(UBOOT_BIN).signature.bin >> $@
+endif
+else    #ifeq ($(CONFIG_LD_BFN_ROM_BOOT),y)
+	$(Q)cat suffix.bin >> $@;
+	
+endif
+
+ifeq ($(findstring y, $(CONFIG_SECURITY_BOOT) $(CONFIG_MSTAR_NS_UBOOT)),y)
+	$(Q)./$(TOOLDIR)/align $@ $(MBOOT_ALIGNMENT_SIZE);
+	$(Q)cat $(SECURITY_BIN) >> $@;
+endif
+	$(Q)rm suffix.bin;
+
+ifneq (, $(filter y, $(CONFIG_LOGO_STORE_IN_MBOOT) $(CONFIG_LOGO_STORE_IN_MBOOT_HYBRID)))
+	$(Q)./$(TOOLDIR)/align $@ $(MBOOT_ALIGNMENT_SIZE);
+	$(Q)cat $(LOGO_SRC) >> $@;
+endif
+
+binaclean:
+	$(Q)rm -f $(BINOUT)/chunk_header.bin
+	$(Q)rm -f $(BINOUT)/mboot.bin
+	$(Q)rm -f $(SECURITY_BIN)
+	$(Q)rm -f $(SIGNATURE_UBOOT)

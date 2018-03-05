@@ -1,0 +1,130 @@
+//================================================
+// Start MIU init !!!             
+//================================================
+wriu -w   0x101220  0x0000
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+//wriu -w   0x10121e  0x0c01
+wriu -w   0x10121e  0x0c00
+wriu -w   0x101202  0x0000
+wriu -w   0x101246  0xfffe
+wriu -w   0x101266  0xffff
+wriu -w   0x101286  0xffff
+wriu -w   0x1012a6  0xffff
+//--------------------
+//set DDRPLL0 1866 - 1% MHz
+//--------------------
+wriu -w   0x110d36  0x4000
+wriu -w   0x110d34  0x0400
+wriu -w   0x110d30  0xF45A
+wriu -w   0x110d32  0x001d
+wriu -w   0x110d22  0x2000
+wriu -w   0x110d24  0x2000
+wriu -w   0x110d24  0x3000
+wriu -w   0x110d24  0x2000
+
+//------------------
+// Wait PLL Stable
+//------------------
+wait 10
+
+//--------------------
+//Turn on SSC
+//--------------------
+wriu -w   0x110d2a  0x0482
+wriu -w   0x110d28  0xC011
+
+//---------------------------
+//set DDR3_16_8X_CL13_1866
+//---------------------------
+wriu -w   0x101202  0x03a3
+wriu -w   0x101204  0x000b
+wriu -w   0x101206  0x1538
+wriu -w   0x101208  0x20dd
+wriu -w   0x10120a  0x2e76
+wriu -w   0x10120c  0xb8e9
+wriu -w   0x10120e  0x4096
+wriu -w   0x101210  0x1f14
+wriu -w   0x101212  0x4040
+wriu -w   0x101214  0x8020
+wriu -w   0x101216  0xc000
+wriu -w   0x101228  0x0400
+wriu -w   0x1012d2  0x7000
+wriu -w   0x110d02  0xaaaa
+wriu -w   0x110d04  0x0080
+wriu -w   0x110d0a  0x1111
+wriu -w   0x110d38  0x0055
+wriu -w   0x110d3a  0x3035
+wriu -w   0x110d3c  0x9333
+wriu -w   0x110d3e  0x1033
+wriu -w   0x110d48  0x0055
+wriu -w   0x110d4a  0x0002
+wriu -w   0x110d4c  0x3333
+wriu -w   0x110d4e  0x0033
+
+wriu -w   0x110d50  0x1111
+wriu -w   0x110d52  0x1111
+wriu -w   0x110d6c  0x5555
+wriu -w   0x110d6e  0x6688
+
+wriu -w   0x110d54  0xc000
+wriu -w   0x110d08  0x003f
+wriu -w   0x110d0e  0xc0a9
+wriu -w   0x110d0e  0xc0e9
+wriu -w   0x110d0e  0xc0a9
+wriu -w   0x10121e  0x0c01
+wriu -w   0x10121e  0x0c00
+//---------------------------
+//disable GPIO
+//---------------------------
+wriu -w   0x110d00  0x2010
+wriu -w   0x110d00  0x0000
+wriu -w   0x110d7c  0x0000
+wriu -w   0x110d00  0x0604 //sel_mapping
+
+wriu -w   0x110d0e  0xc0a9
+wriu -w   0x110d0e  0xc0e9
+wriu -w   0x110d0e  0xc0a9
+
+
+wriu -w   0x110d58  0x0404
+wriu -w   0x110d5a  0x4444
+wriu -w   0x110d5c  0x4444
+wriu -w   0x110d5e  0x4444
+
+wriu -w   0x110d60  0x000c //dll_pd
+wriu -w   0x110d60  0x0008
+wriu -w   0x110d60  0x2370
+
+wriu -w   0x101200  0x0000
+wriu -w   0x101200  0x0008
+wriu -w   0x101200  0x000c
+//==================================================================
+//--------Wait 10us, Reset Dram(200us in real case)
+//==================================================================
+wait 1 //delay 1ms
+wriu -w   0x101200  0x000e
+//======================================================================
+//--------Wait 500ns, dram initernal state initialization(real in 500us)
+//======================================================================
+wait 1 //delay 1ms
+//--------Initial DRAM start here!!!
+wriu -w   0x101200  0x001f
+wait 10 //check reg_101200 #15 for wait initial done
+wriu -w   0x10121e  0x1a08
+wriu -w   0x101240  0x8015
+wriu -w   0x101260  0x8015
+wriu -w   0x101280  0x8015
+wriu -w   0x1012a0  0x8015
+wriu -w   0x101246  0x0000
+wriu -w   0x101266  0x0000
+wriu -w   0x101286  0x0000
+wriu -w   0x1012a6  0x0000
+wriu -w   0x1012fe  0x0087
+
+wriu -w   0x101252  0xffff
+wriu -w   0x101272  0xffff
+wriu -w   0x101292  0xffff
+wriu -w   0x1012b2  0xffff
+

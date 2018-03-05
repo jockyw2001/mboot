@@ -1,0 +1,21 @@
+
+BOOTSPI
+BIST0_OK
+_OK!Hit	CIS
+Hit	BIN
+J2APP
+[AT][MB][start	ub][0]
+
+U-Boot	2011.06-00001-ge9ec27e-dirty	(Aug	04	2016	-	09:40:34)	MBOT-1106.0.10.e9ec27e89c024ed6af11534b5e10765f2b6e3aa5
+
+
+DRAM:	256	MiB
+
+Hello	U-Boot
+Stack	Pointer	at:	873F7480
+mem	initial,	start	0x86DD0180,	len	0x420000
+
+[MIU	INFO]	miu	opencreate	instance	at	86FE5520	with	private	size	80	bytes	at	86FE5568
+Flash	is	detected	(0x0507,	0xC2,	0x20,	0x15)
+create	instance	at	86FE55C0	with	private	size	48	bytes	at	86FE5608
+ub

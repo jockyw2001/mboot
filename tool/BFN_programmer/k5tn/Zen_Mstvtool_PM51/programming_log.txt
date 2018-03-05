@@ -1,0 +1,521 @@
+
+ᡰ灰þ~ x񟱨~㺂ÿþÿþx⟠.埸ÿ񞟸.󽟠.埸ÿ񞟸.󽿠~.埸ÿ񞟸󾅼ÿ񺀠ÿ@~.埸ÿ񞟸灰þþѿ񟱨þþ埸ÿ񞟸󾅿ÿHi Main
+----- STB BFN -----
+NAND ID:0x2C 0x44 0x44 0x4B 0xA9 0x0 0x0 0x0 0x2C 0x44 0x44 0x4B 0xA9 0x0 0x0
+Begin Search CIS in DRAM
+Found NandInfo in given memory, index 21
+u16_PageByteCnt = 2000h
+u16_SpareByteCnt = 2C0h
+u16_BlkPageCnt = 100h
+u16_BlkCnt = 800h
+u16_ECCType = Ah
+u8_AddrCycleIdx = 0h
+u8_CellType = 1h
+u8_PairPageMapLoc = 4h
+u8_PairPageMapType = 5h
+Found PartInfo in given memory, index 11
+Hash left 0x09100
+Write blk10 ok
+LDR write end blk 11
+Hash left 0x09100
+Write blk11 ok
+Backup LDR write end blk 12
+Hash left 0x1C9368
+ᱠ᱀þÿþÿ񟮞󧁴þ~ÿÿ񟱼󃽿򣽿Write blk12 ok
+Hash left 0xC9368
+Write blk13 ok
+APP write end blk 14
+Hash left 0x1C9368
+Write blk14 ok
+Hash left 0xC9368
+Write blk15 ok
+Backup APP write end blk 16
+check good blk:0x0
+CIS is written to blk 0x0
+check good blk:0x1
+CIS is written to blk 0x1
+erase blk:2
+erase blk:3
+erase blk:4
+erase blk:5
+erase blk:6
+erase blk:7
+erase blk:8
+erase blk:9
+Hash left 0x02000
+Write blk2 ok
+MIU write end blk 3
+Hash left 0x02000
+Write blk3 ok
+Backup MIU write end blk 4
+BFN programming is done
+----- END STB BFN -----
+
+BQFPPND_O1234CIS_567MIU_OTAC_88888888888_OKHit CIS
+Hit BIN
+J2APP
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-00003-gde64dbe-dirty (Sep 14 2016 - 09:45:36)  MBOT-1106.0.10.de64dbeca755aeade7e99fc0589aef9b10e28eec
+
+
+DRAM:  256 MiB
+
+Hello U-Boot
+Stack Pointer at: 87C62940
+mem initial, start 0x861D0180, len 0x1020000
+
+[MIU INFO] miu opencreate instance at 863E5FD8 with private size 80 bytes at 863E6020
+create instance at 863E6078 with private size 48 bytes at 863E60C0
+uboot held at [8F000000~90000000]
+Now running in RAM - U-Boot at: 871F0180
+NAND:  [NC_SetupReadRetryCmd]	Using build-in Read Retry Sequence for Type 1 Micron MLC
+[drvNAND_SearchCIS]	Paired Page Map @0x00000004
+CIS is found @Blk0
+FCIE is set to 62MHz
+4096 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x000004000000-0x000006C00000 : "mtd=2"
+Bad block table found at page 524032, version 0x01
+Bad block table found at page 523776, version 0x01
+nand_read_bbt: Bad block at 0x00000B400000
+nand_read_bbt: Bad block at 0x00000B600000
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   2097152 bytes (2048 KiB)
+UBI: logical eraseblock size:    2080768 bytes
+UBI: smallest flash I/O unit:    8192
+UBI: VID header offset:          8192 (aligned 8192)
+UBI: data offset:                16384
+UBI: empty MTD device detected
+UBI: the backup volume was not found
+UBI: create volume table (copy #1)
+UBI: create volume table (copy #2)
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=2"
+UBI: MTD device size:            44 MiB
+UBI: number of good PEBs:        22
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    4096
+UBI: number of internal volumes: 2
+UBI: number of user volumes:     0
+UBI: available PEBs:             15
+UBI: total number of reserved PEBs: 7
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 1/0
+
+NAND read: device 0 offset 0x1800000, size 0x90
+ 144 bytes read: OK
+MPOOL volume not found
+Volume MPOOL not found!
+Found no MPOOL Volume
+ Create MPOOL volume
+Creating dynamic volume MPOOL of size 29130752
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+Changelist:	00112233
+============= set bootargs ===============
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+[ERROR] del_bootargs_cfg:426: No env 'bootargs'
+[ERROR] set_panelinit_cfg:760: set BOOTLOGO_IN_MBOOT to bootargs fail
+Warnning!!!!
+bootargs doesn't exist, add a new one!!
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+Saving Environment to UBI...
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+Saving Environment to UBI...
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+Write Env to 17D0000...
+Write Backup Env to 19CC000...
+done
+Unknown command 'mmc' - try 'help'
+k5tn#
+BQFPPND_O1234CIS_567MIU_OTAC_88888888888_OKHit CIS
+Hit BIN
+J2APP
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-00003-gde64dbe-dirty (Sep 14 2016 - 09:45:36)  MBOT-1106.0.10.de64dbeca755aeade7e99fc0589aef9b10e28eec
+
+
+DRAM:  256 MiB
+
+Hello U-Boot
+Stack Pointer at: 87C62940
+mem initial, start 0x861D0180, len 0x1020000
+
+[MIU INFO] miu opencreate instance at 863E5FD8 with private size 80 bytes at 863E6020
+create instance at 863E6078 with private size 48 bytes at 863E60C0
+uboot held at [8F000000~90000000]
+Now running in RAM - U-Boot at: 871F0180
+NAND:  [NC_SetupReadRetryCmd]	Using build-in Read Retry Sequence for Type 1 Micron MLC
+[drvNAND_SearchCIS]	Paired Page Map @0x00000004
+CIS is found @Blk0
+FCIE is set to 62MHz
+4096 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x000004000000-0x000006C00000 : "mtd=2"
+Bad block table found at page 524032, version 0x01
+Bad block table found at page 523776, version 0x01
+nand_read_bbt: Bad block at 0x00000B400000
+nand_read_bbt: Bad block at 0x00000B600000
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   2097152 bytes (2048 KiB)
+UBI: logical eraseblock size:    2080768 bytes
+UBI: smallest flash I/O unit:    8192
+UBI: VID header offset:          8192 (aligned 8192)
+UBI: data offset:                16384
+UBI: the backup volume was not found
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=2"
+UBI: MTD device size:            44 MiB
+UBI: number of good PEBs:        22
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    4096
+UBI: number of internal volumes: 2
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 21
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+
+NAND read: device 0 offset 0x1800000, size 0x90
+ 144 bytes read: OK
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+Changelist:	00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:760: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+Unknown command 'mmc' - try 'help'
+k5tn#
+BQFPPND_O1234CIS_567MIU_OTAC_88888888888_OKHit CIS
+Hit BIN
+J2APP
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-00003-gde64dbe-dirty (Sep 14 2016 - 09:45:36)  MBOT-1106.0.10.de64dbeca755aeade7e99fc0589aef9b10e28eec
+
+
+DRAM:  256 MiB
+
+Hello U-Boot
+Stack Pointer at: 87C62940
+mem initial, start 0x861D0180, len 0x1020000
+
+[MIU INFO] miu opencreate instance at 863E5FD8 with private size 80 bytes at 863E6020
+create instance at 863E6078 with private size 48 bytes at 863E60C0
+uboot held at [8F000000~90000000]
+Now running in RAM - U-Boot at: 871F0180
+NAND:  [NC_SetupReadRetryCmd]	Using build-in Read Retry Sequence for Type 1 Micron MLC
+[drvNAND_SearchCIS]	Paired Page Map @0x00000004
+CIS is found @Blk0
+FCIE is set to 62MHz
+4096 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x000004000000-0x000006C00000 : "mtd=2"
+Bad block table found at page 524032, version 0x01
+Bad block table found at page 523776, version 0x01
+nand_read_bbt: Bad block at 0x00000B400000
+nand_read_bbt: Bad block at 0x00000B600000
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   2097152 bytes (2048 KiB)
+UBI: logical eraseblock size:    2080768 bytes
+UBI: smallest flash I/O unit:    8192
+UBI: VID header offset:          8192 (aligned 8192)
+UBI: data offset:                16384
+UBI: the backup volume was not found
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=2"
+UBI: MTD device size:            44 MiB
+UBI: number of good PEBs:        22
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    4096
+UBI: number of internal volumes: 2
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 21
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+
+NAND read: device 0 offset 0x1800000, size 0x90
+ 144 bytes read: OK
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+Changelist:	00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:760: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+Unknown command 'mmc' - try 'help'
+k5tn#
+BQFPPND_O1234CIS_567MIU_OTAC_88888888888_OKHit CIS
+Hit BIN
+J2APP
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-00003-gde64dbe-dirty (Sep 14 2016 - 09:45:36)  MBOT-1106.0.10.de64dbeca755aeade7e99fc0589aef9b10e28eec
+
+
+DRAM:  256 MiB
+
+Hello U-Boot
+Stack Pointer at: 87C62940
+mem initial, start 0x861D0180, len 0x1020000
+
+[MIU INFO] miu opencreate instance at 863E5FD8 with private size 80 bytes at 863E6020
+create instance at 863E6078 with private size 48 bytes at 863E60C0
+uboot held at [8F000000~90000000]
+Now running in RAM - U-Boot at: 871F0180
+NAND:  [NC_SetupReadRetryCmd]	Using build-in Read Retry Sequence for Type 1 Micron MLC
+[drvNAND_SearchCIS]	Paired Page Map @0x00000004
+CIS is found @Blk0
+FCIE is set to 62MHz
+4096 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x000004000000-0x000006C00000 : "mtd=2"
+Bad block table found at page 524032, version 0x01
+Bad block table found at page 523776, version 0x01
+nand_read_bbt: Bad block at 0x00000B400000
+nand_read_bbt: Bad block at 0x00000B600000
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   2097152 bytes (2048 KiB)
+UBI: logical eraseblock size:    2080768 bytes
+UBI: smallest flash I/O unit:    8192
+UBI: VID header offset:          8192 (aligned 8192)
+UBI: data offset:                16384
+UBI: the backup volume was not found
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=2"
+UBI: MTD device size:            44 MiB
+UBI: number of good PEBs:        22
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    4096
+UBI: number of internal volumes: 2
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 21
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+
+NAND read: device 0 offset 0x1800000, size 0x90
+ 144 bytes read: OK
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+Changelist:	00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:760: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+Unknown command 'mmc' - try 'help'
+k5tn#
+BQFPPND_O1234CIS_567MIU_OTAC_88888888888_OKHit CIS
+Hit BIN
+J2APP
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-00003-gde64dbe-dirty (Sep 14 2016 - 09:45:36)  MBOT-1106.0.10.de64dbeca755aeade7e99fc0589aef9b10e28eec
+
+
+DRAM:  256 MiB
+
+Hello U-Boot
+Stack Pointer at: 87C62940
+mem initial, start 0x861D0180, len 0x1020000
+
+[MIU INFO] miu opencreate instance at 863E5FD8 with private size 80 bytes at 863E6020
+create instance at 863E6078 with private size 48 bytes at 863E60C0
+uboot held at [8F000000~90000000]
+Now running in RAM - U-Boot at: 871F0180
+NAND:  [NC_SetupReadRetryCmd]	Using build-in Read Retry Sequence for Type 1 Micron MLC
+[drvNAND_SearchCIS]	Paired Page Map @0x00000004
+CIS is found @Blk0
+FCIE is set to 62MHz
+4096 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x000004000000-0x000006C00000 : "mtd=2"
+Bad block table found at page 524032, version 0x01
+Bad block table found at page 523776, version 0x01
+nand_read_bbt: Bad block at 0x00000B400000
+nand_read_bbt: Bad block at 0x00000B600000
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   2097152 bytes (2048 KiB)
+UBI: logical eraseblock size:    2080768 bytes
+UBI: smallest flash I/O unit:    8192
+UBI: VID header offset:          8192 (aligned 8192)
+UBI: data offset:                16384
+UBI: the backup volume was not found
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=2"
+UBI: MTD device size:            44 MiB
+UBI: number of good PEBs:        22
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    4096
+UBI: number of internal volumes: 2
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 21
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+
+NAND read: device 0 offset 0x1800000, size 0x90
+ 144 bytes read: OK
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+Changelist:	00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:760: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+AC on
+Unknown command 'mmc' - try 'help'
+k5tn#
+BQFPPND_O1234CIS_567MIU_OTAC_88888888888_OKHit CIS
+Hit BIN
+J2APP
+[AT][MB][start ub][0]
+
+U-Boot 2011.06-00003-gde64dbe-dirty (Sep 14 2016 - 09:45:36)  MBOT-1106.0.10.de64dbeca755aeade7e99fc0589aef9b10e28eec
+
+
+DRAM:  256 MiB
+
+Hello U-Boot
+Stack Pointer at: 87C62940
+mem initial, start 0x861D0180, len 0x1020000
+
+[MIU INFO] miu opencreate instance at 863E5FD8 with private size 80 bytes at 863E6020
+create instance at 863E6078 with private size 48 bytes at 863E60C0
+uboot held at [8F000000~90000000]
+Now running in RAM - U-Boot at: 871F0180
+NAND:  [NC_SetupReadRetryCmd]	Using build-in Read Retry Sequence for Type 1 Micron MLC
+[drvNAND_SearchCIS]	Paired Page Map @0x00000004
+CIS is found @Blk0
+FCIE is set to 62MHz
+4096 MiB
+*** Warning - set default for mtdparts, using default environment
+
+Creating 1 MTD partitions on "nand0":
+0x000004000000-0x000006C00000 : "mtd=2"
+Bad block table found at page 524032, version 0x01
+Bad block table found at page 523776, version 0x01
+nand_read_bbt: Bad block at 0x00000B400000
+nand_read_bbt: Bad block at 0x00000B600000
+UBI: attaching mtd1 to ubi0
+UBI: physical eraseblock size:   2097152 bytes (2048 KiB)
+UBI: logical eraseblock size:    2080768 bytes
+UBI: smallest flash I/O unit:    8192
+UBI: VID header offset:          8192 (aligned 8192)
+UBI: data offset:                16384
+UBI: the backup volume was not found
+UBI: attached mtd1 to ubi0
+UBI: MTD device name:            "mtd=2"
+UBI: MTD device size:            44 MiB
+UBI: number of good PEBs:        22
+UBI: number of bad PEBs:         0
+UBI: max. allowed volumes:       128
+UBI: wear-leveling threshold:    4096
+UBI: number of internal volumes: 2
+UBI: number of user volumes:     1
+UBI: available PEBs:             1
+UBI: total number of reserved PEBs: 21
+UBI: number of PEBs reserved for bad PEB handling: 2
+UBI: max/mean erase counter: 2/1
+
+NAND read: device 0 offset 0x1800000, size 0x90
+ 144 bytes read: OK
+Volume "MPOOL" found at volume id 0
+In:    serial
+Out:   serial
+Err:   serial
+Net:   No ethernet found.
+ Set MAC default
+MAC:  0x0: 0x30: 0x1B: 0xBA:0x2: 0xDB
+
+Changelist:	00112233
+============= set bootargs ===============
+[ERROR] set_panelinit_cfg:760: set BOOTLOGO_IN_MBOOT to bootargs fail
+WDT is not Enable !!!setenv WDT_ENABLE 1 to enable it.
+Hit any key to stop autoboot:  0
+k5tn#
+k5tn#
+k5tn#

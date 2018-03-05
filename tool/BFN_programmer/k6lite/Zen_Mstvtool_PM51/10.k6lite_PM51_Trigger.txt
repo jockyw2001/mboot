@@ -1,0 +1,5 @@
+swch 3
+wait  2
+wriu    0x0e53 0x00     //[4]mcu0 rstz
+wait  2
+wriu    0x0e53 0x10     //[4]mcu0 rstz

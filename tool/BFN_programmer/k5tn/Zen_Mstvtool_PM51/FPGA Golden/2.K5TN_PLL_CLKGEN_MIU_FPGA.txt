@@ -1,0 +1,308 @@
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////001_Keres_PLL.txt//////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+//--------------------------------------
+//Initialize DMD_ANA_MISC
+//--------------------------------------
+swch 4
+wriu -w 0x101e38 0x0000
+wriu -w 0x112002 0x0000
+wriu -w 0x11286a 0x1e04
+wriu -w 0x11286a 0x0604
+wriu -w 0x112866 0x2400
+wriu -w 0x112860 0x1c01
+wriu -w 0x112840 0x0000
+wriu -w 0x112878 0x0000
+
+//--------------------------------------
+//MIPS PLL speed = 432 / N.F(5.19) x 24 MHz
+//--------------------------------------
+//DDR_SCAL SYNTH N.F = {0x110ac2[7:0],0x110ac0[15:0]}
+//MIPS PLL speed = 432 / DDR_SCAL SYNTH N.F(5.19) * 24MHz
+
+//Example:
+//DDR_SCAL SYNTH N.F(hex)  DDR_SCAL SYNTH N.F(dec)  MIPS PLL(MHz)
+//        52f1a9                  10.36799812        1000.000181
+
+//MIPS PLL(MHz)  DDR_SCAL SYNTH N.F(dec)  DDR_SCAL SYNTH N.F(hex)
+//     500               20.736                   A5E353
+
+wriu -w 0x110ac0 0xf1a9
+wriu -w 0x110ac2 0x0052
+wriu -w 0x110ac4 0x0001
+wriu -w 0x110a22 0x1e80
+
+//--------------------------------------
+//SETUP DSPPLL FREQUENCY TO 324MHz
+//--------------------------------------
+//DSP PLL speed = 0x110d06 * 6MHz
+wriu -w 0x110d02 0x0000
+wriu -w 0x110d06 0x0036
+
+//--------------------------------------
+//turn on all clocks
+//--------------------------------------
+wriu -w 0x100b2e 0x0300
+wriu -w 0x100b3e 0x0000
+
+//--------------------------------------
+//switch clk_mcu to 216MHz
+//--------------------------------------
+wriu -w 0x100b20 0x0001
+wriu -w 0x100bfa 0x0001
+
+//--------------------------------------
+//       Bypass Byte Write Parser
+//--------------------------------------
+wriu -w 0x160f00 0x2000 //mips
+wriu -w 0x160f02 0x2000 //vd_r2
+wriu -w 0x160f04 0x2000 //sec_r2_0
+wriu -w 0x160f06 0x2000 //sec_r2_1
+wriu -w 0x160f08 0x2000 //sec_mcu51
+wriu -w 0x160f0a 0x2000 //mcu51
+wriu -w 0x160f0c 0x2000 //gpd
+wriu -w 0x160f0e 0x2000 //ge
+wriu -w 0x160f10 0x2000 //mvd
+wriu -w 0x160f12 0x2000 //usb_0
+wriu -w 0x160f14 0x2000 //usb_1
+wriu -w 0x160f16 0x2000 //fcie
+wriu -w 0x160f18 0x2000 //piu_0
+wriu -w 0x160f1a 0x2000 //piu_1
+wriu -w 0x160f1c 0x2000 //tsp_0
+wriu -w 0x160f1e 0x2000 //tsp_1
+wriu -w 0x160f20 0x2000 //tsp_2
+wriu -w 0x160f22 0x2000 //tsp_3
+wriu -w 0x160f24 0x2000 //tsp_4
+wriu -w 0x160f26 0x2000 //tsp_5
+wriu -w 0x160f28 0x2000 //tsp_6
+wriu -w 0x160f2a 0x2000 //tsp_7
+wriu -w 0x160f2c 0x2000 //au_r2
+wriu -w 0x160f2e 0x2000 //evd
+wriu -w 0x160f30 0x2000 //v9_dma
+
+//--------------------------------------
+//         Initialize UPLL
+//--------------------------------------
+wriu -w 0x103a88 0x040f
+wriu -w 0x103aa0 0x8051
+wriu -w 0x103aa2 0x5080
+wriu -w 0x103a80 0x6bc3
+wriu -w 0x103a80 0x69c3
+wriu -w 0x103a80 0x0001
+
+wriu -w 0x103a08 0x040f
+wriu -w 0x103a20 0x8051
+wriu -w 0x103a22 0x5080
+wriu -w 0x103a00 0x6bc3
+wriu -w 0x103a00 0x69c3
+wriu -w 0x103a00 0x0001
+
+wriu -w 0x101ea0 0x0000
+
+//--------------------------------------
+//         Initialize DACPLL
+//--------------------------------------
+//MPLL 432
+swch 3
+wriu -w 0x00110b02 0x00000001
+//DACPLL
+wriu -w 0x0012112a 0x00000000
+//wriu -w 0x0012112c 0x00000610
+wriu -w 0x0012112c 0x00000616
+wriu -w 0x0012112e 0x00000807
+//dac synth
+wriu -w 0x00121162 0x00009999
+wriu -w 0x00121164 0x00000019
+wriu -w 0x0012116a 0x00000002
+wriu -w 0x00121166 0x00000007
+wriu -w 0x00121168 0x00000445
+wriu -w 0x00101a00 0x00000020
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////end 001_Keres_PLL.txt//////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////start 002_Keres_Clkgen.txt//////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//clk_mcu = 216MHz
+swch 4
+wriu -w 0x100b20 0x0001
+
+//clk_uart0 = 172MHz
+//clk_uart1 = 172MHz
+//clk_uart2 = 172MHz
+wriu -w 0x100b26 0x0006
+wriu -w 0x100b28 0x0000
+
+//clk_spi = 54MHz
+//clk_mspi = 108MHz
+wriu -w 0x100b2c 0x0030
+
+//clk_fuart = 172MHz
+//clk_fuart0_syn = 432MHz
+wriu -w 0x100b2e 0x0304
+
+//clk_pcm = 54MHz
+//clk_tck enable
+wriu -w 0x100b34 0x0004
+
+//clk_mpll_syn = 432MHz
+//clk_mpll_syn2 = 432MHz
+wriu -w 0x100b3c 0x1100
+
+//clk_ve = 27MHz
+//clk_vedac = 108MHz
+wriu -w 0x100b48 0x0800
+
+//clk_ve_in = clk_odclk
+wriu -w 0x100b4a 0x001c
+
+//clk_tso0_in enable
+//clk_tso_trace enable
+wriu -w 0x100b4e 0x0000
+
+//clk_tsp = 172MHz
+wriu -w 0x100b54 0x000c
+
+//clk_tso0_out enable
+//clk_stamp enable
+wriu -w 0x100b5e 0x001c
+
+//clk_vd_mheg5 = 240MHz
+wriu -w 0x100b60 0x001c
+
+//clk_r2_secure = 240MHz
+wriu -w 0x100b62 0x003c
+
+//clk_hvd = 192MHz
+wriu -w 0x100b68 0x0004
+
+//clk_jpd = 192MHz
+wriu -w 0x100b6a 0x000c
+
+//clk_mvd = 160MHz
+//clk_parser = 172MHz
+wriu -w 0x100b72 0x0000
+
+//clk_mvd_chroma enable
+//clk_mvd_luma_a enable
+wriu -w 0x100b74 0x0000
+
+//clk_mvd_luma_b enable
+//clk_mvd_luma_c enable
+wriu -w 0x100b76 0x0000
+
+//clk_mvd_rmem = enable
+wriu -w 0x100b78 0x0000
+
+//clk_gpd = 216MHz
+wriu -w 0x100b7c 0x0000
+
+//clk_gopg0 = clk_odclk
+//clk_gopg1 = clk_odclk
+wriu -w 0x100b80 0x0000
+
+//clk_gopmix = clk_odclk
+//clk_gopd = clk_odclk
+wriu -w 0x100b82 0x0000
+
+//clk_gopg2 = clk_odclk
+//clk_gopg3 = clk_odclk
+wriu -w 0x100b84 0x0000
+
+//clk_psram0 enable
+//clk_psram1 enable
+wriu -w 0x100b86 0x0000
+
+//clk_ge = clk_miu
+wriu -w 0x100b90 0x0000
+
+//clk_dc0 = 123MHz
+wriu -w 0x100b98 0x0010
+
+//clk_ficlk_f2 = clk_fclk
+wriu -w 0x100ba2 0x0004
+
+//clk_ficlk = 216MHz
+wriu -w 0x100ba4 0x0c00
+
+//clk_odclk = 27MHz
+wriu -w 0x100ba6 0x0018
+
+//clk_idclk2 = clk_dc0
+wriu -w 0x100baa 0x000c
+
+//clk_hdgen = clk_out_dac_div8
+//clk_hdgen_fir = clk_out_dac
+wriu -w 0x100bb0 0x000c
+
+//clk_dac1 = clk_vedac
+//clk_dac2 = clk_hdgen_filter
+wriu -w 0x100bb2 0x000c
+
+//clk_bdma = clk_miu
+wriu -w 0x100bcc 0x0004
+
+//clk_fsync = 432MHz
+wriu -w 0x100bf8 0x0100
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////end 002_Keres_Clkgen.txt///////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////start 004_Kentucky_MIU_FPGA///////////////////////
+///////////////////////////////////////////////////////////////////////////////
+swch 4
+wriu -w 0x101202 0x0858
+wriu -w 0x101204 0x01c5
+wriu -w 0x101206 0x0120
+wriu -w 0x101208 0x0833
+wriu -w 0x10120a 0x0c33
+wriu -w 0x10120c 0x7111
+wriu -w 0x10120e 0x100e
+wriu -w 0x101210 0x0031
+
+wriu -w 0x10122a 0x000f
+wriu -w 0x10121e 0x0C00  
+wriu -w 0x10121e 0x0C01
+wriu -w 0x10121e 0x0C00       
+
+
+
+wriu -w 0x100602 0x0858
+wriu -w 0x100604 0x01c5
+wriu -w 0x100606 0x0120
+wriu -w 0x100608 0x0833
+wriu -w 0x10060a 0x0c33
+wriu -w 0x10060c 0x7111
+wriu -w 0x10060e 0x100e
+wriu -w 0x100610 0x0031
+
+wriu -w 0x10062a 0x000f
+wriu -w 0x10061e 0x0C00  
+wriu -w 0x10061e 0x0C01
+wriu -w 0x10061e 0x0C00   
+
+
+
+wriu -w 0x101200 0x0000
+wriu -w 0x101200 0x0008
+wriu -w 0x101200 0x000c
+wriu -w 0x101200 0x000e
+wriu -w 0x101200 0x001f
+
+wriu -w 0x100600 0x0000
+wriu -w 0x100600 0x0008
+wriu -w 0x100600 0x000c
+wriu -w 0x100600 0x000e
+wriu -w 0x100600 0x001f
+
+
+
+
+wriu -w 0x10061e 0x0C08
+wriu -w 0x10121e 0x0C08
+
+wriu -w 0x1012fe 0x80e1

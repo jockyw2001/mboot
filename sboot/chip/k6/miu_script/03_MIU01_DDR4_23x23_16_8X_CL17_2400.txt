@@ -1,0 +1,584 @@
+//-------------------------------------------------------------------------------------------
+//Loard ID	     	: MST257A-D01A
+//setting Ref. DRAM die : Samsung K4A8G165WB-BCRC      8Gb (Speed bin = 2400MHz)<--AC timing check ok
+//                        Micron  MT40A512M16HA-083:B  8Gb (Speed bin = 2400MHz)<--AC timing check ok
+//On board DRAM die	: Micron  MT40A512M16HA-083:B  (Speed bin = 2400MHz)
+//-------------------------------------------------------------------------------------------
+//================================================
+// Start MIU init !!!             
+//================================================
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c00
+wriu -w   0x10121e  0x0c01
+wriu -w   0x101246  0xfffe
+wriu -w   0x101266  0xffff
+wriu -w   0x101286  0xffff
+wriu -w   0x1012a6  0xffff
+wriu -w   0x161506  0xffff
+wriu -w   0x161526  0xffff
+wriu -w   0x141006  0xffff
+wriu -w   0x141026  0xffff
+wriu -w   0x1615e6  0x00fa
+
+wriu -w   0x10061e  0x0000
+wriu -w   0x10061e  0x0000
+wriu -w   0x10061e  0x0000
+wriu -w   0x10061e  0x0c01
+wriu -w   0x100646  0xfffe
+wriu -w   0x100666  0xffff
+wriu -w   0x100686  0xffff
+wriu -w   0x1006a6  0xffff
+wriu -w   0x162206  0xffff
+wriu -w   0x162226  0xffff
+wriu -w   0x141106  0xffff
+wriu -w   0x141126  0xffff
+wriu -w   0x1622e6  0x00fa
+
+wriu -w   0x110d78  0x0001
+wriu -w   0x161678  0x0001
+wriu -w   0x110d24  0x1000
+wriu -w   0x161624  0x1000
+wriu -w   0x110d24  0x0000
+wriu -w   0x161624  0x0000
+//----------------------
+//set DDRPLL0 = 2400MHZ 
+//----------------------
+wriu -w   0x110d36  0x0400
+wriu -w   0x110d34  0x2004
+wriu -w   0x110d30  0x45d1 //update by winnie @20160818
+wriu -w   0x110d32  0x0017
+wriu -w   0x110d2A  0x05cd //update by winnie @20160818
+wriu -w   0x110d28  0xC00a //update by winnie @20160818
+//----------------------
+//set DDRPLL1 = 2400MHZ 
+//----------------------
+wriu -w   0x161636  0x0400
+wriu -w   0x161634  0x2004
+wriu -w   0x161630  0x45d1 //update by winnie @20160818
+wriu -w   0x161632  0x0017
+wriu -w   0x16162A  0x05cd //update by winnie @20160818
+wriu -w   0x161628  0xC00a //update by winnie @20160818
+
+wriu -w   0x110d8a  0x0003 //[ 2: 1] : 'h 0 :reg_ddrldo_idc, 0 for DDR3 ; 1 for DDR4
+wriu -w   0x16168a  0x0003 //[ 2: 1] : 'h 0 :reg_ddrldo_idc, 0 for DDR3 ; 1 for DDR4
+//=================================================
+// Wait PLL Stable!!
+//=================================================
+wait 10 //Need wait up to 1ms
+wriu -w   0x110d22  0x0004
+wriu -w   0x110d2c  0x0114
+wriu -w   0x161622  0x0004
+wriu -w   0x16162c  0x0114
+//---------------------------
+//set DDR4_16_8X_CL17_2400(MIU0)
+//---------------------------
+wriu -w   0x101202  0x0393 //DC: wriu -w   0x101202  0xf393
+wriu -w   0x101204  0x000f //update by winnie @20160818
+wriu -w   0x101206  0x1649 //[13] : 'h 0 :reg_odt_always_on
+wriu -w   0x101208  0xe711
+wriu -w   0x10120a  0x3897
+wriu -w   0x10120c  0xf32c
+wriu -w   0x10120e  0xc1a4
+wriu -w   0x101210  0x0964
+wriu -w   0x101212  0x2101
+wriu -w   0x101214  0x40d8
+wriu -w   0x101216  0x6000
+wriu -w   0x101228  0x0051 //update by winnie @20160818
+wriu -w   0x1012d2  0xa000
+wriu -w   0x141422  0x0003
+wriu -w   0x14143e  0x0000
+wriu -w   0x141440  0x1111
+wriu -w   0x141442  0x0727
+wriu -w   0x141444  0x3809
+wriu -w   0x141446  0x120c
+wriu -w   0x141448  0x0f03
+wriu -w   0x14144a  0x0604
+wriu -w   0x14144c  0x0524
+wriu -w   0x14144e  0x01a4
+wriu -w   0x141450  0xe000
+wriu -w   0x141452  0x0806
+wriu -w   0x141454  0x1109
+wriu -w   0x141480  0x8010 //multi_act_ctrl_all enable
+wriu -w   0x141486  0x0000
+wriu -w   0x1414fe  0x0001 //enable DIG_E bank 
+wriu -w   0x161560  0x8000
+wriu -w   0x161562  0xa400
+wriu -w   0x161564  0xc800
+wriu -w   0x161566  0x0039
+wriu -w   0x161568  0x5986
+wriu -w   0x16156a  0x0024
+wriu -w   0x110d02  0xaaaa
+wriu -w   0x110d04  0x0080
+wriu -w   0x110d0a  0x1133 //update by winnie @20160818
+wriu -w   0x110d0e  0x008d
+wriu -w   0x110d2e  0x0011 //update by winnie @20160818
+wriu -w   0x110d38  0x0277 //update by winnie @20160818
+wriu -w   0x110d3a  0x0018 //update by winnie @20160818
+wriu -w   0x110d3c  0x9255 //update by winnie @20160818
+wriu -w   0x110d3e  0xa022 //update by winnie @20160523
+wriu -w   0x110d48  0x0077
+wriu -w   0x110d4a  0x0000
+wriu -w   0x110d4c  0x0133
+wriu -w   0x110d4e  0x0044 //update by winnie @20160523
+wriu -w   0x110d50  0x1111
+wriu -w   0x110d52  0x0002 //update by winnie @20160818
+wriu -w   0x110d6c  0x0808
+wriu -w   0x110d6e  0x0808
+wriu -w   0x110da0  0x3234 //update by winnie @20160523
+wriu -w   0x110da2  0x4150 //update by winnie @20160523
+wriu -w   0x110da4  0x0431 //update by winnie @20160523
+wriu -w   0x110da6  0x2523 //update by winnie @20160523
+wriu -w   0x110da8  0x1111
+wriu -w   0x110daa  0x1111
+wriu -w   0x110dac  0x1111
+wriu -w   0x110dae  0x1111
+wriu -w   0x110db6  0x0000
+wriu -w   0x110db8  0x2222 //update by winnie @20160523
+wriu -w   0x110dba  0x0222 //update by winnie @20160523
+wriu -w   0x110dbc  0x0222 //update by winnie @20160523
+wriu -w   0x110dbe  0x0222 //update by winnie @20160523
+wriu -w   0x110dd0  0x5555
+wriu -w   0x110dd2  0x5555
+wriu -w   0x110dd4  0x5555
+wriu -w   0x110dd6  0x5555
+wriu -w   0x110dd8  0x0055
+wriu -w   0x110de0  0x5555
+wriu -w   0x110de2  0x5555
+wriu -w   0x110de4  0x5555
+wriu -w   0x110de6  0x5555
+wriu -w   0x110de8  0x0055
+
+wriu -w   0x110d94  0x060d //k/2 offset  //update by winnie @20160523
+//wriu -w   0x110d96  0x0809 //k/2 offset
+//---------------------------
+//set DDR4_16_8X_CL17_2400(MIU1)
+//---------------------------
+wriu -w   0x100602  0x0393 //DC: wriu -w   0x100602  0xf393
+wriu -w   0x100604  0x000f //update by winnie @20160818
+wriu -w   0x100606  0x1649 //[13] : 'h 0 :reg_odt_always_on
+wriu -w   0x100608  0xe711
+wriu -w   0x10060a  0x3897
+wriu -w   0x10060c  0xf32c
+wriu -w   0x10060e  0xc1a4
+wriu -w   0x100610  0x0964
+wriu -w   0x100612  0x2101
+wriu -w   0x100614  0x40d8
+wriu -w   0x100616  0x6000
+wriu -w   0x100628  0x0051 //update by winnie @20160818
+wriu -w   0x1006d2  0xa000
+wriu -w   0x141522  0x0003
+wriu -w   0x14153e  0x0000
+wriu -w   0x141540  0x1111
+wriu -w   0x141542  0x0727
+wriu -w   0x141544  0x3809
+wriu -w   0x141546  0x120c
+wriu -w   0x141548  0x0f03
+wriu -w   0x14154a  0x0604
+wriu -w   0x14154c  0x0524
+wriu -w   0x14154e  0x01a4
+wriu -w   0x141550  0xe000
+wriu -w   0x141552  0x0806
+wriu -w   0x141554  0x1109
+wriu -w   0x141580  0x8010 //multi_act_ctrl_all enable
+wriu -w   0x141586  0x0000
+wriu -w   0x1415fe  0x0001 //enable DIG_E bank 
+wriu -w   0x162260  0x8000
+wriu -w   0x162262  0xa400
+wriu -w   0x162264  0xc800
+wriu -w   0x162266  0x0039
+wriu -w   0x162268  0x5986
+wriu -w   0x16226a  0x0024
+wriu -w   0x161602  0xaaaa
+wriu -w   0x161604  0x0080
+wriu -w   0x16160a  0x1155 //update by winnie @20160818
+wriu -w   0x16160e  0x008d
+wriu -w   0x16162e  0x0022 //update by winnie @20160818
+wriu -w   0x161638  0x1177 //update by winnie @20160818
+wriu -w   0x16163a  0xb0c8 //update by winnie @20160818
+wriu -w   0x16163c  0x9244 //update by winnie @20160818
+wriu -w   0x16163e  0xa022 //update by winnie @20160523
+wriu -w   0x161648  0x0077
+wriu -w   0x16164a  0x0000
+wriu -w   0x16164c  0x0133
+wriu -w   0x16164e  0x0044 //update by winnie @20160523
+wriu -w   0x161650  0x1111
+wriu -w   0x161652  0x0003 //update by winnie @20160818
+wriu -w   0x16166c  0x0808
+wriu -w   0x16166e  0x0808
+wriu -w   0x1616a0  0x1213 //update by winnie @20160523
+wriu -w   0x1616a2  0x3402 //update by winnie @20160523
+wriu -w   0x1616a4  0x0324 //update by winnie @20160523
+wriu -w   0x1616a6  0x5505 //update by winnie @20160523
+wriu -w   0x1616a8  0x1111
+wriu -w   0x1616aa  0x1111
+wriu -w   0x1616ac  0x1111
+wriu -w   0x1616ae  0x1111
+wriu -w   0x1616b6  0x0000
+wriu -w   0x1616b8  0x2222 //update by winnie @20160523
+wriu -w   0x1616ba  0x0222 //update by winnie @20160523
+wriu -w   0x1616bc  0x0222 //update by winnie @20160523
+wriu -w   0x1616be  0x0222 //update by winnie @20160523
+wriu -w   0x1616d0  0x4444 //update by winnie @20160818
+wriu -w   0x1616d2  0x4444 //update by winnie @20160818
+wriu -w   0x1616d4  0x4444 //update by winnie @20160818
+wriu -w   0x1616d6  0x4444 //update by winnie @20160818
+wriu -w   0x1616d8  0x0044 //update by winnie @20160818
+wriu -w   0x1616e0  0x5555
+wriu -w   0x1616e2  0x5555
+wriu -w   0x1616e4  0x5555
+wriu -w   0x1616e6  0x5555
+wriu -w   0x1616e8  0x0055
+
+wriu -w   0x161694  0x070e //k/2 offset
+//wriu -w   0x161696  0x0B0A //k/2 offset
+//-------------------------
+// Set 128 BIST engine
+//-------------------------
+wriu -w   0x1012fe  0x00e1
+//=====================================================================
+// inivec setting start(MIU0)
+//=====================================================================
+//=====================================================================
+// pre inivec setting start(MIU0)
+//=====================================================================
+//-----------------
+//program DLL
+//-----------------
+wriu -w   0x110d62  0x007f
+wriu -w   0x110d64  0xf000
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00cf
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00c3
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00c3
+wriu -w   0x110d60  0x00cb
+wriu -w   0x110d60  0x00c2
+wriu -w   0x110d60  0x00c0
+wriu -w   0x110d60  0x33c8
+wriu -w   0x110d70  0x0000
+wriu -w   0x110d98  0x0000
+wriu -w   0x110d9a  0x0000
+wriu -w   0x110d90  0xf0f1
+wriu -w   0x110d70  0x0800
+//---------------------------
+//program dig general setting
+//---------------------------
+wriu -w   0x10122c  0x8200
+wriu -w   0x1012fc  0x951a
+//--------------------------------------
+//Chose last_done_z after sync_fifo
+//--------------------------------------
+wriu -w   0x101252  0xffff
+wriu -w   0x101272  0xffff
+wriu -w   0x101292  0xffff
+wriu -w   0x1012b2  0xffff
+wriu -w   0x161512  0xffff
+wriu -w   0x161532  0xffff
+//---------------------
+// Default BW setting  
+//---------------------
+wriu -w   0x101240  0x8011 //disable member limit enable
+wriu -w   0x101260  0x8011 //disable member limit enable
+wriu -w   0x101280  0x8011 //disable member limit enable
+wriu -w   0x1012a0  0x8011 //disable member limit enable
+wriu -w   0x161500  0x8011 //disable member limit enable
+wriu -w   0x161520  0x8011 //disable member limit enable
+//---------------------------
+//program ana general setting
+//---------------------------
+wriu -w   0x110d70  0x0800
+//driving setting
+wriu -w   0x110d58  0x0c0c //driving: @20160427 Rayray suggest default value //update by winnie @20160818
+wriu -w   0x110d5a  0xaaaa //driving: @20160427 Rayray suggest default value //update by winnie @20160818
+wriu -w   0x110d5c  0xccaa //driving: @20160427 Rayray suggest default value //update by winnie @20160818
+wriu -w   0x110d5e  0xccaa //driving: @20160427 Rayray suggest default value //update by winnie @20160818
+//trig. lvl setting
+wriu -w   0x110d74  0x0606 //trig. lvl: //update by winnie @20160523
+wriu -w   0x110d76  0x0606 //trig. lvl: //update by winnie @20160523
+
+wriu -w   0x110d1a  0x8333 //ODT to VDD/2: //update by winnie @20160818
+wriu -w   0x110d1c  0x0020
+
+wriu -w   0x110d08  0x007f //DC: wriu -w   0x110d08  0x0000
+//=====================================================================
+// inivec setting start(MIU1)
+//=====================================================================
+//=====================================================================
+// pre inivec setting start(MIU1)
+//=====================================================================
+//-----------------
+//program DLL
+//-----------------
+wriu -w   0x161662  0x007f
+wriu -w   0x161664  0xf000
+wriu -w   0x161660  0x00cb
+wriu -w   0x161660  0x00cf
+wriu -w   0x161660  0x00cb
+wriu -w   0x161660  0x00c3
+wriu -w   0x161660  0x00cb
+wriu -w   0x161660  0x00c3
+wriu -w   0x161660  0x00cb
+wriu -w   0x161660  0x00c2
+wriu -w   0x161660  0x00c0
+wriu -w   0x161660  0x33c8
+wriu -w   0x161670  0x0000
+wriu -w   0x161698  0x0000
+wriu -w   0x16169a  0x0000
+wriu -w   0x161690  0xf0f1
+wriu -w   0x161670  0x0800
+//---------------------------
+//program dig general setting
+//---------------------------
+wriu -w   0x10062c  0x8200
+wriu -w   0x1006fc  0x951a
+//--------------------------------------
+//Chose last_done_z after sync_fifo
+//--------------------------------------
+wriu -w   0x100652  0xffff
+wriu -w   0x100672  0xffff
+wriu -w   0x100692  0xffff
+wriu -w   0x1006b2  0xffff
+wriu -w   0x162212  0xffff
+wriu -w   0x162232  0xffff
+//---------------------
+// Default BW setting  
+//---------------------
+wriu -w   0x100640  0x8011 //disable member limit enable
+wriu -w   0x100660  0x8011 //disable member limit enable
+wriu -w   0x100680  0x8011 //disable member limit enable
+wriu -w   0x1006a0  0x8011 //disable member limit enable
+wriu -w   0x162200  0x8011 //disable member limit enable
+wriu -w   0x162220  0x8011 //disable member limit enable
+//---------------------------
+//program ana general setting
+//---------------------------
+wriu -w   0x161670  0x0800
+//driving setting
+wriu -w   0x161658  0x0c0c //driving: @20160427 Rayray suggest default value //update by winnie @20160818
+wriu -w   0x16165a  0xaaaa //driving: @20160427 Rayray suggest default value //update by winnie @20160818
+wriu -w   0x16165c  0xccaa //driving: @20160427 Rayray suggest default value //update by winnie @20160818
+wriu -w   0x16165e  0xccaa //driving: @20160427 Rayray suggest default value //update by winnie @20160818
+//trig. lvl setting
+wriu -w   0x161674  0x0606 //trig. lvl: //update by winnie @20160523
+wriu -w   0x161676  0x0606 //trig. lvl: //update by winnie @20160523
+
+wriu -w   0x16161a  0x8333 //ODT to VDD/2 //update by winnie @20160818
+wriu -w   0x16161c  0x0020
+
+wriu -w   0x161608  0x007f //DC: wriu -w   0x161608  0x0000
+//---------------------------
+//Release miu SW reset
+//---------------------------
+wriu -w   0x10121e  0x8c00
+wriu -w   0x10061e  0x8c00
+//=====================================================================
+// post inivec setting start(MIU0)
+//=====================================================================
+//---------------------------
+//disable GPIO
+//---------------------------
+wriu -w   0x110d00  0x2010 //DC: wriu -w   0x110d00  0x2018
+wriu -w   0x110d00  0x0000 //DC: wriu -w   0x110d00  0x0008
+wriu -w   0x110d18  0x0000
+wriu -w   0x110d7c  0x0000
+//---------------------------
+//Release ATOP PD mode       
+//---------------------------
+wriu -w   0x110d54  0xc000 //DC: wriu -w   0x110d54  0xc070
+//-----------
+// DQSM RST  
+//-----------
+wriu -w   0x110d1e  0x0005 //DC:
+wriu -w   0x110d1e  0x000f //DC:
+wriu -w   0x110d1e  0x0005 //DC:
+//---------------------------
+//select Mapping
+//---------------------------
+wriu -w   0x110d00  0x0002 //DC: wriu -w   0x110d00  0x000a //reg_pkg_sel = 2
+wriu -w   0x101200  0x0000
+//=====================================================================
+// post inivec setting start(MIU1)
+//=====================================================================
+//---------------------------
+//disable GPIO
+//---------------------------
+wriu -w   0x161600  0x2010 //DC: wriu -w   0x161600  0x2018
+wriu -w   0x161600  0x0000 //DC: wriu -w   0x161600  0x0008
+wriu -w   0x161618  0x0000
+wriu -w   0x16167c  0x0000
+//---------------------------
+//Release ATOP PD mode       
+//---------------------------
+wriu -w   0x161654  0xc000 //DC: wriu -w   0x161654  0xc070
+//-----------
+// DQSM RST  
+//-----------
+wriu -w   0x16161e  0x0005 //DC:
+wriu -w   0x16161e  0x000f //DC:
+wriu -w   0x16161e  0x0005 //DC:
+//---------------------------
+//select Mapping
+//---------------------------
+wriu -w   0x161600  0x0002 //DC: wriu -w   0x161600  0x000a //reg_pkg_sel = 2
+wriu -w   0x100600  0x0000
+//---------------------
+// begin init DRAM     
+//---------------------
+//-----Wait 200us, (keep DRAM RESET = 0)-----
+wait 1
+wriu -w   0x101200  0x0008
+wriu -w   0x101200  0x000c
+wriu -w   0x100600  0x0008
+wriu -w   0x100600  0x000c
+//-----Wait 500us, (keep DRAM RESET = 1 , CKE = 0)-----
+wait 1
+wriu -w   0x101200  0x000e
+wriu -w   0x100600  0x000e
+//-----Wait tXPR=400ns-----
+wait 1
+//--------Initial DRAM start here!!!
+wriu -w   0x101200  0x005f //disable pdn_pre_all function for CPU efficiency issue
+wriu -w   0x100600  0x005f //disable pdn_pre_all function for CPU efficiency issue
+//-----Wait init done-----
+wait 1
+//--------Initial Done
+//--------DDR2 wait 400ns for tXPR(?), DDR3 wait 512T for tZQinit
+wait 10
+//========================================================================================
+// This script is for MIU0 DDR4 VrefDQ change (begin)
+//========================================================================================
+
+wriu -b   0x101200  0x20 0x20 //DC:	//[05]   : reg_auto_ref_off = 1
+wriu -b   0x101207  0x10 0x10 //DC:	//[12]   : reg_cke_always_on = 1
+
+//---------------------------
+//Set MRx[15:8] = access MR6
+//---------------------------
+wriu      0x101219  0xc8 //DC:
+wriu -b   0x101201  0x1e 0x00 //DC: //[12:9] : reg_single_cmd    = 0 (MRW)
+
+
+//-------------------------------------------
+//Set MRx[6:0] = Choose VrefDQ value & Range
+//-------------------------------------------
+wriu -b   0x101218  0x7f 0x24 //DC: //0(Range)_11111(value), //update by winnie @20160818
+
+//----------------------------
+//Enable DQ Vref
+//----------------------------
+wriu -b   0x101218  0x80 0x80 //DC: //[7]    : = 1 (Enable VrefDQ training)
+wriu -b   0x101201  0x01 0x00 //DC: //[8]    : reg_single_cmd_en = 0 
+wriu -b   0x101201  0x01 0x01 //DC: //[8]    : reg_single_cmd_en = 1 
+wriu -b   0x101201  0x01 0x00 //DC: //[8]    : reg_single_cmd_en = 0 
+
+wait 2 //DC: 
+
+wriu -b   0x101201  0x01 0x00 //DC: //[8]    : reg_single_cmd_en = 0 
+wriu -b   0x101201  0x01 0x01 //DC: //[8]    : reg_single_cmd_en = 1 
+wriu -b   0x101201  0x01 0x00 //DC: //[8]    : reg_single_cmd_en = 0
+
+wait 2 //DC:
+
+//----------------------------
+//Disable set DQ Vref
+//----------------------------
+wriu -b   0x101218  0x80 0x00 //DC: //[7]    : = 0 (Disable VrefDQ training) 
+wriu -b   0x101201  0x01 0x00 //DC: //[8]    : reg_single_cmd_en = 0 
+wriu -b   0x101201  0x01 0x01 //DC: //[8]    : reg_single_cmd_en = 1 
+wriu -b   0x101201  0x01 0x00 //DC: //[8]    : reg_single_cmd_en = 0 
+
+wait 1 //DC: 
+
+
+wriu -b   0x101200  0x20 0x00 //DC: //[05]   : reg_auto_ref_off = 0
+//wriu -b   0x101207  0x10 0x00	//DC: //[12]   : reg_cke_always_on = 0
+
+
+
+//========================================================================================
+// This script is for MIU0 DDR4 VrefDQ change (end)
+//========================================================================================
+
+
+//========================================================================================
+// This script is for MIU1 DDR4 VrefDQ change (begin)
+//========================================================================================
+
+
+wriu -b   0x100600  0x20 0x20 //DC: 	//[05]   : reg_auto_ref_off = 1
+wriu -b   0x100607  0x10 0x10 //DC: 	//[12]   : reg_cke_always_on = 1
+
+//---------------------------
+//Set MRx[15:8] = access MR6
+//---------------------------
+wriu      0x100619  0xc8 //DC: 
+wriu -b   0x100601  0x1e 0x00 //DC:  //[12:9] : reg_single_cmd    = 0 (MRW)
+
+
+//-------------------------------------------
+//Set MRx[6:0] = Choose VrefDQ value & Range
+//-------------------------------------------
+wriu -b   0x100618  0x7f 0x26 //DC:  //0(Range)_11111(value), //update by winnie @20160818
+
+//----------------------------
+//Enable DQ Vref
+//----------------------------
+wriu -b   0x100618  0x80 0x80 //DC:  //[7]    : = 1 (Enable VrefDQ training)
+wriu -b   0x100601  0x01 0x00 //DC:  //[8]    : reg_single_cmd_en = 0 
+wriu -b   0x100601  0x01 0x01 //DC:  //[8]    : reg_single_cmd_en = 1 
+wriu -b   0x100601  0x01 0x00 //DC:  //[8]    : reg_single_cmd_en = 0 
+
+wait 2 //DC: 
+
+wriu -b   0x100601  0x01 0x00 //DC:  //[8]    : reg_single_cmd_en = 0 
+wriu -b   0x100601  0x01 0x01 //DC:  //[8]    : reg_single_cmd_en = 1 
+wriu -b   0x100601  0x01 0x00 //DC:  //[8]    : reg_single_cmd_en = 0
+
+wait 2 //DC: 
+
+//----------------------------
+//Disable set DQ Vref
+//----------------------------
+wriu -b   0x100618  0x80 0x00 //DC:  //[7]    : = 0 (Disable VrefDQ training) 
+wriu -b   0x100601  0x01 0x00 //DC:  //[8]    : reg_single_cmd_en = 0 
+wriu -b   0x100601  0x01 0x01 //DC:  //[8]    : reg_single_cmd_en = 1 
+wriu -b   0x100601  0x01 0x00 //DC:  //[8]    : reg_single_cmd_en = 0 
+
+wait 1 //DC: 
+
+
+wriu -b   0x100600  0x20 0x00 //DC: 	//[05]   : reg_auto_ref_off = 0
+//wriu -b   0x100607  0x10 0x00 //DC: 	//[12]   : reg_cke_always_on = 0
+
+//========================================================================================
+// This script is for MIU1 DDR4 VrefDQ change (end)
+//========================================================================================
+//-------------------------
+// unmask all 
+//-------------------------
+wriu -w   0x101246  0x0000 //DC: 
+wriu -w   0x101266  0x0000 //DC: 
+wriu -w   0x101286  0x0000 //DC: 
+wriu -w   0x1012a6  0x0000 //DC: 
+wriu -w   0x161506  0x0000 //DC: 
+wriu -w   0x161526  0x0000 //DC: 
+wriu -w   0x141006  0x0000 //DC: 
+wriu -w   0x141026  0x0000 //DC: 
+wriu -w   0x1615e6  0x0000 //DC: 
+wriu -w   0x10121e  0x8c08 //DC: 
+
+wriu -w   0x100646  0x0000 //DC: 
+wriu -w   0x100666  0x0000 //DC: 
+wriu -w   0x100686  0x0000 //DC: 
+wriu -w   0x1006a6  0x0000 //DC: 
+wriu -w   0x162206  0x0000 //DC: 
+wriu -w   0x162226  0x0000 //DC: 
+wriu -w   0x141106  0x0000 //DC: 
+wriu -w   0x141126  0x0000 //DC: 
+wriu -w   0x1622e6  0x0000 //DC: 
+//-------------------------
+// Begin of MIU BIST test
+//-------------------------
+wriu -w   0x1012fe  0x80e1 //use new 7 mode

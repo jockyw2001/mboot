@@ -1,0 +1,21 @@
+// Turn on xtal
+WREG (REG_ADDR_BASE + (0x000e7a <<1 )) , 0x0000
+
+// MPLL Power on
+WREG (REG_ADDR_BASE + (0x110b02 <<1 )) , 0x0000
+WREG_B (REG_ADDR_BASE + (0x110b08 <<1 )) , 0x11
+WREG (REG_ADDR_BASE + (0x110b00 <<1 )) , 0x0013
+
+//ARMPLL_CLKOUT_CPU
+WREG_B (REG_ADDR_BASE + ((0x110a22 <<1) + 1)) , 0x01
+
+// CPU 700MHZ
+WREG (REG_ADDR_BASE + (0x110ac0 <<1 )) , 0xfe89
+WREG (REG_ADDR_BASE + (0x110ac2 <<1 )) , 0x004e
+
+WREG (REG_ADDR_BASE + (0x110ac4 <<1 )) , 0x0001
+
+//ARMPLL Power on
+WREG_B (REG_ADDR_BASE + ((0x110a22 <<1) + 1)) , 0x00
+WREG_B (REG_ADDR_BASE + (0x110a20 <<1)) , 0x09
+

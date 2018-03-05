@@ -1,0 +1,257 @@
+//****************************************************
+// 001 HVSP non scale
+//****************************************************
+
+swch 4
+
+//enable capture
+wriu -w 0x102f00 0x000F  	//Bank0F S_vop2_reg
+wriu -w 0x102fae 0x0800		//[11] reg_cap_en
+wriu -w 0x102f8c 0x0020 	//[7: 4] reg_cap_stage
+
+//#----- OP2_HVSP -----#
+wriu -w 0x102f00 0x0062		//Bank62 op2_hvsp
+
+//hsp
+wriu -w 0x102f02 0xb42a
+wriu -w 0x102f04 0x00aa
+wriu -w 0x102f06 0x3000
+wriu -w 0x102f0a 0x0200
+wriu -w 0x102f0c 0x0780
+wriu -w 0x102f0e 0x02d0
+
+//vsp
+//wriu -w 0x102f82 0x02cf
+wriu -w 0x102f84 0x0437
+wriu -w 0x102f86 0x02cf
+wriu -w 0x102f88 0x01df
+wriu -w 0x102f8a 0x0405
+wriu -w 0x102f8e 0x0ab1
+wriu -w 0x102f90 0x0024
+wriu -w 0x102fa8 0x8000
+wriu -w 0x102fbc 0x02d0
+
+//****************************************************
+// 002 VE_Init
+//****************************************************
+
+// select output of VOP2IP or VOP2VE
+wriu 0x102F00 0x0F //sub bank 0f
+wriu 0x102F8C 0x20 //[5:4] capture stage select
+wriu 0x102FAF 0x08 //enable capture ... VOP2IP
+
+// ====================================
+//    NTSC frame buffer mode setting
+// ====================================
+//VE OSD enable    : 0x3b55[0], 0x3b55[2]
+wriu 0x103baa 0x05
+
+// --- ve source ---
+
+wriu 0x103b02 0x00 //read base address
+wriu 0x103b03 0x00 //read base address
+wriu 0x103b04 0x10 //read base address //6-frame //0x7e900
+
+
+wriu 0x103b14 0x14 //[4:3]422to444_mode [2]bypass_422to444 [0]sw_ini_sel
+wriu 0x103b15 0x01 //[10]rest_fbl_flag [9]crcb_swap [8]444to422_mode
+
+wriu 0x103b16 0x04 //[2]sep_sync_en [1:0]ipmux_sel
+
+
+wriu 0x103b18 0x00 //[11:0] fbl hde start
+wriu 0x103b19 0x00 //[11:0] fbl hde start
+wriu 0x103b1a 0xcf //[11:0] fbl hde end //719
+wriu 0x103b1b 0x02 //[11:0] fbl hde end //719
+
+wriu 0x103b1c 0x00 //[10:0] fbl vde start
+wriu 0x103b1d 0x00 //[10:0] fbl vde start
+wriu 0x103b1e 0xdf //[10:0] fbl vde end //479
+wriu 0x103b1f 0x01 //[10:0] fbl vde end //479
+
+wriu 0x103b20 0x00 //[6]rgb_in [0]interlace_enable
+
+
+wriu 0x103b24 0x02 //[11:0]vwhde_start
+wriu 0x103b25 0x00 //[11:0]vwhde_start
+
+wriu 0x103b26 0xff //[11:0]vwhde_end
+wriu 0x103b27 0xff //[11:0]vwhde_end
+
+
+wriu 0x103b28 0x02 //[11:0]vwvde_start
+wriu 0x103b29 0x00 //[11:0]vwvde_start
+
+wriu 0x103b2a 0xff //[11:0]vwvde_end
+wriu 0x103b2b 0xff //[11:0]vwvde_end
+
+//wriu 0x3b2c 0x00 //H_scaling_rate
+//wriu 0x3b2d 0x00 //H_scaling_rate
+
+//wriu 0x3b2e 0x00 //H_scaling_rate
+//wriu 0x3b2f 0x00 //H_scaling_rate
+
+wriu 0x103b40 0x00 //[0]disable_frame_drop
+
+wriu 0x103b42 0x40 //dram_full=0
+wriu 0x103b43 0xfa //dram_full=0
+wriu 0x103b44 0x01 //dram_full=0
+
+
+//wriu 0x103b52 0x18 //[4]tve_mode [3]tve_en [2]frame_rdy_mode [1]sw_wrfame_en [0]goprdbuf_en
+wriu 0x103b52 0x00
+wriu 0x103b53 0x00 //
+
+wriu 0x103b58 0x00 //[15]fbl enable [14]fbl reset [11:0]fbl start pixel_cnt
+wriu 0x103b59 0x00 //[15]fbl enable [14]fbl reset [11:0]fbl start pixel_cnt
+wriu 0x103b5a 0x00 //[10:0] fbl start line_cnt (reg_wff_thd2start_tve)
+wriu 0x103b5b 0x00 //[10:0] fbl start line_cnt (reg_wff_thd2start_tve)
+
+wriu 0x103b60 0xc0 //dram_empty
+wriu 0x103b61 0xa8 //dram_empty
+wriu 0x103b62 0x00 //dram_empty
+
+wriu 0x103b64 0x30 //read fifo num2miu
+
+//wriu 0x3b66 0x60 //field size for dram chk
+//wriu 0x3b67 0x54 //field size for dram chk
+
+wriu 0x103b6e 0x0b //[7]RdLastHigh [6:0]Rd2miuBNum
+wriu 0x103b6f 0x0c //[14:8]Rd2miuSNum
+
+wriu 0x103b82 0x00  //[3:0]sync inv
+
+wriu 0x103b84 0xe0 //frame line num
+wriu 0x103b85 0x01 //
+
+wriu 0x103b88 0x80 //[7:4]rff reset [3:0]avg end line
+wriu 0x103b89 0x00 //
+
+wriu 0x103b8a 0xc0 //field size
+wriu 0x103b8b 0xa8 //
+
+wriu 0x103b8c 0x00 #disable_RFIFI_auto_reset(only_for_sim)
+wriu 0x103b8d 0x00 #disable_RFIFI_auto_reset(only_for_sim)
+
+wriu 0x103bf6 0x00 //write base address
+wriu 0x103bf7 0x00 //write base address
+wriu 0x103bf8 0x10 //write base address
+
+wriu 0x103bfa 0x00 //pat_sel=1
+wriu 0x103bfb 0x20 //pat_sel=1
+
+wriu 0x103b00 0x30 //VE SC reset step1/3
+wriu 0x103b01 0x00 //VE SC reset step1/3
+
+wriu 0x103b00 0x20 //VE SC reset step2/3
+wriu 0x103b01 0x00 //VE SC reset step2/3
+
+wriu 0x103b00 0x00 //VE SC reset step3/3
+wriu 0x103b01 0x00 //VE SC reset step3/3
+
+wriu 0x103b00 0x85 //enable_VE(video_source=VE_SC_test_pattern//no_do_H/Vscaling_down//open_DE_mode)
+wriu 0x103b01 0x03 //enable_VE(video_source=VE_SC_test_pattern//no_do_H/Vscaling_down//open_DE_mode)
+
+
+
+
+// ve encoder ####
+wriu 0x103e06 0x00 //bit[4]=1'b0=>disable_TVE_internal_pattern(color_bar)
+wriu 0x103e07 0x00 //bit[4]=1'b0=>disable_TVE_internal_pattern(color_bar)
+
+wriu 0x103e0e 0x1 //TVE_SW_reset
+wriu 0x103e0f 0x0 //TVE_SW_reset
+
+wriu 0x103e0e 0x0 //TVE_SW_reset_disable
+wriu 0x103e0f 0x0 //TVE_SW_reset_disable
+
+wriu 0x103e7c 0x01 //pixel_start
+wriu 0x103e7d 0x00 //pixel_start
+
+wriu 0x103e7e 0x01 //TVE_line_start_from_line2([9:0])//bit[10]=>always_to_start_TVE
+wriu 0x103e7f 0x1C //TVE_line_start_from_line2([9:0])//bit[10]=>always_to_start_TVE
+
+wriu 0x103ef0 0x0 //macrovision_disable
+wriu 0x103ef1 0x0 //macrovision_disable
+
+//For 27MHz clk_vedac
+//wriu 0x103e04 0x48	//[3:2]:filter mode; [6]:EN_27N
+
+
+//****************************************************
+// 003 NTSC
+//****************************************************
+// NTSC Scrpits
+// ve encoder ####
+wriu 0x103e00 0x01 // hsync start
+wriu 0x103e01 0x7E // hsync end
+wriu 0x103e02 0x94 // burst start
+wriu 0x103e03 0xD7 // burst end
+wriu 0x103e04 0x00
+wriu 0x103e05 0x00
+wriu 0x103e06 0x06 // Vtotal Select (NTSC 0, PAL 1)
+wriu 0x103e07 0x00
+
+//PACE PATCH
+wriu 0x103e08 0x00 // contrast
+wriu 0x103e09 0x4C // contrast
+//NORMAL PATCH
+//wriu 0x103e08 0x80 // contrast
+//wriu 0x103e09 0x52 // contrast
+
+wriu 0x103e0C 0x00 // NTSC/PAL Switch Enable (NTSC 0, PAL 1)
+wriu 0x103e0D 0x00
+wriu 0x103e12 0xB4 // h total
+wriu 0x103e13 0x06 // h total
+wriu 0x103e14 0x00 // brightness
+wriu 0x103e15 0x80 // brightness
+wriu 0x103e16 0x1F // burst phase step (15-0)
+wriu 0x103e17 0x7C // burst phase step
+wriu 0x103e18 0xF0 // burst phase step (31-16)
+wriu 0x103e19 0x21 // burst phase step
+
+wriu 0x103e1A 0xD0  // low stage fraction
+wriu 0x103e1B 0x00 // low stage fraction
+wriu 0x103e1C 0x00 // 625 stage fraction
+wriu 0x103e1D 0x00 // 625 stage fraction
+
+wriu 0x103e4A 0x00 // av st (NTSC=256, PAL=287 or 279)
+wriu 0x103e4B 0x01
+wriu 0x103e4C 0x8D // av end (NTSC=1677, PAL=1690 or 1686)
+wriu 0x103e4D 0x06
+wriu 0x103e4E 0x2A // pad level
+wriu 0x103e4F 0x10 // sync tip level
+
+//PACE PATCH
+wriu 0x103e50 0xF0 // blank level
+wriu 0x103e51 0x3C // sync step
+//NORMAL
+//wriu 0x103e50 0xF0 // blank level
+//wriu 0x103e51 0x3F // sync step
+
+wriu 0x103e52 0x13 // burst step
+wriu 0x103e53 0x70 // burst amp
+wriu 0x103e54 0x41 //chroma gain
+wriu 0x103e55 0x5B
+wriu 0x103e5A 0x30 // Y clamp
+wriu 0x103e5B 0x53
+wriu 0x103e5C 0x00 //VBI Mode
+wriu 0x103e5D 0x00
+
+wriu 0x103eF0 0x00 // disable MV
+
+//video source
+wriu 0x103b84 0xE0 // Frame line num (NTSC=480, PAL=576)
+wriu 0x103b85 0x01
+wriu 0x103b8A 0xC0 // Field Size (NTSC=43200, PAL=51840)
+wriu 0x103b8B 0xA8
+
+//Encoder EX
+wriu 0x103fEE 0x84 // half de mask
+wriu 0x103fEF 0x02 // half de mask
+wriu 0x103fF0 0x8B // half de mask
+wriu 0x103fF1 0x04 // half de mask
+
+
+//DAC enable
+wriu -b 0x101A00 0x1F 0x11
